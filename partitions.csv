@@ -1,0 +1,24 @@
+# Note: We allow the system to calculate the Offsets.
+#
+# ESP-IDF Partition Table
+# Name,     Type,   SubType,    Offset,   Size,      Flags
+nvs,        data,   nvs,              ,   0x006000,
+nvs_key,    data,   nvs_keys,         ,   0x001000,  encrypted
+phy_init,   data,   phy,              ,   0x001000,  encrypted
+otadata,    data,   ota,              ,   0x002000,
+factory,    app,    factory,          ,   0x2EE000,
+ota_0,      app,    ota_0,            ,   0x63E000,
+ota_1,      app,    ota_1,            ,   0x63E000,
+#
+# factory partition  is set to  3.0Mb (never changes)
+# ota app partitions are set to 6.5Mb
+#
+# NOTE: nvs partition cannot be encrypted - but data is still stored in encrypted form. (requires Flash encryption)
+# NOTE: app partitions are always treated as encrypted when encryption enabled at a system level (no need to flag it)
+# NOTE: Encryption requires boot offset from partition table to be set at 0xC000 (this is set in menuConfig)
+# NOTE: Subtype nvs_keys must be of type data with a minumum size of 0x1000 and marked encrypted.
+#
+# add flags as follows when applying encryption above
+#
+# nvs_key,    data,   nvs_keys,         ,   0x001000, encrypted
+# phy_init,   data,   phy,              ,   0x001000, encrypted
