@@ -71,7 +71,7 @@ void System::run(void)
             if (saveToNVSFlag)
             {
                 saveToNVSFlag = false;
-                // saveVariablesToNVS();
+                saveVariablesToNVS();
             }
 
             //

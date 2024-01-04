@@ -1,0 +1,4 @@
+// To add a submodule
+// 1) Make sure project is already in Git under control.
+// 2) Move to components directory and right mouse click "Git Bash here".
+// 3) Apply command: git submodule add https://github.com/SolidStateLEDLighting/<repository name>.git

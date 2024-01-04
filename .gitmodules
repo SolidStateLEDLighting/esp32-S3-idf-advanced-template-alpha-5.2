@@ -1,0 +1,3 @@
+[submodule "components/nvs"]
+	path = components/nvs
+	url = https://github.com/SolidStateLEDLighting/nvs.git

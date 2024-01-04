@@ -16,7 +16,7 @@ System::System(void)
     setLogLevels();                // Manually sets log levels for tasks down the call stack for development.
     createSemaphores();            // Create any locking semaphores owned by this object.
     setConditionalCompVariables(); // Converts conditional compilation to varibles.
-    // restoreVariablesFromNVS();     // Bring back all our persistant data.
+    restoreVariablesFromNVS();     // Bring back all our persistant data.
 
     /* GPIO */
     initGPIOPins(); // Set up all our pin General Purpose Input Output pin definitions

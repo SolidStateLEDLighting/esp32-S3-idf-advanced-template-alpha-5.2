@@ -22,7 +22,7 @@
 #include "esp_sntp.h"
 #include "esp_log.h"
 
-// #include "nvs/nvs_.hpp" // Our components
+#include "nvs/nvs_.hpp" // Our components
 
 class NVS; // Forward declarations
 
@@ -104,8 +104,8 @@ extern "C"
         bool saveToNVSFlag = false;
         uint8_t saveToNVSDelayCount = 0;
 
-        // bool restoreVariablesFromNVS();
-        // bool saveVariablesToNVS();
+        bool restoreVariablesFromNVS();
+        bool saveVariablesToNVS();
 
         /* System_Run */
         SYS_NOTIFY sysTaskNotifyValue = SYS_NOTIFY::NONE;
