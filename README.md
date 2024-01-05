@@ -17,12 +17,13 @@ Features which are included, explained, or demonstrated are:
 6. Queues (which send commands and data)
 7. Semaphore locking (code entry and variables)
 8. Basic Wifi connectivity
-9. WS2812 Addressable Indication RGB LED (remote control tranceiver (RMT) driver)
+9. WS2812 Addressable Indication RGB LED (employs the remote control transceiver (RMT) driver)
 
 ## Abstractions
 On a project level, the primary abstraction is the operation of the entire system.  At this point, the project doesn't interact much with the surrounding world, so it's abstraction detail is limited.
 
 ## Block Diagrams
+The primary block diagram of the project is shown above.  A block diagram shows the building blocks and typically a work process that starts on the left and moves to the right over time.
 
 ## Sequence Diagrams
 
@@ -33,8 +34,7 @@ Therefore a development approach must include a smart and effient and easily und
 
 State transition modelling provides a well understood mechanism that upon input and time, a system moves from one state to another. In other words, with input, work is acheived, and the result is that the system completes a task and reaches a stopping point.   It is at this stopping point, that we can yield back to the operating system.  When that task resumes work, it has a next task to complete and does what is required before yielding again.  This cycle repeats continously to achieve the system's objectives.  Most of our programming follows this state transition model. 
 
-On the down side, state modelling doesn't look normal to the human eye.  State modelling isn't a linear list of things to do.  State modelling resembles a series of inter-related repeating loops.  With time and experience, state modelling become easier to see and understand, but one way to more quickly some up to speed with it is to view state modelling diagrams.
-
+On the down side, state modelling doesn't look normal to the human eye.  State modelling isn't a linear list of things to do (as is seen in Espressif's code examples).  State modelling resembles a series of inter-related repeating loops.  With time and experience, state modelling becomes easier to see and understand, but one way to more quickly some up to speed with it is to view state modelling diagrams.  As a rule, if you easily diagram your intended state transition process, then it is likely to work nicely as expected.   An explanation as to why you are doing something is typically very important so, always include good documentation about intent.
 
 
 \<end of document>
