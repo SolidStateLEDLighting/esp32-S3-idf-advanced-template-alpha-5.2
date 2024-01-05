@@ -1,1 +1,1 @@
-![system_block](./main/docs/images/system_block.png)
+![system_block](./docs/images/project_block.png)
