@@ -1,16 +1,19 @@
 > Taking note of our planned abstraction levels helps us keep the design intent clear between files and functions.
 
 
-# Top Level ---
+# Top Level
+---
 
 ## Classes
 
 
-# Mid Level ---
+# Mid Level
+---
 
 
 
 
-# Low Level ---
+# Low Level
+---
 
 ## ESP-IDF - 
