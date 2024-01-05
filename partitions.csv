@@ -1,3 +1,7 @@
+# This partition table has been used in a much larger project that included
+# AWS IOT Core services and the ability to OTA.  Future examples will require
+# this more advanced partition table.
+#
 # Note: We allow the system to calculate the Offsets.
 #
 # ESP-IDF Partition Table
