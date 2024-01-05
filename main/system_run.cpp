@@ -74,31 +74,6 @@ void System::run(void)
                 saveVariablesToNVS();
             }
 
-            //
-            // Did we connect before -- Yes, then are we the root of the network?  No, then try to find a router.
-            //
-            // Do we have router1 and/or router2 ssid and passwds?    Favor the router with proven info - favor router1
-            //
-            // Test routers -- start and connect (has Internet)
-            //
-            // Has connection ssid/passwrd
-            // Connect      -- logs into router
-            // HasIPAddress -- can see Internet
-            //
-            // Are we the root?  Yes, connect.   No, disconnect.
-            //
-
-            if (wifiRestart)
-            {
-                wifiRestart = false;
-
-                // if (wifi != nullptr)
-                //     delete wifi;
-
-                // initSysStep = SYS_INIT::Create_Wifi;
-                // sysOP = SYS_OP::Init;
-            }
-
             if (diagSys) // We may run periodic or commanded diagnostics
             {
                 if (diagSys & _diagHeapCheck)
@@ -144,6 +119,12 @@ void System::run(void)
                 if (show & _showInit)
                     routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::Init_Queues_Commands - Step " + std::to_string((int)SYS_INIT::Init_Queues_Commands));
 
+                /* IOT Request and Responses WE RESPOND TO */
+                systemCmdRequestQue = xQueueCreate(1, sizeof(SYS_CmdRequest *)); // We hold the queue for incoming requests
+                ptrSYSCmdRequest = new SYS_CmdRequest();                         // <-- Incoming request
+                ptrSYSResponse = new SYS_Response();                             // --> Outgoing responses
+                ptrSYSResponse->jsonResponse = nullptr;
+
                 initSysStep = SYS_INIT::Create_Default_Event_Loop;
                 break;
             }
@@ -167,7 +148,7 @@ void System::run(void)
             case SYS_INIT::Start_Network_Interface:
             {
                 if (show & _showInit)
-                    routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::StartNetworkInterface: - Step 5");
+                    routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::Start_Network_Interface - Step " + std::to_string((int)SYS_INIT::Start_Network_Interface));
 
                 // ESP_GOTO_ON_ERROR(esp_netif_init(), sys_Start_Network_Interface_err, TAG, "esp_netif_init() failure."); // Network Interface initialization - starts up the TCP/IP stack.
                 initSysStep = SYS_INIT::Finished;

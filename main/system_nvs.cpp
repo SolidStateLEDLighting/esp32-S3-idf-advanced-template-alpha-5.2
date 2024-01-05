@@ -66,17 +66,6 @@ bool System::restoreVariablesFromNVS()
             successFlag = false;
     }
 
-    if (successFlag)
-    {
-        if (nvs->getU32IntegerFromNVS("wifiRsrtCount", &wifiRestrtCount))
-        {
-            if (show & _showNVS)
-                ESP_LOGW(TAG, "wifiRestrtCount is %ld", wifiRestrtCount);
-        }
-        else
-            successFlag = false;
-    }
-
     if (show & _showNVS)
         ESP_LOGW(TAG, "system end");
 
@@ -130,20 +119,6 @@ bool System::saveVariablesToNVS()
         else
         {
             ESP_LOGE(TAG, "Error, Unable to saveU32IntegerToNVS bootCount");
-            successFlag = false;
-        }
-    }
-
-    if (successFlag)
-    {
-        if likely (nvs->saveU32IntegerToNVS("wifiRsrtCount", wifiRestrtCount))
-        {
-            if (show & _showNVS)
-                ESP_LOGW(TAG, "wifiRestrtCount = %ld", wifiRestrtCount);
-        }
-        else
-        {
-            ESP_LOGE(TAG, "Error, Unable to saveU32IntegerToNVS wifiRsrtCount");
             successFlag = false;
         }
     }

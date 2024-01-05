@@ -166,59 +166,6 @@ void System::oneSecondActions(void)
         else
             return; // Don't permit further entry into the oneSecondActions routine while waiting for the reboot to begin.
     }
-
-    //
-    //  Ask Wifi To Connect based on a time delay.  This reduces excessive attempts in a short period of time.
-    //
-    // if (startWifiDelaySecondsCountDown > 0)
-    // {
-    //     if (--startWifiDelaySecondsCountDown < 1)
-    //     {
-    //         if ((wifi != nullptr) && (currWifiState != SYS_WIFI_STATE::CONNECTED)) // First look to see if we are connected already...
-    //         {
-    //             ESP_LOGI(TAG, "Asking Wifi to Connect...");
-
-    //             if (taskHandleWIFIRun != nullptr) // Inform Wifi so it may choose to connect
-    //             {
-    //                 if (xTaskNotify(taskHandleWIFIRun, static_cast<uint8_t>(WIFI_NOTIFY::CMD_CONNECT), eSetValueWithoutOverwrite))
-    //                     vTaskDelay(pdMS_TO_TICKS(10));
-    //             }
-    //             else
-    //                 ESP_LOGE(TAG, "taskHandleWIFIRun is null... We can't send CMD_CONNECT task notifications to Wifi");
-    //         }
-    //     }
-    // }
-
-    // if (currWifiState < SYS_WIFI_STATE::CONNECTED) // Anytime we are less than connected
-    // {
-    //     if (wifiSSIDPasswordOk == false) // wifiSSIDPasswordOk == true indicates that we have confirmed the SSID/Password currently good
-    //     {
-    //     }
-    //     else // We have logged into the Wifi router, but don't have an IP Address yet.
-    //     {
-    //         //
-    //         // There are circumstances where our Wifi connection progress will stall before and IP address is assigned.
-    //         // We catch those occurances here and restart the Wifi object if necessary.  Additionally, we record every wifi object restart in NVS.
-    //         //
-    //         // lookingForIPAddressCounter++;
-
-    //         if (lookingForIPAddressCounter > 30) // Watch the count between 30 and 45 seconds...
-    //             ESP_LOGW(TAG, "Wifi Connection waiting for an IP address running long at %d seconds.", lookingForIPAddressCounter);
-
-    //         if (lookingForIPAddressCounter > 45)
-    //         {
-    //             ESP_LOGW(TAG, "Wifi Connect Timed Out.  Restarting Wifi...");
-    //             wifiRestrtCount++; // Record this restart in NVS
-    //             saveToNVSFlag = true;
-    //             vTaskDelay(pdMS_TO_TICKS(50));
-    //             wifiRestart = true;
-    //         }
-    //     }
-    // }
-    // else // The only other state possible is SYS_WIFI_STATE::CONNECTED
-    // {
-    //     lookingForSSIDandPasswordSecsCounter = 0; // Reset our counter
-    // }
 }
 
 void System::fiveSecondActions(void)
@@ -249,7 +196,4 @@ void System::fiveMinuteActions(void)
 {
     if (showSys & _showTimerMinutes)
         ESP_LOGI(TAG, "Five Minutes");
-
-    // if (blnSNTPTimeValid)
-    // printTime();
 }

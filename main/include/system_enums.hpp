@@ -19,7 +19,7 @@ enum class SYS_NOTIFY : uint8_t // Task Notification definitions for the Run loo
 // Queue based commands should be used for commands which may provide input and perhaps return data.
 enum class SYS_COMMAND : uint8_t
 {
-    NONE,
+    NONE = 0,
 };
 
 //
@@ -67,10 +67,6 @@ enum class SYS_INIT : uint8_t
     Finished,
     Error,
 };
-
-//
-// Object States
-//
 
 //
 // Logging

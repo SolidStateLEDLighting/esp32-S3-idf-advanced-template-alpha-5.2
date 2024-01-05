@@ -30,14 +30,8 @@
 //
 // showSys masks to create values from a 32 bit value
 //
-#define _showWifiStart 0x00000001
-#define _showSysXXX 0x00000002
-#define _showPowerUpEnv 0x00000004
-#define _showPowerDownEnv 0x00000008
-#define _showPowerUpCamera 0x00000010
-#define _showPowerDownCamera 0x00000020
-#define _showTimerSeconds 0x00000040
-#define _showTimerMinutes 0x00000080
+#define _showTimerSeconds 0x00000001
+#define _showTimerMinutes 0x00000002
 
 //
 // diagSys masks to create values from a 32 bit value

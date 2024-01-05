@@ -90,14 +90,6 @@ void System::runGPIOTask(void)
 {
     uint32_t io_num;
 
-    uint32_t color1 = 0;
-    uint32_t cycles1 = 0;
-    uint32_t color2 = 0;
-    uint32_t cycles2 = 0;
-    uint32_t onTime = 0;
-    uint32_t offTime = 0;
-    uint32_t val = 0;
-
     while (true)
     {
         if (xQueueReceive(xQueueGPIOEvents, (void *)&io_num, portMAX_DELAY)) // There is never any reason to yield.

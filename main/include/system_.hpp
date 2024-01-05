@@ -42,18 +42,21 @@ extern "C"
         QueueHandle_t get_CmdRequestQueue(void);
 
     private:
-        /* Object References */
-        NVS *nvs = nullptr;
-
-        /* System */
+        /* System_ */
         char TAG[5] = "_sys";
-        uint8_t runStackSizeK = 6; // Default size
 
-        uint16_t iotDirty = 0;
+        uint8_t runStackSizeK = 6;  // Default size
+        uint8_t gpioStackSizeK = 3; //
+
+        uint8_t show = 0;      // Flags
+        uint8_t showSys = 0;   //
+        uint8_t diagSys = 0;   //
+        uint16_t iotDirty = 0; //
+
         uint32_t bootCount = 0;
-        uint64_t currentEventEpochTime = 0;
 
-        uint8_t gpioStackSizeK = 3;
+        QueueHandle_t queHandleWIFICmdRequest = nullptr;
+        QueueHandle_t queHandleINDCmdRequest = nullptr;
 
         System(void);
         System(const System &) = delete;         // Disable copy constructor
@@ -64,43 +67,28 @@ extern "C"
         void createSemaphores(void);
         void setConditionalCompVariables(void);
 
-        std::string strCmdPayload = ""; // Document handling
-
-        QueueHandle_t systemCmdRequestQue = nullptr; // Command Queue
-        SYS_CmdRequest *ptrSYSCmdRequest = nullptr;
-        SYS_Response *ptrSYSResponse = nullptr;
-
-        TaskHandle_t taskHandleSystemRun = nullptr; /* RTOS */
-        TaskHandle_t taskHandleINDRun = nullptr;
-        TaskHandle_t taskHandleSNTPRun = nullptr;
-        TaskHandle_t taskHandleWIFIRun = nullptr;
-        TaskHandle_t taskHandleMeshRun = nullptr;
-
-        QueueHandle_t queHandleWIFICmdRequest = nullptr;
-        QueueHandle_t queHandleINDCmdRequest = nullptr;
-
         /* System_Diagnostics */
-        uint8_t show = 0;
-        uint8_t showSys = 0;
-
-        const char *convertWifiStateToChars(uint8_t);
-        std::string getDeviceID(void);
-
-        /* System_gpio_test */
-        bool toogleBool = false;
-
-        void Test_Power_Rails(void);
+        void printRunTimeStats(void);
+        void printMemoryStats();
+        void printTaskInfo(void);
 
         /* System_gpio */
         TaskHandle_t runTaskHandleSystemGPIO = nullptr;
-        uint8_t gpioStep = 0;
 
-        static void runGPIOTaskMarshaller(void *);
-        void runGPIOTask(void); // Handles GPIO Interrupts on Change Events
         void initGPIOPins(void);
         void initGPIOTask(void);
+        static void runGPIOTaskMarshaller(void *);
+        void runGPIOTask(void); // Handles GPIO Interrupts on Change Events
+
+        /* System_Logging */
+        std::string errMsg = "";
+
+        void routeLogByRef(LOG_TYPE, std::string *);
+        void routeLogByValue(LOG_TYPE, std::string);
 
         /* System_NVS */
+        NVS *nvs = nullptr;
+
         bool saveToNVSFlag = false;
         uint8_t saveToNVSDelayCount = 0;
 
@@ -109,9 +97,21 @@ extern "C"
 
         /* System_Run */
         SYS_NOTIFY sysTaskNotifyValue = SYS_NOTIFY::NONE;
+
+        QueueHandle_t systemCmdRequestQue = nullptr; // Command Queue
+        SYS_CmdRequest *ptrSYSCmdRequest = nullptr;
+        SYS_Response *ptrSYSResponse = nullptr;
+        std::string strCmdPayload = "";
+
         SYS_OP sysOP = SYS_OP::Idle;
         SYS_OP opSys_Return = SYS_OP::Idle;
         SYS_INIT initSysStep = SYS_INIT::Finished;
+
+        TaskHandle_t taskHandleSystemRun = nullptr; /* RTOS */
+        TaskHandle_t taskHandleINDRun = nullptr;
+        TaskHandle_t taskHandleSNTPRun = nullptr;
+        TaskHandle_t taskHandleWIFIRun = nullptr;
+        TaskHandle_t taskHandleMeshRun = nullptr;
 
         static void runMarshaller(void *);
         void run(void); // Handles all System activites that are not on a frequency
@@ -119,11 +119,11 @@ extern "C"
         /* System_Timer */
         uint8_t rebootTimerSec = 0;
         uint8_t syncEventTimeOut_Counter = 0;
-        esp_timer_handle_t handleGenTimer;
+        esp_timer_handle_t handleGenTimer = nullptr;
         TaskHandle_t taskHandleRunSystemTimer = nullptr;
 
-        static void runGenTimerTaskMarshaller(void *);
-        void runGenTimerTask(void); // Handles all Timer related events
+        static void runGenTimerTaskMarshaller(void *); // Handles all Timer related events
+        void runGenTimerTask(void);                    //
 
         void initGenTimer(void);
         static void genTimerCallback(void *);
@@ -135,46 +135,16 @@ extern "C"
         void oneMinuteActions(void);
         void fiveMinuteActions(void);
 
-        //
-        // Local Components
-        //
-        /* Indication */
-        void Test_SendIndication(void);
-
-        bool wifiSSIDPasswordOk = false;
-        uint8_t lookingForSSIDandPasswordSecsCounter = 0;
-        const uint8_t wifiFailureProvisionThresholdSecs = 35;
-
-        bool wifiRestart = false;
-        uint32_t wifiRestrtCount = 0;
-
-        uint8_t startWifiDelaySeconds = 5;
-        uint8_t startWifiDelaySecondsCountDown = 0;
-
-        uint8_t lookingForIPAddressCounter = 0;
-        const uint8_t wifiConnectTimeOutSecsThreshold = 200;
-
-        /* Logging */
-        std::string errMsg = "";
-
-        void routeLogByRef(LOG_TYPE, std::string *);
-        void routeLogByValue(LOG_TYPE, std::string);
-
         /* Utilities */
-        bool lockGetBool(bool *);
-        void lockSetBool(bool *, bool);
+        const char *convertWifiStateToChars(uint8_t);
+        std::string getDeviceID(void);
 
-        uint8_t lockGetUint8(uint8_t *);
-        void lockOrUint8(uint8_t *, uint8_t);
-        void lockAndUint8(uint8_t *variable, uint8_t value);
-        void lockSetUint8(uint8_t *, uint8_t);
+        bool lockGetBool(bool *);       // Locking Boolean variables
+        void lockSetBool(bool *, bool); //
 
-        /* Diagnostics */
-        uint8_t diagSys = 0;
-
-        void printTaskInfo(void);
-        void printRunTimeStats(void);
-        void printMemoryStats();
-        void printJSON(void);
+        uint8_t lockGetUint8(uint8_t *);                     // Locking uint8_t variables
+        void lockOrUint8(uint8_t *, uint8_t);                //
+        void lockAndUint8(uint8_t *variable, uint8_t value); //
+        void lockSetUint8(uint8_t *, uint8_t);               //
     };
 }

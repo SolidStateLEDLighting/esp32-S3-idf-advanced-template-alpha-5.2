@@ -39,11 +39,6 @@ void System::setFlags()
     // show |= _showJSONProcessing;
 
     showSys = 0;
-    // showSys |= _showWifiRestart;
-    // showSys |= _showPowerUpEnv;
-    // showSys |= _showPowerDownEnv;
-    // showSys |= _showPowerUpCamera;
-    // showSys |= _showPowerDownCamera;
     // showSys |= _showTimerSeconds;
     // showSys |= _showTimerMinutes;
 
