@@ -1,0 +1,1 @@
+If you are viewing components from Github, you will see they are just links to other repositories.  Those components may be used by many projects.  Each project will employ the components as a sub-module.

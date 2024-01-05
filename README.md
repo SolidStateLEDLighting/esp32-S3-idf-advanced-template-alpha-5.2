@@ -27,12 +27,14 @@ On a project level, the primary abstraction is the operation of the entire syste
 ## Sequence Diagrams
 
 ## State Transition Diagrams
-One of the basic premises of development in a cooperative multi-tasking system is that the processes (tasks) must yield back to the schedular on a regular basis frequently enough to supply enough processor time to service all tasks.   If any task doesn't yield, the system will starve of CPU time and the watchdog timer will expire causing a core panic followed by (in most cases) a reboot.
+One of the basic premises of development in a cooperative multi-tasking system is that the processes (tasks) must yield back to the OS's scheduler on a regular basis frequently enough to supply enough processor time to service all tasks.   If any task doesn't yield, the system will starve of CPU time and the watchdog timer will expire causing a core panic followed by (in most cases) a reboot.
 
 Therefore a development approach must include a smart and effient and easily understood way to complete descrete work, and systematically yield to the OS (in this case freeRTOS).  There may be several approaches to solving this problem, but one well known approach is to use state transition modelling.
 
-State transition modelling provides a well understood mechanism that upon input and time, a system moves from one state to another. In other words, with input, work is acheived, and the result is that the system moves to the next task and reaches a stopping point.   It is at this stopping point, that we can yield back to the operating system.   We peform this cycle repeatedly to continously achieve the system's objectives.
+State transition modelling provides a well understood mechanism that upon input and time, a system moves from one state to another. In other words, with input, work is acheived, and the result is that the system completes a task and reaches a stopping point.   It is at this stopping point, that we can yield back to the operating system.  When that task resumes work, it has a next task to complete and does what is required before yielding again.  This cycle repeats continously to achieve the system's objectives.  Most of our programming follows this state transition model. 
 
-Most of our programming follows this state transition model of programming.
+On the down side, state modelling doesn't look normal to the human eye.  State modelling isn't a linear list of things to do.  State modelling resembles a series of inter-related repeating loops.  With time and experience, state modelling become easier to see and understand, but one way to more quickly some up to speed with it is to view state modelling diagrams.
+
+
 
 \<end of document>
