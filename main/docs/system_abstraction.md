@@ -1,19 +1,21 @@
 > Taking note of our planned abstraction levels helps us keep the design intent clear between files and functions.
 
+The intent of the System is to be the foundation of the project.  Master control he held here.
 
-# Top Level
 ---
+# Top-Level
 
-## Classes
+## User Classes
+Only one class: System
 
-
-# Mid Level
 ---
+# Mid-Level
+
+No mid-level entities.
 
 
-
-
-# Low Level
 ---
+# Low-Level
 
-## ESP-IDF - 
+## ESP-IDF
+The system will make calls directly back to the ESP-IDF.  There are no other intermediary actors between the System and the IDF.
