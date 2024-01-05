@@ -32,9 +32,7 @@ void System::initGPIOPins(void) // We initial all pins possible here.
     gpio_config(&gpioSW1);
 }
 
-//
-// This ISR is set apart because tactile switch input needs to be handled with a debouncing algorithm.
-//
+/* This ISR is set apart because tactile switch input needs to be handled with a debouncing algorithm. */
 void IRAM_ATTR GPIOSwitchIsrHandler(void *arg)
 {
     if (blnallowSwitchGPIOinput)
@@ -45,9 +43,7 @@ void IRAM_ATTR GPIOSwitchIsrHandler(void *arg)
     }
 }
 
-//
-// Normal (non-switch) GPIO ISR handling would warrant no debouncing delay.
-//
+/* Normal (non-switch) GPIO ISR handling would warrant no debouncing delay. */
 void IRAM_ATTR GPIOIsrHandler(void *arg)
 {
     xQueueSendToBackFromISR(xQueueGPIOEvents, &arg, NULL);

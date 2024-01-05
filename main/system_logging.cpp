@@ -1,11 +1,11 @@
 #include "system_.hpp" // Class structure and variables
 
-extern SemaphoreHandle_t semSysRouteLock;
+extern SemaphoreHandle_t semSysLoggingLock;
 
 /* Logging */
 void System::routeLogByRef(LOG_TYPE _type, std::string *_msg)
 {
-    if (xSemaphoreTake(semSysRouteLock, portMAX_DELAY)) // We use this lock to prevent sys_evt and wifi_run tasks from having conflicts
+    if (xSemaphoreTake(semSysLoggingLock, portMAX_DELAY)) // We use this lock to prevent sys_evt and wifi_run tasks from having conflicts
     {
         LOG_TYPE type = _type;   // Copy our parameters upon entry before they are over-written by another calling task.
         std::string *msg = _msg; // This will point back to the caller's variable.
@@ -37,13 +37,13 @@ void System::routeLogByRef(LOG_TYPE _type, std::string *_msg)
         }
         }
 
-        xSemaphoreGive(semSysRouteLock);
+        xSemaphoreGive(semSysLoggingLock);
     }
 }
 
 void System::routeLogByValue(LOG_TYPE _type, std::string _msg)
 {
-    if (xSemaphoreTake(semSysRouteLock, portMAX_DELAY)) // We use this lock to prevent sys_evt and wifi_run tasks from having conflicts
+    if (xSemaphoreTake(semSysLoggingLock, portMAX_DELAY)) // We use this lock to prevent sys_evt and wifi_run tasks from having conflicts
     {
         LOG_TYPE type = _type; // Copy our parameters upon entry before they are over-written by another calling task.
         std::string msg = _msg;
@@ -75,6 +75,6 @@ void System::routeLogByValue(LOG_TYPE _type, std::string _msg)
         }
         }
 
-        xSemaphoreGive(semSysRouteLock);
+        xSemaphoreGive(semSysLoggingLock);
     }
 }

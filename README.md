@@ -1,1 +1,1 @@
-empty
+![system_block](./main/docs/images/system_block.jpg)

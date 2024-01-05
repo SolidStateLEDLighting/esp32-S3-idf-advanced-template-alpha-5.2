@@ -5,10 +5,7 @@
 
 /* External Variables */
 extern SemaphoreHandle_t semIndEntry;
-extern SemaphoreHandle_t semSNTPEntry;
-extern SemaphoreHandle_t semWifiEntry;
-extern SemaphoreHandle_t semMeshEntry;
-extern SemaphoreHandle_t semSysRouteLock;
+extern SemaphoreHandle_t semSysLoggingLock;
 extern SemaphoreHandle_t semSysUint8Lock;
 
 void System::runMarshaller(void *arg)
