@@ -4,3 +4,4 @@ to another duel core processor.   If run on a single core processor, much of the
 >More information about this project and all its components can be found in the docs directories in each respective area.
 
 ![system_block](./docs/images/project_block.png)
+<end of document>
