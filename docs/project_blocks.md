@@ -1,5 +1,5 @@
 # Project Blocks
-Here again is our project block diagram.  Obviously we are included some detail on what would be considered the system object.
+Here again is our project block diagram.  We are also including some detail on what would be considered the system object.
 
 ![system_block](./images/project_block.png)
 
@@ -15,4 +15,17 @@ Here again is our project block diagram.  Obviously we are included some detail 
 
 ## Basic function:
 
-## Tasks
+## Tasks:
+Behind the scenes, the IDF starts a number of tasks which are important to be aware of.
+
+### Idle Tasks:
+
+### ipc Tasks:
+
+### sys_evt Task:
+
+### tiT Task:
+
+### Tmr Sve Task:
+
+### esp_timer:
