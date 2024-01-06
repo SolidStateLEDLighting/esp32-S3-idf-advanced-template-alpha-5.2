@@ -10,9 +10,9 @@ The main is just the app entry point and doesn't do much for the application.  S
 The System is a singleton object and remains resident and active for the entire lifetime of the application.  The System will only be destroyed and restarted upon a hardware reboot.
 
 The System contains 3 core services:
-# GPIO
-# Run
-# Timer
+* GPIO
+* Run
+* Timer
 
 
 
@@ -28,9 +28,9 @@ This version of the indication object is programmed to operate a 1 wire output u
 
 ### ESP-IDF:
 
-## Basic function:
+## Basic function
 
-## Tasks:
+## Tasks
 Behind the scenes, the IDF starts a number of tasks which are important to be aware of.   A complete task list can be generated with the printRunTimeStats() function which is located in system_diagnostics.
 
 ### IDLE Tasks:
