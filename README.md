@@ -22,6 +22,8 @@ Features which are included, explained, or demonstrated are:
 ## Abstractions
 On a project level, the primary abstraction is the operation of the entire system.  At present, the project doesn't interact much with the surrounding world, so it's abstraction detail is limited.
 
+[a relative link](./docs/project_abstractions.md)
+
 ## Block Diagrams
 The primary block diagram of the project is shown above.  A block diagram shows the building blocks and sometimes a simplistic work process that starts on the left and moves to the right over time.
 
