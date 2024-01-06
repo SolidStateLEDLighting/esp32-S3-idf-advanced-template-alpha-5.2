@@ -21,16 +21,21 @@ Features which are included, explained, or demonstrated are:
 8. Basic Wifi connectivity
 9. WS2812 Addressable Indication RGB LED (employs the remote control transceiver (RMT) driver)
 
+For more information about the system blocks, follow this link:
+
+[project block](./docs/project_blocks.md) 
+
 ## Abstractions
 On a project level, the primary abstraction is the operation of the entire system.  At present, the project doesn't interact much with the surrounding world, so it's abstraction value is limited.
 
-[project adbstraction](./docs/project_abstractions.md)
+[project abstraction](./docs/project_abstractions.md)
 
 ## Block Diagrams
 The primary block diagram of the project is shown above.  A block diagram shows the building blocks and sometimes a simplistic work process that starts on the left and moves to the right over time.
 
 ## Sequence Diagrams
 
+[sequence diagrams](./docs/project_sequences.md)
 
 ## State Transition Diagrams
 One of the basic premises of development in a cooperative multi-tasking system is that the processes (tasks) must yield back to the OS's scheduler on a regular basis frequently enough to supply enough processor time to service all tasks.   If any task doesn't yield, the system will starve of CPU time and the watchdog timer will expire causing a core panic followed by (in most cases) a reboot.
@@ -42,5 +47,7 @@ State transition modelling provides a well understood mechanism that upon input 
 On the down side, state modelling doesn't look normal to the human eye.  State modelling isn't a linear list of things to do (as is seen in Espressif's code examples).  State modelling resembles a series of inter-related repeating loops.  With time and experience, state modelling becomes easier to see and understand, but one way to more quickly some up to speed with it is to view state modelling diagrams and see how it relates to source code.  As a rule, if you can easily diagram your intended state transition process, then it is likely to work nicely in code as expected.   An explanation as to why you are doing something is typically very important so, always include good documentation about your design intent.
 
 View this page for our state models.
+
+[state models](./docs/project_state_models.md)
 
 \<end of document>
