@@ -92,6 +92,7 @@ void System::runGPIOTask(void)
         {
             // ESP_LOGI(TAG, "xQueueGPIOEvents   io_num  %d", io_num);
             // ESP_LOGI(TAG, "xQueueGPIOEvents ...sysOP = %x", (uint8_t)sysOP);
+
             if (sysOP == SYS_OP::Init) // If we haven't finished out our initialization -- discard items in our queue.
                 continue;
 

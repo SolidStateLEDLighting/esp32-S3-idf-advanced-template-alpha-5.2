@@ -7,7 +7,10 @@ void System::printRunTimeStats()
     //
     //  DIAGNOSTICS ONLY -- Use this function to see all the tasks running and their load on the system.
     //  This function is automatically defined and comes into scope in tasks.c when
-    //  CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS == 1, CONFIG_FREERTOS_USE_STATS_FORMATTING_FUNCTIONS > 0, CONFIG_FREERTOS_SUPPORT_STATIC_ALLOCATION == 1
+    //
+    //  CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS == 1,
+    //  CONFIG_FREERTOS_USE_STATS_FORMATTING_FUNCTIONS > 0,
+    //  CONFIG_FREERTOS_SUPPORT_STATIC_ALLOCATION == 1
     //
     //  To use this function you must set the following in SKD Configuration editor.
     //  [*] Enable FreeRTOS trace facility
