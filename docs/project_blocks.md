@@ -1,5 +1,5 @@
 # Project Blocks
-Here again is our project block diagram.  We are also including some detail on what would be considered the system object.
+Here again is our project block diagram.  We are also see in this diagram some detail on what would be considered the system object.
 
 ![system_block](./images/project_block.png)
 
@@ -31,9 +31,6 @@ This version of the indication object is programmed to operate a 1 wire output u
 ### Wifi:
 The Wifi component handles all the communication to the TCP/IP stack.  It may also optionally make calls to SNTP, and handle Wifi Provisioning (not included in this base project)
 
-### ESP-IDF:
-This is the primary library that Espressif creates to provide you all the services that you need, but where is Arduino?   Now that you're an expert, or becomming an expert, you won't need an intermedia library like Arduino, or MongooseOS.  Intermediate libraries can add trouble with tricky problems or unreachable bugs that you just can't fix.  If you can accept the Esp32 hardware product and its IDF library, then the whole world is your oyster, and it is up to you to master key concepts and produce the best product possible with Esp32 hardware.  If you can master the IDF, then no one on the planet can make a smaller, better, faster, Esp32 application than you can.
-
 ## Tasks
 Behind the scenes, the IDF starts a number of tasks which are important to be aware of.   A complete task list can be generated with the printRunTimeStats() function which is located in system_diagnostics.   (printRunTimeStats() is a special function and you'll need to be aware of its limited use.)
 
@@ -55,5 +52,8 @@ This is the primary freeRTOS Daemon Task.
 ### esp_timer:
 This task is created in response to any timer tasks that you create.  This Task is the one that makes the timer call-back.
 
-### Others:
-Other than the list above, most other tasks are created in code.  These will be servicing objects in system created components.
+### Other Tasks:
+Other than the list above, most other tasks are created in code.  These will be servicing objects in system created components (which are not seen yet in this sample application).
+
+### ESP-IDF:
+This is the primary library that Espressif creates to provide you all the services that you need, but where is Arduino?   Now that you're an expert, or becomming an expert, you won't need an intermedia library like Arduino, or MongooseOS.  Intermediate libraries can add trouble with tricky problems or unreachable bugs that you just can't fix.  If you can accept the Esp32 hardware product and its IDF library, then the whole world is your oyster, and it is up to you to master key concepts and produce the best product possible with Esp32 hardware.  If you can master the IDF, then no one on the planet can make a smaller, better, faster, Esp32 application than you can.
