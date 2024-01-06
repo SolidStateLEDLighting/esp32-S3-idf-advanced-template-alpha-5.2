@@ -1,5 +1,5 @@
 #
-# Use the Global Recursive action to gather up all the source files under a variable called APP_SOURCES
+# Use the Global Recursive action to gather up all the source files under a variable called SOURCES
 #
 # NOTE: Anytime you add a new .cpp files, the entire project must be cleaned and rebuilt or the new files
 # will not be included in the compilation process.  This is the one drawback of GLOB_RECURSE implicit inclusion.
@@ -11,6 +11,7 @@ set(REQUIRES
 )
 #
 # Anything that must be exposed to the sources files, but may remain hidden from the header files.
+# Using private requires helps to reduce possible linking error in very large applications.
 set(PRIV_REQUIRES
 )
 #

@@ -20,7 +20,7 @@ void System::printRunTimeStats()
 #if ((configGENERATE_RUN_TIME_STATS == 1) && (configUSE_STATS_FORMATTING_FUNCTIONS > 0) && (configSUPPORT_DYNAMIC_ALLOCATION == 1))
     char pcBuffer[800]; // About 40 bytes per task is needed.  Data will be missing if the buffer is short.
 
-    for (int i = 0; i < 3; i++) // We pull data 3 times to show the change in percentage
+    for (int i = 0; i < 3; i++) // We pull data 3 times to show the change in percentage of CPU use.
     {
         vTaskGetRunTimeStats(pcBuffer);
         ESP_LOGW("Task Runtime Stats", "\nTask name       Counter         Percent\n%s\n\n", pcBuffer);

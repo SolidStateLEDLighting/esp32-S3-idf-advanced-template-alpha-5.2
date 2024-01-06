@@ -173,7 +173,7 @@ void System::fiveSecondActions(void)
     if (showSys & _showTimerSeconds)
         ESP_LOGI(TAG, "Five Seconds");
 
-    // int32_t val = 0x21000209; // 5 second heartbeat in green
+    // int32_t val = 0x4A00009; // 5 second heartbeat in blue
     // if (queHandleINDCmdRequest != nullptr)
     //     xQueueSendToBack(queHandleINDCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
 }
