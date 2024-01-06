@@ -1,8 +1,10 @@
-This is a sample boiler plate project for dual core Esp32 microcontroller running FreeRTOS.  This hardware is equivalent to a DevKit-C running an Esp32s3N16R8, but this project could be adapted to other duel core processors.   If run on a single core processor, some of the included features might not be necessary (like varable locking between two tasks), but operation should still appear normal.
+This is a sample boiler plate project for dual core Esp32 microcontroller running FreeRTOS.  This hardware is equivalent to a DevKit-C running an Esp32s3N16R8, but this project could be adapted to other duel core processors.
 
-Downloading, compiling, and running the application are all standard common processes and needs no special instruction.  This project only uses the ESP-IDF and is compiled on version 5.2.
+If run on a single core processor, some of the included features might not be necessary (like varable locking between two tasks), but operation should still appear normal.
 
->For specific information about components, please exampine doc directories in each respective component area.  
+* Downloading, compiling, and running the application are all standard common processes and needs no special instruction.  This project only uses the ESP-IDF and is compiled on version 5.2.
+
+* For specific information about components, please exampine doc directories in each respective component area.  
 
 ![system_block](./docs/images/project_block.png)
 
@@ -20,14 +22,15 @@ Features which are included, explained, or demonstrated are:
 9. WS2812 Addressable Indication RGB LED (employs the remote control transceiver (RMT) driver)
 
 ## Abstractions
-On a project level, the primary abstraction is the operation of the entire system.  At present, the project doesn't interact much with the surrounding world, so it's abstraction detail is limited.
+On a project level, the primary abstraction is the operation of the entire system.  At present, the project doesn't interact much with the surrounding world, so it's abstraction value is limited.
 
-[a relative link](./docs/project_abstractions.md)
+[project adbstraction](./docs/project_abstractions.md)
 
 ## Block Diagrams
 The primary block diagram of the project is shown above.  A block diagram shows the building blocks and sometimes a simplistic work process that starts on the left and moves to the right over time.
 
 ## Sequence Diagrams
+
 
 ## State Transition Diagrams
 One of the basic premises of development in a cooperative multi-tasking system is that the processes (tasks) must yield back to the OS's scheduler on a regular basis frequently enough to supply enough processor time to service all tasks.   If any task doesn't yield, the system will starve of CPU time and the watchdog timer will expire causing a core panic followed by (in most cases) a reboot.
