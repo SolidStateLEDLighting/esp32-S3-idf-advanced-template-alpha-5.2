@@ -28,7 +28,7 @@ void System::printRunTimeStats()
     }
 #endif
     //
-    // Turn off all the config settings when you are done with this because this function stops the schedular for prolonged periods of time.
+    // Turn off all the config settings when you are done with this because this function stops the scheduler for prolonged periods of time.
     // THIS IS A TOOL THAT CAN ONLY BE USED OCCASIONALLY TO GET GENERAL INFORMATION ABOUT THE TASKS.
     //
 }
