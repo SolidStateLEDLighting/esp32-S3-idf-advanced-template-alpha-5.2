@@ -10,15 +10,14 @@ The main is just the app entry point and doesn't do much for the application.  S
 The System is a singleton object and remains resident and active for the entire lifetime of the application.  The System will only be destroyed and restarted upon a hardware reboot.
 
 The System contains 3 core services:
-* GPIO
+* **GPIO**
 This service runs a task that manages GPIO and responds to GPIO interrupts.  Any number of pin interupts can be handled or monitored here.  It is worth mentioning that many peripherals will initialize their own pins and handle their own interrupts without the need for this service.
 
-* Run
+* **Run**
 The Run service is a task based service that would be considered the "super loop" for the entire system.  Run spins up all the objects, handles Task Notification, Commands, and makes decisions on operation based on other input.  Run is also the service that would put the entire system to sleep states.
 
-* Timer
-
-
+* **Timer**
+The system supplies a timer service that offers a highly accurate way to trigger action on a period basis.  Action can be taken in seconds, minutes, hours even possibly days and months.  The majority of the work is done on fairly short time lengths.   As ane example, the service helps out the GPIO service with some switch debouncing timing.
 
 ### Indication:
 The Indication object controls an exteral LED indicator for feedback to the user.  Any object inside the system may supply a Task Notification to the Indication object to trigger a 1 or 2 number flashing code in variety colors.
