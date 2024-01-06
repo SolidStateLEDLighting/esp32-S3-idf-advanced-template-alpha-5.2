@@ -21,7 +21,7 @@ Features which are included, explained, or demonstrated are:
 8. Basic Wifi connectivity
 9. WS2812 Addressable Indication RGB LED (employs the remote control transceiver (RMT) driver)
 
-For more information about the system blocks, follow this link:
+For more information about the system blocks, follow this link link:
 
 [project block](./docs/project_blocks.md) 
 
