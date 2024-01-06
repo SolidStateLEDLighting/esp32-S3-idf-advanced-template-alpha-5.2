@@ -32,7 +32,7 @@ This version of the indication object is programmed to operate a 1 wire output u
 The Wifi component handles all the communication to the TCP/IP stack.  It may also optionally make calls to SNTP, and handle Wifi Provisioning (not included in this base project)
 
 ## Tasks
-Behind the scenes, the IDF starts a number of tasks which are important to be aware of.   A complete task list can be generated with the printRunTimeStats() function which is located in system_diagnostics.   (printRunTimeStats() is a special function and you'll need to be aware of its limited use.)
+Behind the scenes, the IDF starts a number of tasks which are important to be aware of.   A complete task list can be generated a run time with the printRunTimeStats() function which is located in system_diagnostics.   (printRunTimeStats() is a special function and you'll need to be aware of its limited use.)
 
 ### IDLE Tasks:
 IDLE tasks are freeRTOS processes which run when a CPU cores are in the idle state.   Each IDLE task (IDLE0 and IDLE1) is pinned to their respective cores.  Priority for IDLE tasks are always 0 (lowest priority).

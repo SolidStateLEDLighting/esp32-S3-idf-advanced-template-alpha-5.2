@@ -21,14 +21,16 @@ Features which are included, explained, or demonstrated are:
 8. Basic Wifi connectivity
 9. WS2812 Addressable Indication RGB LED (employs the remote control transceiver (RMT) driver)
 
-For more information about the system blocks, follow this link link:
+For more information about the system blocks at a project level, follow this link:
 
-[project block](./docs/project_blocks.md) 
+[project blocks](./docs/project_blocks.md)
+
 
 ## Abstractions
 On a project level, the primary abstraction is the operation of the entire system.  At present, the project doesn't interact much with the surrounding world, so it's abstraction value is limited.
 
 [project abstraction](./docs/project_abstractions.md)
+
 
 ## Block Diagrams
 The primary block diagram of the project is shown above.  A block diagram shows the building blocks and sometimes a simplistic work process that starts on the left and moves to the right over time.
@@ -37,16 +39,17 @@ The primary block diagram of the project is shown above.  A block diagram shows 
 
 [sequence diagrams](./docs/project_sequences.md)
 
+
 ## State Transition Diagrams
 One of the basic premises of development in a cooperative multi-tasking system is that the processes (tasks) must yield back to the OS's scheduler on a regular basis frequently enough to supply enough processor time to service all tasks.   If any task doesn't yield, the system will starve of CPU time and the watchdog timer will expire causing a core panic followed by (in most cases) a reboot.
 
 Therefore a development approach must include a smart and effient and easily understood way to complete descrete work and systematically yield to the OS (in this case freeRTOS).  There may be several approaches to solving this problem, but one well known approach is to use state transition modelling.
 
-State transition modelling provides a well understood mechanism that upon input and time, a system moves from one state to another. In other words, with input, work is acheived, and the result is that the system completes a task and reaches a stopping point.   It is at this stopping point, that we can yield back to the operating system.  When that task resumes work, it considers new input and has a next task to complete and does what is required before yielding again.  This cycle repeats continously to achieve the system's objectives incrementally.  Most of our programming will follow the state transition model.
+State transition modelling provides a well understood mechanism that upon input and time, a system moves from one state to another. In other words, with input, work is acheived, and the result is that the system completes a task, creates output, and reaches a possible stopping point.   It is at this stopping point, that we can yield back to the operating system.  When that task resumes work, it considers new input and has a next task to complete and does what is required before yielding again.  This cycle repeats continously to achieve the system's objectives incrementally.  Most of our programming will follow the state transition model.
 
-On the down side, state modelling doesn't look normal to the human eye.  State modelling isn't a linear list of things to do (as is seen in Espressif's code examples).  State modelling resembles a series of inter-related repeating loops.  With time and experience, state modelling becomes easier to see and understand, but one way to more quickly some up to speed with it is to view state modelling diagrams and see how it relates to source code.  As a rule, if you can easily diagram your intended state transition process, then it is likely to work nicely in code as expected.   An explanation as to why you are doing something is typically very important so, always include good documentation about your design intent.
+On the down side, state modelling can't be seen in a single page of source code.  State modelling isn't a linear list of things to do (as is seen in Espressif's code examples).  State modelling resembles a series of inter-related repeating loops.  With time and experience, state modelling becomes easier to see and understand, but one way to more quickly some up to speed with it is to view state modelling diagrams and consider how it relates to source code.  As a rule, if you can easily diagram your intended state transition process, then it is likely to work nicely in code as expected.   Additionally, explanating why you are doing something is typically very important so, always include good documentation about your design intent.
 
-View this page for our state models.
+View this page for our state models at a project level.
 
 [state models](./docs/project_state_models.md)
 
