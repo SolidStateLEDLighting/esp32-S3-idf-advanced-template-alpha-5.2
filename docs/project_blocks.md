@@ -11,7 +11,11 @@ The System is a singleton object and remains resident and active for the entire 
 
 The System contains 3 core services:
 * GPIO
+This service runs a task that manages GPIO and responds to GPIO interrupts.  Any number of pin interupts can be handled or monitored here.  It is worth mentioning that many peripherals will initialize their own pins and handle their own interrupts without the need for this service.
+
 * Run
+The Run service is a task based service that would be considered the "super loop" for the entire system.  Run spins up all the objects, handles Task Notification, Commands, and makes decisions on operation based on other input.  Run is also the service that would put the entire system to sleep states.
+
 * Timer
 
 
