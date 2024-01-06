@@ -1,2 +1,18 @@
 # Project Blocks
-Generally, a bloc diagram would depict how this project relates to the system it belongs to, but this case we present only a sample project.  So, there is not block diagram to show.
+Here again is our project block diagram.  Obviously we are included some detail on what would be considered the system object.
+
+![system_block](./images/project_block.png)
+
+### Main:
+
+### System:
+
+### Indication:
+
+### Wifi:
+
+### ESP-IDF:
+
+## Basic function:
+
+## Tasks

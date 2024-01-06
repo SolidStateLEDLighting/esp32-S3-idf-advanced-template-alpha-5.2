@@ -1,2 +1,3 @@
 # Project Sequences
-At a project select, a sequence might include how the hardware gets started and stops.   As this is only a sample project, the starting and stopping proceedures have not been defined.
+At a project level, a sequence might include how the hardware gets started and stops.
+
