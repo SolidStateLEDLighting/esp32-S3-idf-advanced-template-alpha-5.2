@@ -85,13 +85,21 @@ void System::runGPIOTaskMarshaller(void *arg) // This function can be resolved a
 void System::runGPIOTask(void)
 {
     uint32_t io_num;
+    int32_t val = 0;
+    int32_t brightnessSetting = 0;
+    uint8_t gpioStep = 1;
+
+    xQueueReset(xQueueGPIOEvents);
 
     while (true)
     {
         if (xQueueReceive(xQueueGPIOEvents, (void *)&io_num, portMAX_DELAY)) // There is never any reason to yield.
         {
-            // ESP_LOGI(TAG, "xQueueGPIOEvents   io_num  %d", io_num);
-            // ESP_LOGI(TAG, "xQueueGPIOEvents ...sysOP = %x", (uint8_t)sysOP);
+            ESP_LOGW(TAG, "xQueueGPIOEvent...");
+            // ESP_LOGW(TAG, "xQueueGPIOEvents   io_num  %ld", io_num);
+            // ESP_LOGW(TAG, "xQueueGPIOEvents ...sysOP = %x", (uint8_t)sysOP);
+
+            // ESP_LOGW(TAG, "queHandleIndCmdRequest %d/%d", (int)&queHandleIndCmdRequest, (int)queHandleIndCmdRequest);
 
             if (sysOP == SYS_OP::Init) // If we haven't finished out our initialization -- discard items in our queue.
                 continue;
@@ -100,6 +108,115 @@ void System::runGPIOTask(void)
             {
             case SW1: // Call Test fuctions here
             {
+                switch (gpioStep)
+                {
+                case 0:
+                {
+                    ESP_LOGI(TAG, "Rejecting spurious GPIO event...");
+                    break;
+                }
+
+                case 1:
+                {
+                    brightnessSetting = (uint32_t)IND_NOTIFY::SET_A_COLOR_BRIGHTNESS; // First we set the target color bit
+                    brightnessSetting |= 10;                                          // Supply the brightness value
+
+                    while (!xTaskNotify(taskHandleIndRun, brightnessSetting, eSetValueWithoutOverwrite))
+                        vTaskDelay(pdMS_TO_TICKS(10));
+
+                    val = 0x11000209;
+                    if (queHandleIndCmdRequest != nullptr)
+                        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+                    else
+                        ESP_LOGW(TAG, "queHandleIndCmdRequest is null");
+                    break;
+                }
+
+                case 2:
+                {
+                    val = 0x11000209;
+                    if (queHandleIndCmdRequest != nullptr)
+                        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+
+                    brightnessSetting = (uint32_t)IND_NOTIFY::SET_A_COLOR_BRIGHTNESS; // First we set the target color bit
+                    brightnessSetting |= 20;                                          // Supply the brightness value
+
+                    while (!xTaskNotify(taskHandleIndRun, brightnessSetting, eSetValueWithoutOverwrite))
+                        vTaskDelay(pdMS_TO_TICKS(10));
+                    break;
+                }
+
+                case 3:
+                {
+                    val = 0x11000209;
+                    if (queHandleIndCmdRequest != nullptr)
+                        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+
+                    brightnessSetting = (uint32_t)IND_NOTIFY::SET_A_COLOR_BRIGHTNESS; // First we set the target color bit
+                    brightnessSetting |= 80;                                          // Supply the brightness value
+
+                    while (!xTaskNotify(taskHandleIndRun, brightnessSetting, eSetValueWithoutOverwrite))
+                        vTaskDelay(pdMS_TO_TICKS(10));
+                    break;
+                }
+
+                case 4:
+                {
+                    val = 0x11000209;
+                    if (queHandleIndCmdRequest != nullptr)
+                        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+
+                    brightnessSetting = (uint32_t)IND_NOTIFY::SET_A_COLOR_BRIGHTNESS; // First we set the target color bit
+                    brightnessSetting |= 120;                                         // Supply the brightness value
+
+                    while (!xTaskNotify(taskHandleIndRun, brightnessSetting, eSetValueWithoutOverwrite))
+                        vTaskDelay(pdMS_TO_TICKS(10));
+                    break;
+                }
+
+                case 5:
+                {
+                    val = 0x11000209;
+                    if (queHandleIndCmdRequest != nullptr)
+                        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+
+                    brightnessSetting = (uint32_t)IND_NOTIFY::SET_A_COLOR_BRIGHTNESS; // First we set the target color bit
+                    brightnessSetting |= 200;                                         // Supply the brightness value
+
+                    while (!xTaskNotify(taskHandleIndRun, brightnessSetting, eSetValueWithoutOverwrite))
+                        vTaskDelay(pdMS_TO_TICKS(10));
+                    break;
+                }
+
+                case 6:
+                {
+                    val = 0x11000209;
+                    if (queHandleIndCmdRequest != nullptr)
+                        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+
+                    brightnessSetting = (uint32_t)IND_NOTIFY::SET_A_COLOR_BRIGHTNESS; // First we set the target color bit
+                    brightnessSetting |= 5;                                           // Supply the brightness value
+
+                    while (!xTaskNotify(taskHandleIndRun, brightnessSetting, eSetValueWithoutOverwrite))
+                        vTaskDelay(pdMS_TO_TICKS(10));
+                    break;
+                }
+
+                case 7:
+                {
+                    val = 0x11000209;
+                    if (queHandleIndCmdRequest != nullptr)
+                        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+                    break;
+                }
+                }
+
+                if (++gpioStep > 7)
+                {
+                    ESP_LOGW(TAG, "gpioStep restart...");
+                    gpioStep = 1;
+                }
+
                 // if (taskHandleIndicationRun != nullptr)
                 // {
                 //     uint32_t Notification = ((int32_t)IND_NOTIFY::SET_C_COLOR_DEFAULT | 0x00000025);

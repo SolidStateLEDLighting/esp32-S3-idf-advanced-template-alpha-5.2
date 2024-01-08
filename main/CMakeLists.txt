@@ -6,13 +6,18 @@
 #
 FILE(GLOB_RECURSE SOURCES ${PROJECT_DIR}/main/*.cpp)
 #
-# Exposes components to both source and header files.
+# Included components which are exposed in public header files.
 set(REQUIRES
+    esp_event
+    esp_timer
+    driver
+    indication_ws2812_5.2
 )
 #
-# Anything that must be exposed to the sources files, but may remain hidden from the header files.
-# Using private requires helps to reduce possible linking error in very large applications.
+# Anything that must be included, but may remain hidden from the public header files.
+# Limiting component exposure can reduce Undefined Reference linking problems in larger applications.
 set(PRIV_REQUIRES
+    nvs 
 )
 #
 #

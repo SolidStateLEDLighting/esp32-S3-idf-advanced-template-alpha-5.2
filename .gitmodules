@@ -1,6 +1,6 @@
 [submodule "components/nvs"]
 	path = components/nvs
 	url = https://github.com/SolidStateLEDLighting/nvs.git
-[submodule "components/indication"]
-	path = components/indication
-	url = https://github.com/SolidStateLEDLighting/indication.git
+[submodule "components/indication_ws2812_5.2"]
+	path = components/indication_ws2812_5.2
+	url = https://github.com/SolidStateLEDLighting/indication_ws2812_5.2.git

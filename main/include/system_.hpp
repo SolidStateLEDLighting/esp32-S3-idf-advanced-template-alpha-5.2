@@ -17,14 +17,16 @@
 #include <driver/gpio.h> // IDF components
 #include <esp_log.h>
 #include <esp_err.h>
-#include <esp_event.h>
+#include "esp_event.h"
 #include "esp_timer.h"
 #include "esp_sntp.h"
 #include "esp_log.h"
 
 #include "nvs/nvs_.hpp" // Our components
+#include "indication/indication_.hpp"
 
 class NVS; // Forward declarations
+class Indication;
 
 extern "C"
 {
@@ -56,7 +58,10 @@ extern "C"
         uint32_t bootCount = 0;
 
         QueueHandle_t queHandleWIFICmdRequest = nullptr;
-        QueueHandle_t queHandleINDCmdRequest = nullptr;
+        QueueHandle_t queHandleIndCmdRequest = nullptr;
+
+        /* Object References */
+        Indication *ind = nullptr;
 
         System(void);
         System(const System &) = delete;         // Disable copy constructor
@@ -108,7 +113,7 @@ extern "C"
         SYS_INIT initSysStep = SYS_INIT::Finished;
 
         TaskHandle_t taskHandleSystemRun = nullptr; /* RTOS */
-        TaskHandle_t taskHandleINDRun = nullptr;
+        TaskHandle_t taskHandleIndRun = nullptr;
         TaskHandle_t taskHandleSNTPRun = nullptr;
         TaskHandle_t taskHandleWIFIRun = nullptr;
         TaskHandle_t taskHandleMeshRun = nullptr;

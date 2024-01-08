@@ -1,1 +1,3 @@
-If you are viewing components from Github, you will see these are just links to other repositories.  These components may be used by many projects.  Each project will include the components as a submodule.
+If you are viewing components from Github, you will see these are just links to other repositories.  These components may be used by multiple projects.  Each project will include the components as a submodule.
+
+These are my repositories.  If you don't want to pull from these repositories then you can just clone the entire respository into your project directly.  Don't forget to remove ".gitmodules" from your projects root directory.

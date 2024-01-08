@@ -148,13 +148,43 @@ void System::run(void)
                     routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::Start_Network_Interface - Step " + std::to_string((int)SYS_INIT::Start_Network_Interface));
 
                 // ESP_GOTO_ON_ERROR(esp_netif_init(), sys_Start_Network_Interface_err, TAG, "esp_netif_init() failure."); // Network Interface initialization - starts up the TCP/IP stack.
-                initSysStep = SYS_INIT::Finished;
+                initSysStep = SYS_INIT::Create_Indication;
                 break;
 
                 // sys_Start_Network_Interface_err:
                 //     errMsg = std::string(__func__) + "(): SYS_INIT::StartNetworkInterface: error: " + esp_err_to_name(ret);
                 //     initSysStep = SYS_INIT::Error;
                 //     break;
+            }
+
+            case SYS_INIT::Create_Indication:
+            {
+                if (show & _showInit)
+                    routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::Create_Indication - Step " + std::to_string((int)SYS_INIT::Create_Indication));
+
+                if (ind == nullptr)
+                    ind = new Indication((uint8_t)APP_VERSION_MAJOR, (uint8_t)APP_VERSION_MINOR, (uint8_t)APP_VERSION_REVISION);
+
+                if (ind != nullptr)
+                {
+                    if (show & _showInit)
+                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::Wait_On_Indication - Step " + std::to_string((int)SYS_INIT::Wait_On_Indication));
+
+                    initSysStep = SYS_INIT::Wait_On_Indication;
+                }
+                [[fallthrough]];
+            }
+
+            case SYS_INIT::Wait_On_Indication:
+            {
+                if (xSemaphoreTake(semIndEntry, 100) == pdTRUE)
+                {
+                    taskHandleIndRun = ind->getRunTaskHandle();
+                    queHandleIndCmdRequest = ind->getCmdRequestQueue();
+                    xSemaphoreGive(semIndEntry);
+                    initSysStep = SYS_INIT::Finished;
+                }
+                break;
             }
 
             case SYS_INIT::Finished:
