@@ -141,8 +141,8 @@ void System::printTaskInfo()
     highWaterMark = uxTaskGetStackHighWaterMark(runTaskHandleSystemGPIO);
     printf("  %s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
 
-    // if (ind != nullptr)
-    //     ind->printTaskInfo();
+    if (ind != nullptr)
+        ind->printTaskInfo();
 
     // if (wifi != nullptr)
     //     wifi->printTaskInfo();

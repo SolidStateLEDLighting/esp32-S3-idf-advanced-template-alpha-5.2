@@ -27,7 +27,7 @@ void System::initGenTimer(void)
 
     esp_err_t ret = esp_timer_create(&general_timer_args, &handleGenTimer);
 
-    if unlikely (ret != ESP_OK)
+    if (ret != ESP_OK)
     {
         ESP_LOGE(TAG, "%s::esp_timer_create failed.  err = 0x%X", __func__, ret);
         return;
@@ -35,7 +35,7 @@ void System::initGenTimer(void)
 
     ret = esp_timer_start_periodic(handleGenTimer, TIMER_PERIOD_100Hz);
 
-    if unlikely (ret != ESP_OK)
+    if (ret != ESP_OK)
     {
         ESP_LOGE(TAG, "%s::esp_timer_start_periodic failed.  err = 0x%X", __func__, ret);
         return;
@@ -173,9 +173,9 @@ void System::fiveSecondActions(void)
     if (showSys & _showTimerSeconds)
         ESP_LOGI(TAG, "Five Seconds");
 
-    // int32_t val = 0x41000209; // 5 second heartbeat in blue
-    // if (queHandleIndCmdRequest != nullptr)
-    //     xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+    int32_t val = 0x41000209; // 5 second heartbeat in blue
+    if (queHandleIndCmdRequest != nullptr)
+        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
 }
 
 void System::tenSecondActions(void)

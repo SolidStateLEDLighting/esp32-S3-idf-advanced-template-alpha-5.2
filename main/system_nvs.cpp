@@ -20,7 +20,7 @@ bool System::restoreVariablesFromNVS()
         if (show & _showNVS)
             ESP_LOGW(TAG, "openNVStorage 'system'");
 
-        if unlikely (!nvs->openNVSStorage("system", true))
+        if (!nvs->openNVSStorage("system", true))
         {
             ESP_LOGE(TAG, "Error, Unable to OpenNVStorage inside restoreVariablesFromNVS");
             xSemaphoreGive(semNVSEntry);
@@ -69,7 +69,7 @@ bool System::restoreVariablesFromNVS()
     if (show & _showNVS)
         ESP_LOGW(TAG, "system end");
 
-    if unlikely (!successFlag)
+    if (!successFlag)
     {
         ESP_LOGE(TAG, "restoreVariablesFromNVS failed");
         nvs->closeNVStorage(false); // No changes
@@ -98,7 +98,7 @@ bool System::saveVariablesToNVS()
     {
         if (xSemaphoreTake(semNVSEntry, portMAX_DELAY) == pdTRUE)
         {
-            if unlikely (!nvs->openNVSStorage("system", true)) // Read/Write
+            if (!nvs->openNVSStorage("system", true)) // Read/Write
             {
                 ESP_LOGE(TAG, "Error, Unable to OpenNVStorage inside saveVariablesToNVS");
                 xSemaphoreGive(semNVSEntry);
@@ -111,7 +111,7 @@ bool System::saveVariablesToNVS()
 
     if (successFlag)
     {
-        if likely (nvs->saveU32IntegerToNVS("bootCount", bootCount))
+        if (nvs->saveU32IntegerToNVS("bootCount", bootCount))
         {
             if (show & _showNVS)
                 ESP_LOGW(TAG, "bootCount = %ld", bootCount);

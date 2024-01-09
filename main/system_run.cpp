@@ -34,7 +34,7 @@ void System::run(void)
                 {
                 case SYS_NOTIFY::NONE:
                 {
-                    if unlikely (show & _showRun)
+                    if (show & _showRun)
                         ESP_LOGW(TAG, "SYS_NOTIFY::NONE");
                     break;
                 }
@@ -55,7 +55,7 @@ void System::run(void)
                 {
                 case SYS_COMMAND::NONE:
                 {
-                    if unlikely (show & _showRun)
+                    if (show & _showRun)
                         ESP_LOGI(TAG, "Received the command SYS_COMMAND::NONE");
                     break;
                 }
@@ -133,7 +133,7 @@ void System::run(void)
 
                 ret = esp_event_loop_create_default();
 
-                if unlikely (ret != ESP_OK)
+                if (ret != ESP_OK)
                 {
                     ESP_LOGE(TAG, "esp_event_loop_create_default() Failed. Error: 0x%X", ret);
                     initSysStep = SYS_INIT::Finished;
@@ -163,7 +163,7 @@ void System::run(void)
                     routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::Create_Indication - Step " + std::to_string((int)SYS_INIT::Create_Indication));
 
                 if (ind == nullptr)
-                    ind = new Indication((uint8_t)APP_VERSION_MAJOR, (uint8_t)APP_VERSION_MINOR, (uint8_t)APP_VERSION_REVISION);
+                    ind = new Indication((uint8_t)APP_VERSION_MAJOR, (uint8_t)APP_VERSION_MINOR, (uint8_t)APP_VERSION_PATCH);
 
                 if (ind != nullptr)
                 {

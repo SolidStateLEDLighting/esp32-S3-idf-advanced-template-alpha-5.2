@@ -24,7 +24,7 @@ The system supplies a timer service that offers a highly accurate way to trigger
 ### Indication:
 The Indication component controls an exteral LED indicator for feedback to the user.  Any object inside the system may supply a Task Notification to the Indication object to trigger a 1 or 2 number flashing code in variety colors.
 
-At start-up, this object outputs the firmware version number in RGB color.  Red for MAJOR, Green for MINOR, Blue for REVISION number of the firmware.
+At start-up, this object outputs the firmware version number in RGB color.  Red for MAJOR, Green for MINOR, Blue for PATCH number of the firmware.
 
 This version of the indication object is programmed to operate a 1 wire output using the RMT (remote control transceiver) driver to control an WS2812 LED.
 
