@@ -3,7 +3,7 @@
 #include "esp_check.h"
 #include "esp_heap_caps.h"
 
-/* External Variables */
+/* External Semaphores */
 extern SemaphoreHandle_t semIndEntry;
 extern SemaphoreHandle_t semSysLoggingLock;
 extern SemaphoreHandle_t semSysUint8Lock;
@@ -35,7 +35,7 @@ void System::run(void)
                 case SYS_NOTIFY::NONE:
                 {
                     if (show & _showRun)
-                        ESP_LOGW(TAG, "SYS_NOTIFY::NONE");
+                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::NONE");
                     break;
                 }
                 }
@@ -56,7 +56,7 @@ void System::run(void)
                 case SYS_COMMAND::NONE:
                 {
                     if (show & _showRun)
-                        ESP_LOGI(TAG, "Received the command SYS_COMMAND::NONE");
+                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_COMMAND::NONE");
                     break;
                 }
                 }
@@ -215,7 +215,7 @@ void System::run(void)
 
         case SYS_OP::Idle:
         {
-            ESP_LOGW(TAG, "Idle...");
+            routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Idle...");
             sysOP = SYS_OP::Idle_Silent;
             [[fallthrough]];
         }

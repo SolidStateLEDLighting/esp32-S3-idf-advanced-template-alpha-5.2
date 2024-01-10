@@ -3,6 +3,7 @@
 #include "esp_efuse.h"
 #include "esp_efuse_table.h"
 
+/* Local Semaphores */
 SemaphoreHandle_t semSysBoolLock = NULL;
 SemaphoreHandle_t semSysUint8Lock = NULL;
 

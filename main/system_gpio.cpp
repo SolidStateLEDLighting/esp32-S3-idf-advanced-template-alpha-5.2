@@ -9,7 +9,6 @@
 // switch in software.   We handle switch input with espressive's recommendation to first catching the ISR and then routing that
 // to a queue.
 //
-
 bool blnallowSwitchGPIOinput = true; // These variables are used for switch input debouncing
 uint8_t SwitchDebounceCounter = 0;
 
@@ -37,13 +36,16 @@ void IRAM_ATTR GPIOSwitchIsrHandler(void *arg)
 {
     if (blnallowSwitchGPIOinput)
     {
+        // Important Note:  We are breaking the rules here by accessing variables in 2 different tasks without locking them.
+        // In this particular case any errors that would result can not be seen.  We might have a skipped count or a
+        // slightly longer delay.  The error would not matter.
         xQueueSendToBackFromISR(xQueueGPIOEvents, &arg, NULL);
         SwitchDebounceCounter = 50; // Reject all input for 5/10 of a second -- counter is running in system_timer
         blnallowSwitchGPIOinput = false;
     }
 }
 
-/* Normal (non-switch) GPIO ISR handling would warrant no debouncing delay. */
+/* Normal GPIO ISR handling would warrant no debouncing delay. */
 void IRAM_ATTR GPIOIsrHandler(void *arg)
 {
     xQueueSendToBackFromISR(xQueueGPIOEvents, &arg, NULL);
@@ -52,7 +54,7 @@ void IRAM_ATTR GPIOIsrHandler(void *arg)
 void System::initGPIOTask(void)
 {
     if (show & _showInit)
-        ESP_LOGI(TAG, "%s()", __func__); // Our Error handlers and loggers are not running yet.
+        ESP_LOGI(TAG, "%s()", __func__); // Our Error handlers and loggers may not be running yet.
 
     esp_err_t ret = ESP_OK;
 
@@ -73,7 +75,7 @@ void System::initGPIOTask(void)
     return;
 
 sys_GPIOIsrHandler_err:
-    ESP_LOGI(TAG, "%s(): error %s", __func__, esp_err_to_name(ret)); // Our Error handlers and loggers are not running yet.
+    ESP_LOGI(TAG, "%s(): error %s", __func__, esp_err_to_name(ret)); // Our Error handlers and loggers may not be running yet.
 }
 
 void System::runGPIOTaskMarshaller(void *arg) // This function can be resolved at run time by the compiler.

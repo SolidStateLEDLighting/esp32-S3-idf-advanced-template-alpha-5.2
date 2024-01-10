@@ -3,19 +3,25 @@
 #include "esp_system.h"
 #include "esp_heap_caps.h"
 
+/* External Variables */
 extern bool blnallowSwitchGPIOinput;
 extern uint8_t SwitchDebounceCounter;
 
-auto halfSecond = 50;
-auto OneSecond = 2;
-auto FiveSeconds = 5;
-auto TenSeconds = 10;
-auto OneMinute = 6;
-auto FiveMinutes = 5;
+// Local Variables
+uint8_t halfSecond = 50;
+uint8_t OneSecond = 2;
+uint8_t FiveSeconds = 5;
+uint8_t TenSeconds = 10;
+uint8_t OneMinute = 6;
+uint8_t FiveMinutes = 5;
 
+//
+// The timer here is of good precision but because all control to other objects is done through freeRTOS mechanisms, they would not
+// be best for short time intervals.  So, we refrain from calling other objects for short time periods.
+//
 void System::initGenTimer(void)
 {
-    xTaskCreate(runGenTimerTaskMarshaller, "sys_tmr", 1024 * 4, this, 8, &taskHandleRunSystemTimer);
+    xTaskCreate(runGenTimerTaskMarshaller, "sys_tmr", 1024 * timerStackSizeK, this, 8, &taskHandleRunSystemTimer);
 
     const esp_timer_create_args_t general_timer_args = {
         &System::genTimerCallback,
@@ -71,6 +77,9 @@ void System::runGenTimerTask(void)
 
         if (SwitchDebounceCounter > 0) // Perform GPIO Switch Debouncing delay here.
         {
+            // Important Note:  We are breaking the rules here by accessing variables in 2 different tasks without locking them.
+            // In this particular case any errors that would result can not be seen.  We might have a skipped count or a
+            // slightly longer delay.  The error would not matter.
             if (--SwitchDebounceCounter < 1)
                 blnallowSwitchGPIOinput = true;
         }
@@ -131,36 +140,31 @@ void System::runGenTimerTask(void)
     }
 }
 
-/* Periodic One Second Actions */
+/* Periodic Actions */
 void System::halfSecondActions(void)
 {
     if (showSys & _showTimerSeconds)
-        ESP_LOGI(TAG, "Half Second");
-    //
-    // Right now, we will allow the half second action to be completely filled with one objective -- to handle cat detection and image acquisition.
-    //
-
-    // First -- if we are not connected, our entire state model has to be cancelled.
+        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Half Second");
 }
 
 void System::oneSecondActions(void)
 {
     if (showSys & _showTimerSeconds)
-        ESP_LOGI(TAG, "One Second");
+        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): One Second");
 
     //
     // When we are working with multiple variables at the same time, we don't want 'save to NVS' being called too quickly.
     // Allow a save even if we are in the process of reboot counte-down.
     //
-    if (saveToNVSDelayCount > 0)
+    if (saveToNVSDelaySecs > 0)
     {
-        if (--saveToNVSDelayCount < 1)
+        if (--saveToNVSDelaySecs < 1)
             saveToNVSFlag = true;
     }
 
     if (rebootTimerSec > 0) // Reboot Timer
     {
-        ESP_LOGW(TAG, "Reboot in %d", rebootTimerSec);
+        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Reboot in " + std::to_string(rebootTimerSec));
         if (--rebootTimerSec < 1)
             esp_restart(); // Reboot
         else
@@ -171,7 +175,7 @@ void System::oneSecondActions(void)
 void System::fiveSecondActions(void)
 {
     if (showSys & _showTimerSeconds)
-        ESP_LOGI(TAG, "Five Seconds");
+        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Five Seconds");
 
     int32_t val = 0x41000209; // 5 second heartbeat in blue
     if (queHandleIndCmdRequest != nullptr)
@@ -181,7 +185,7 @@ void System::fiveSecondActions(void)
 void System::tenSecondActions(void)
 {
     if (showSys & _showTimerSeconds)
-        ESP_LOGI(TAG, "Ten Seconds");
+        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Ten Seconds");
 
     lockOrUint8(&diagSys, _diagHeapCheck); // Set the diag bit to run the heap_caps_check_integrity_all(true) test
 }
@@ -189,11 +193,11 @@ void System::tenSecondActions(void)
 void System::oneMinuteActions(void)
 {
     if (showSys & _showTimerMinutes)
-        ESP_LOGI(TAG, "One Minute");
+        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): One Minute");
 }
 
 void System::fiveMinuteActions(void)
 {
     if (showSys & _showTimerMinutes)
-        ESP_LOGI(TAG, "Five Minutes");
+        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Five Minutes");
 }

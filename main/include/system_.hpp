@@ -47,8 +47,9 @@ extern "C"
         /* System_ */
         char TAG[5] = "_sys";
 
-        uint8_t runStackSizeK = 6;  // Default size
-        uint8_t gpioStackSizeK = 3; //
+        /* Object References */
+        NVS *nvs = nullptr;
+        Indication *ind = nullptr;
 
         uint8_t show = 0;      // Flags
         uint8_t showSys = 0;   //
@@ -60,8 +61,14 @@ extern "C"
         QueueHandle_t queHandleWIFICmdRequest = nullptr;
         QueueHandle_t queHandleIndCmdRequest = nullptr;
 
-        /* Object References */
-        Indication *ind = nullptr;
+        uint8_t runStackSizeK = 6;                  // Default size
+        TaskHandle_t taskHandleSystemRun = nullptr; //
+
+        uint8_t gpioStackSizeK = 3;                     // Default size
+        TaskHandle_t runTaskHandleSystemGPIO = nullptr; //
+
+        uint8_t timerStackSizeK = 4;
+        TaskHandle_t taskHandleRunSystemTimer = nullptr;
 
         System(void);
         System(const System &) = delete;         // Disable copy constructor
@@ -78,8 +85,6 @@ extern "C"
         void printTaskInfo(void);
 
         /* System_gpio */
-        TaskHandle_t runTaskHandleSystemGPIO = nullptr;
-
         void initGPIOPins(void);
         void initGPIOTask(void);
         static void runGPIOTaskMarshaller(void *);
@@ -92,10 +97,8 @@ extern "C"
         void routeLogByValue(LOG_TYPE, std::string);
 
         /* System_NVS */
-        NVS *nvs = nullptr;
-
         bool saveToNVSFlag = false;
-        uint8_t saveToNVSDelayCount = 0;
+        uint8_t saveToNVSDelaySecs = 0;
 
         bool restoreVariablesFromNVS();
         bool saveVariablesToNVS();
@@ -108,24 +111,22 @@ extern "C"
         SYS_Response *ptrSYSResponse = nullptr;
         std::string strCmdPayload = "";
 
-        SYS_OP sysOP = SYS_OP::Idle;
+        SYS_OP sysOP = SYS_OP::Idle; // State variables
         SYS_OP opSys_Return = SYS_OP::Idle;
         SYS_INIT initSysStep = SYS_INIT::Finished;
 
-        TaskHandle_t taskHandleSystemRun = nullptr; /* RTOS */
-        TaskHandle_t taskHandleIndRun = nullptr;
+        TaskHandle_t taskHandleIndRun = nullptr; // RTOS
         TaskHandle_t taskHandleSNTPRun = nullptr;
         TaskHandle_t taskHandleWIFIRun = nullptr;
         TaskHandle_t taskHandleMeshRun = nullptr;
 
-        static void runMarshaller(void *);
-        void run(void); // Handles all System activites that are not on a frequency
+        static void runMarshaller(void *); // Handles all System activites
+        void run(void);                    //
 
         /* System_Timer */
         uint8_t rebootTimerSec = 0;
         uint8_t syncEventTimeOut_Counter = 0;
         esp_timer_handle_t handleGenTimer = nullptr;
-        TaskHandle_t taskHandleRunSystemTimer = nullptr;
 
         static void runGenTimerTaskMarshaller(void *); // Handles all Timer related events
         void runGenTimerTask(void);                    //

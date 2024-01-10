@@ -1,5 +1,6 @@
 #include "system_.hpp" // Class structure and variables
 
+/* External Semaphores */
 extern SemaphoreHandle_t semSysLoggingLock;
 
 /* Logging */
