@@ -87,8 +87,8 @@ void System::runGPIOTaskMarshaller(void *arg) // This function can be resolved a
 void System::runGPIOTask(void)
 {
     uint32_t io_num = 0;
-    int32_t val = 0;
-    int32_t brightnessSetting = 0;
+    // int32_t val = 0;
+    // int32_t brightnessLevel = 0;
     uint8_t gpioStep = 0;
 
     xQueueReset(xQueueGPIOEvents);
@@ -112,134 +112,49 @@ void System::runGPIOTask(void)
                 {
                 case 0:
                 {
-                    brightnessSetting = 0;
-                    brightnessSetting |= (uint32_t)IND_NOTIFY::SET_A_COLOR_BRIGHTNESS; // Set all colors
-                    brightnessSetting |= (uint32_t)IND_NOTIFY::SET_B_COLOR_BRIGHTNESS;
-                    brightnessSetting |= (uint32_t)IND_NOTIFY::SET_C_COLOR_BRIGHTNESS;
-                    brightnessSetting |= 6;
-
-                    while (!xTaskNotify(taskHandleIndRun, brightnessSetting, eSetValueWithoutOverwrite))
+                    while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_DISC_ROUTER), eSetValueWithoutOverwrite))
                         vTaskDelay(pdMS_TO_TICKS(10));
 
-                    val = 0x7E000209; // Turn all color to AUTO
-                    if (queHandleIndCmdRequest != nullptr)
-                        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
-
-                    val = 0x71000209; // Flash White once
-                    if (queHandleIndCmdRequest != nullptr)
-                        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
-
+                    while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_RUN_DIRECTIVES), eSetValueWithoutOverwrite))
+                        vTaskDelay(pdMS_TO_TICKS(10));
                     break;
                 }
-                    // case 1:
-                    // {
-                    //     val = 0x11000209;
-                    //     if (queHandleIndCmdRequest != nullptr)
-                    //         xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
-
-                    //     brightnessSetting = (uint32_t)IND_NOTIFY::SET_A_COLOR_BRIGHTNESS; // First we set the target color bit
-                    //     brightnessSetting |= 20;                                          // Supply the brightness value
-
-                    //     while (!xTaskNotify(taskHandleIndRun, brightnessSetting, eSetValueWithoutOverwrite))
-                    //         vTaskDelay(pdMS_TO_TICKS(10));
-                    //     break;
-                    // }
-
-                    // case 2:
-                    // {
-                    //     val = 0x11000209;
-                    //     if (queHandleIndCmdRequest != nullptr)
-                    //         xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
-
-                    //     brightnessSetting = (uint32_t)IND_NOTIFY::SET_A_COLOR_BRIGHTNESS; // First we set the target color bit
-                    //     brightnessSetting |= 80;                                          // Supply the brightness value
-
-                    //     while (!xTaskNotify(taskHandleIndRun, brightnessSetting, eSetValueWithoutOverwrite))
-                    //         vTaskDelay(pdMS_TO_TICKS(10));
-                    //     break;
-                    // }
-
                 case 1:
                 {
-                    // brightnessSetting = (uint32_t)IND_NOTIFY::SET_B_COLOR_BRIGHTNESS; // First we set the target color bit
-                    // brightnessSetting |= 1;                                           // Supply the brightness value
+                    while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_CONN_PRI_ROUTER), eSetValueWithoutOverwrite))
+                        vTaskDelay(pdMS_TO_TICKS(10));
 
-                    // while (!xTaskNotify(taskHandleIndRun, brightnessSetting, eSetValueWithoutOverwrite))
-                    //   vTaskDelay(pdMS_TO_TICKS(10));
-
-                    val = 0x2F000209; // Turn G on solidly
-                    if (queHandleIndCmdRequest != nullptr)
-                        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+                    while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_RUN_DIRECTIVES), eSetValueWithoutOverwrite))
+                        vTaskDelay(pdMS_TO_TICKS(10));
                     break;
                 }
 
                 case 2:
                 {
-                    val = 0x20000209; // Turn G off
-                    if (queHandleIndCmdRequest != nullptr)
-                        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
                     break;
                 }
 
                 case 3:
                 {
-                    val = 0x2F000209; // Turn G on solidly
-                    if (queHandleIndCmdRequest != nullptr)
-                        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
                     break;
                 }
 
                 case 4:
                 {
-                    val = 0x12002A3A; // R 2 cycles
-                    if (queHandleIndCmdRequest != nullptr)
-                        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
-
-                    // brightnessSetting = (uint32_t)IND_NOTIFY::SET_A_COLOR_BRIGHTNESS; // First we set the target color bit
-                    // brightnessSetting |= 200;                                         // Supply the brightness value
-
-                    // while (!xTaskNotify(taskHandleIndRun, brightnessSetting, eSetValueWithoutOverwrite))
-                    //     vTaskDelay(pdMS_TO_TICKS(10));
                     break;
                 }
 
                 case 5:
                 {
-                    val = 0x43002A3A; // B 3 cycles
-                    if (queHandleIndCmdRequest != nullptr)
-                        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
-
-                    // brightnessSetting = (uint32_t)IND_NOTIFY::SET_A_COLOR_BRIGHTNESS; // First we set the target color bit
-                    // brightnessSetting |= 5;                                           // Supply the brightness value
-
-                    // while (!xTaskNotify(taskHandleIndRun, brightnessSetting, eSetValueWithoutOverwrite))
-                    //     vTaskDelay(pdMS_TO_TICKS(10));
                     break;
                 }
-
-                    // case 6:
-                    // {
-                    //     val = 0x11000209;
-                    //     if (queHandleIndCmdRequest != nullptr)
-                    //         xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
-                    //     break;
-                    // }
                 }
 
-                if (++gpioStep > 5)
+                if (++gpioStep > 1)
                 {
                     ESP_LOGW(TAG, "gpioStep restart...");
                     gpioStep = 0;
                 }
-
-                // if (taskHandleIndicationRun != nullptr)
-                // {
-                //     uint32_t Notification = ((int32_t)IND_NOTIFY::SET_C_COLOR_DEFAULT | 0x00000025);
-                //     if(xTaskNotify(taskHandleIndicationRun, static_cast<uint32_t>(Notification), eSetValueWithoutOverwrite))
-                // vTaskDelay(pdMS_TO_TICKS(10));
-                // }
-                // else
-                //     ESP_LOGE(TAG, "taskHandleIndicationRun is null... We can't send a task notification to Indication");
 
                 // NVS
                 // char nameWifi[] = "wifi";

@@ -8,7 +8,6 @@
         "ESP_ROM_ELF_DIR": "c:\\Users\\Keith\\esp\\tools\\tools\\esp-rom-elfs\\20230320/"
     },
     "idf.espIdfPathWin": "c:\\Users\\Keith\\esp\\v5.2\\esp-idf",
-    "idf.espMdfPathWin": "c:\\Users\\Keith\\Desktop\\ESP-MDF\\esp-mdf-v1.0",
     "idf.openOcdConfigs": [
         "board/esp32s3-builtin.cfg"
     ],

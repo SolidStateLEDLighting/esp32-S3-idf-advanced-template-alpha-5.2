@@ -10,14 +10,16 @@ FILE(GLOB_RECURSE SOURCES ${PROJECT_DIR}/main/*.cpp)
 set(REQUIRES
     esp_event
     esp_timer
+    esp_netif
     driver
     indication_ws2812_5.2
+    wifi_5.2
 )
 #
 # Anything that must be included, but may remain hidden from the public header files.
 # Limiting component exposure can reduce Undefined Reference linking problems in larger applications.
 set(PRIV_REQUIRES
-    nvs 
+    nvs
 )
 #
 #

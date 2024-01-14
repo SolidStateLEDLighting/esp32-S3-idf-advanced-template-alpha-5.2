@@ -43,26 +43,6 @@ std::string System::getDeviceID()
     return id.str();
 }
 
-bool System::lockGetBool(bool *variable)
-{
-    bool value = false;
-    if (xSemaphoreTake(semSysBoolLock, portMAX_DELAY))
-    {
-        value = *variable; // Dereference and return the value
-        xSemaphoreGive(semSysBoolLock);
-    }
-    return value;
-}
-
-void System::lockSetBool(bool *variable, bool value)
-{
-    if (xSemaphoreTake(semSysBoolLock, portMAX_DELAY))
-    {
-        *variable = value; // Dereference and set the value
-        xSemaphoreGive(semSysBoolLock);
-    }
-}
-
 uint8_t System::lockGetUint8(uint8_t *variable)
 {
     uint8_t value = 0;

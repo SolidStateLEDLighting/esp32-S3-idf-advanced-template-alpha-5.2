@@ -14,6 +14,10 @@
 enum class SYS_NOTIFY : uint8_t // Task Notification definitions for the Run loop
 {
     NONE = 0,
+    WIFI_CONNECTED,     // Wifi can be used
+    WIFI_DISCONNECTING, // Stop using Wifi
+    WIFI_DISCONNECTED,  // Wifi is availiable to be connected again
+    WIFI_SHUTDOWN,
 };
 
 // Queue based commands should be used for commands which may provide input and perhaps return data.
@@ -62,10 +66,12 @@ enum class SYS_INIT : uint8_t
 {
     Start,
     Init_Queues_Commands,
-    Create_Default_Event_Loop,
     Start_Network_Interface,
+    Create_Default_Event_Loop,
     Create_Indication,
     Wait_On_Indication,
+    Create_Wifi,
+    Wait_On_Wifi,
     Finished,
     Error,
 };

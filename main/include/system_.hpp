@@ -24,9 +24,11 @@
 
 #include "nvs/nvs_.hpp" // Our components
 #include "indication/indication_.hpp"
+#include "wifi/wifi_.hpp"
 
 class NVS; // Forward declarations
 class Indication;
+class Wifi;
 
 extern "C"
 {
@@ -50,6 +52,7 @@ extern "C"
         /* Object References */
         NVS *nvs = nullptr;
         Indication *ind = nullptr;
+        Wifi *wifi = nullptr;
 
         uint8_t show = 0;      // Flags
         uint8_t showSys = 0;   //
@@ -100,8 +103,8 @@ extern "C"
         bool saveToNVSFlag = false;
         uint8_t saveToNVSDelaySecs = 0;
 
-        bool restoreVariablesFromNVS();
-        bool saveVariablesToNVS();
+        bool restoreVariablesFromNVS(void);
+        bool saveVariablesToNVS(void);
 
         /* System_Run */
         SYS_NOTIFY sysTaskNotifyValue = SYS_NOTIFY::NONE;
@@ -144,9 +147,6 @@ extern "C"
         /* Utilities */
         const char *convertWifiStateToChars(uint8_t);
         std::string getDeviceID(void);
-
-        bool lockGetBool(bool *);       // Locking Boolean variables
-        void lockSetBool(bool *, bool); //
 
         uint8_t lockGetUint8(uint8_t *);                     // Locking uint8_t variables
         void lockOrUint8(uint8_t *, uint8_t);                //
