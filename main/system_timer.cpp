@@ -148,37 +148,21 @@ void System::oneSecondActions(void)
     // When we are working with multiple variables at the same time, we don't want 'save to NVS' being called too quickly.
     // Allow a save even if we are in the process of reboot count-down.
     //
-    if (saveToNVSDelaySecs > 0)
+    if (lockGetUint8(&saveToNVSDelaySecs) > 0)
     {
-        if (--saveToNVSDelaySecs < 1)
-            saveToNVSFlag = true;
+        if (lockDecrementUint8(&saveToNVSDelaySecs) < 1)
+            lockSetBool(&saveToNVSFlag, true);
     }
 
     /* Reboot Request */
-    if (rebootTimerSec > 0)
+    if (rebootTimerSec > 0) // Currently, in this project, we don't invoke a reboot, but we will someday.
     {
         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Reboot in " + std::to_string(rebootTimerSec));
         if (--rebootTimerSec < 1)
             esp_restart(); // Reboot
         else
-            return; // Don't permit further entry into the oneSecondActions routine while waiting for the reboot to begin.
+            return; // Don't permit further entry into the oneSecondActions routine while waiting for a reboot to begin.
     }
-
-    //
-    // If Unconnected to a Host - flash Red
-    // If Connecting  to a Host - flash Green
-    // If Connected   to a Host - flash Blue
-    //
-    int32_t val = 0;
-    if (sysWifiConnState == WIFI_CONN_STATE::WIFI_DISCONNECTED)
-        val = 0x11000209;
-    if (sysWifiConnState == WIFI_CONN_STATE::WIFI_CONNECTING_STA)
-        val = 0x21000209;
-    else if (sysWifiConnState == WIFI_CONN_STATE::WIFI_CONNECTED_STA)
-        val = 0x41000209;
-
-    if (queHandleIndCmdRequest != nullptr)
-        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
 }
 
 void System::fiveSecondActions(void)

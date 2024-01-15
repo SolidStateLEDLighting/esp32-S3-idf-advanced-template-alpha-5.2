@@ -20,11 +20,13 @@ void System::run(void)
 {
     esp_err_t ret;
 
+    int8_t oneSecCounter = 7;
+
     while (true)
     {
         switch (sysOP)
         {
-        case SYS_OP::Run:
+        case SYS_OP::Run: // We would like to achieve about a 4Hz entry cadence in the Run state.
         {
             /*  Service all Task Notifications */
             /* Task Notifications should be used for notifications or commands which need no input and return no data. */
@@ -110,9 +112,9 @@ void System::run(void)
             }
 
             /* Pending actions */
-            if (saveToNVSFlag)
+            if (lockGetBool(&saveToNVSFlag))
             {
-                saveToNVSFlag = false;
+                lockSetBool(&saveToNVSFlag, false);
                 saveVariablesToNVS();
             }
 
@@ -139,6 +141,29 @@ void System::run(void)
                 {
                     lockAndUint8(&diagSys, _printTaskInfo); // Clear the bit
                     printTaskInfo();
+                }
+            }
+
+            if (--oneSecCounter < 1) // Low accuracy counter based on normal delays inside this run function.
+            {
+                oneSecCounter = 7; // Can be adjusted up or down to yield are more pleasant result.
+                //
+                // If Unconnected to a Host - flash Red
+                // If Connecting  to a Host - flash Green
+                // If Connected   to a Host - flash Blue
+                //
+                int32_t val = 0;
+                if (sysWifiConnState == WIFI_CONN_STATE::WIFI_DISCONNECTED)
+                    val = 0x11000209;
+                if (sysWifiConnState == WIFI_CONN_STATE::WIFI_CONNECTING_STA)
+                    val = 0x21000209;
+                else if (sysWifiConnState == WIFI_CONN_STATE::WIFI_CONNECTED_STA)
+                    val = 0x41000209;
+
+                if (val > 0)
+                {
+                    if (queHandleIndCmdRequest != nullptr)
+                        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
                 }
             }
 
@@ -267,6 +292,9 @@ void System::run(void)
             {
                 if (show & _showInit)
                     routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::Finished");
+
+                bootCount++;
+                lockSetUint8(&saveToNVSDelaySecs, 2);
 
                 initGenTimer(); // Starting General Timer task
                 sysOP = SYS_OP::Run;

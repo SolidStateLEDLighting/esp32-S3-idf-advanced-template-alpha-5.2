@@ -70,7 +70,7 @@ extern "C"
         uint8_t runStackSizeK = 6;                  // Default minimum size
         TaskHandle_t taskHandleSystemRun = nullptr; //
 
-        uint8_t gpioStackSizeK = 3;                     // Default minimum size
+        uint8_t gpioStackSizeK = 5;                     // Default minimum size
         TaskHandle_t runTaskHandleSystemGPIO = nullptr; //
 
         uint8_t timerStackSizeK = 4;                     // Default minimum size
@@ -151,9 +151,12 @@ extern "C"
         const char *convertWifiStateToChars(uint8_t);
         std::string getDeviceID(void);
 
+        void lockSetBool(bool *, bool);
+        bool lockGetBool(bool *);
         uint8_t lockGetUint8(uint8_t *);                     // Locking uint8_t variables
         void lockOrUint8(uint8_t *, uint8_t);                //
         void lockAndUint8(uint8_t *variable, uint8_t value); //
         void lockSetUint8(uint8_t *, uint8_t);               //
+        uint8_t lockDecrementUint8(uint8_t *);               //
     };
 }

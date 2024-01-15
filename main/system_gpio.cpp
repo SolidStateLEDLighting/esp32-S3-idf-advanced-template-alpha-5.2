@@ -23,13 +23,13 @@ void System::initGPIOPins(void) // We initial all pins possible here.
     //
 
     //
-    // At may be important to disable all unused pins in a very specific ways to reduce power consumption.  This should be done here.
+    // It may be important to disable all unused pins in a very specific ways to reduce power consumption.  This should be done here.
     //
 
     //
     // Tactile Switch(es)
     //
-    gpio_config_t gpioSW1;             // We have one switch available in the S3 DevKitM   GPIO_BOOT_SW
+    gpio_config_t gpioSW1;             // We have one switch available in the S3 DevKits   GPIO_BOOT_SW
     gpioSW1.pin_bit_mask = 1LL << SW1; //
     gpioSW1.mode = GPIO_MODE_INPUT;    //
     gpioSW1.pull_up_en = GPIO_PULLUP_ENABLE;
@@ -97,6 +97,8 @@ void System::runGPIOTask(void)
     // int32_t brightnessLevel = 0;
     uint8_t gpioIndex = 0;
 
+    bool autoConnect = false;
+
     xQueueReset(xQueueGPIOEvents);
 
     while (true)
@@ -110,10 +112,11 @@ void System::runGPIOTask(void)
             {
             case SW1: // Call Test fuctions here
             {
-                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SW1...");
+                routeLogByValue(LOG_TYPE::WARN, std::string(__func__) + "(): SW1...");
 
                 switch (gpioIndex)
                 {
+
                 case 0:
                 {
                     while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_CONN_PRI_HOST), eSetValueWithoutOverwrite))
@@ -133,63 +136,81 @@ void System::runGPIOTask(void)
                     break;
                 }
 
-                case 2:
-                {
-                    break;
-                }
+                    /*
+                    case 0:
+                    {
+                        if (nvs->openNVSStorage("test", true) == false) // Read/Write
+                            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Error, Unable to nvs->openNVStorage()");
+
+                        if (nvs->getBooleanFromNVS("autoConnect", &autoConnect))
+                            routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): autoConnect restored = " + std::to_string(autoConnect));
+                        else
+                            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Error, Unable to restore autoConnect");
+                        nvs->closeNVStorage(true); // Commit changes
+                        break;
+                    }
+
+                    case 1:
+                    {
+                        autoConnect = !autoConnect;
+                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): autoConnect changed to " + std::to_string(autoConnect));
+                        break;
+                    }
+
+                    case 2:
+                    {
+                        if (nvs->openNVSStorage("test", true) == false) // Read/Write
+                            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Error, Unable to nvs->openNVStorage()");
+
+                        if (nvs->saveBooleanToNVS("autoConnect", autoConnect))
+                            routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): autoConnect saved   = " + std::to_string(autoConnect));
+                        else
+                            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to save autoConnect");
+                        nvs->closeNVStorage(true); // Commit changes
+                        break;
+                    }
+                    */
 
                 case 3:
                 {
                     break;
                 }
 
-                case 4:
-                {
-                    break;
-                }
-
-                case 5:
-                {
-                    break;
-                }
-                }
-
-                /*
-                switch (gpioIndex) // NVS testing
-                {
-                case 0: // Erases all the partition variables - defaults to "nvs"
-                {
-                    if (xSemaphoreTake(semNVSEntry, portMAX_DELAY))
+                    /*
+                    case 0: // Erases all the partition's variables - defaults to "nvs"
                     {
-                        ESP_LOGW(TAG, "eraseNVSPartition");
-                        nvs->eraseNVSPartition();
-                        xSemaphoreGive(semNVSEntry);
+                        if (xSemaphoreTake(semNVSEntry, portMAX_DELAY))
+                        {
+                            ESP_LOGW(TAG, "eraseNVSPartition");
+                            nvs->eraseNVSPartition();
+                            xSemaphoreGive(semNVSEntry);
+                        }
+                        break;
                     }
-                }
+                    */
 
-                case 1: // Only erases a single nvs namespace
-                {
-                    std::string strNameSpace = "wifi";
-                    // std::string strNameSpace = "system";
-                    // std::string strNameSpace = "sntp";
-                    // std::string strNameSpace = "indication";
-
-                    if (xSemaphoreTake(semNVSEntry, portMAX_DELAY))
+                    /*
+                    case 1: // Only erases a single nvs namespace
                     {
-                        ESP_LOGW(TAG, "eraseNVSNamespace %s", strNameSpace.c_str());
-                        nvs->eraseNVSNamespace((char *)strNameSpace.c_str()); // Erases all the partition variables - defaults to "nvs"
-                        xSemaphoreGive(semNVSEntry);
-                    }
-                }
-                }
-                */
+                        std::string strNameSpace = "wifi";
+                        // std::string strNameSpace = "system";
+                        // std::string strNameSpace = "sntp";
+                        // std::string strNameSpace = "indication";
 
+                        if (xSemaphoreTake(semNVSEntry, portMAX_DELAY))
+                        {
+                            ESP_LOGW(TAG, "eraseNVSNamespace %s", strNameSpace.c_str());
+                            nvs->eraseNVSNamespace((char *)strNameSpace.c_str()); // Erases all the variables in this namespace
+                            xSemaphoreGive(semNVSEntry);
+                        }
+                    }
+                    */
+                }
                 if (++gpioIndex > 1)
                 {
-                    routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): gpioIndex restart...");
+                    routeLogByValue(LOG_TYPE::WARN, std::string(__func__) + "(): gpioIndex restart...");
                     gpioIndex = 0;
                 }
-
                 break;
             }
 

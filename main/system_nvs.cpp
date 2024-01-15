@@ -12,19 +12,13 @@ extern SemaphoreHandle_t semNVSEntry;
 
 bool System::restoreVariablesFromNVS()
 {
-    if (show & _showNVS)
-        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "()");
-
     uint8_t temp = 0;
 
     if (nvs == nullptr)
-        nvs = NVS::getInstance(); // First, get the nvs object handle if didn't do this previously.
+        nvs = NVS::getInstance(); // First, get the nvs object handle if we didn't do this previously.
 
     if (xSemaphoreTake(semNVSEntry, portMAX_DELAY) == pdTRUE)
     {
-        if (show & _showNVS)
-            routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): openNVStorage 'system'");
-
         if (!nvs->openNVSStorage("system", true))
         {
             routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to OpenNVStorage inside restoreVariablesFromNVS");
@@ -32,6 +26,9 @@ bool System::restoreVariablesFromNVS()
             return false;
         }
     }
+
+    if (show & _showNVS)
+        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): system namespace start");
 
     bool successFlag = true;
 
@@ -47,11 +44,11 @@ bool System::restoreVariablesFromNVS()
             if (temp > runStackSizeK) // Ok to use any value greater than the default size.
             {
                 runStackSizeK = temp;
-                saveToNVSDelaySecs = 2; // Save it
+                lockSetUint8(&saveToNVSDelaySecs, 2); // Save it
             }
 
             if (show & _showNVS)
-                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): runStackSizeK is " + std::to_string(runStackSizeK));
+                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): runStackSizeK       is " + std::to_string(runStackSizeK));
         }
         else
         {
@@ -69,11 +66,11 @@ bool System::restoreVariablesFromNVS()
             if (temp > gpioStackSizeK) // Ok to use any value greater than the default size.
             {
                 gpioStackSizeK = temp;
-                saveToNVSDelaySecs = 2; // Save it
+                lockSetUint8(&saveToNVSDelaySecs, 2); // Save it
             }
 
             if (show & _showNVS)
-                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): gpioStackSizeK is " + std::to_string(gpioStackSizeK));
+                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): gpioStackSizeK      is " + std::to_string(gpioStackSizeK));
         }
         else
         {
@@ -91,11 +88,11 @@ bool System::restoreVariablesFromNVS()
             if (temp > timerStackSizeK) // Ok to use any value greater than the default size.
             {
                 timerStackSizeK = temp;
-                saveToNVSDelaySecs = 2; // Save it
+                lockSetUint8(&saveToNVSDelaySecs, 2); // Save it
             }
 
             if (show & _showNVS)
-                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): timerStackSizeK is " + std::to_string(timerStackSizeK));
+                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): timerStackSizeK     is " + std::to_string(timerStackSizeK));
         }
         else
         {
@@ -109,14 +106,14 @@ bool System::restoreVariablesFromNVS()
         if (nvs->getU32IntegerFromNVS("bootCount", &bootCount))
         {
             if (show & _showNVS)
-                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): bootCount is " + std::to_string(bootCount));
+                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): bootCount           is " + std::to_string(bootCount));
         }
         else
             successFlag = false;
     }
 
     if (show & _showNVS)
-        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): system end");
+        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): system name end");
 
     if (successFlag)
     {
@@ -137,27 +134,26 @@ bool System::restoreVariablesFromNVS()
 
 bool System::saveVariablesToNVS()
 {
-    if (show & _showNVS)
-        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "():");
     //
     // The best idea is to save only changed values.  Right now, we try to save everything.
     // The NVS object we call will avoid over-writing variables which already hold the correct value.
     // Later, we may try to add and track 'dirty' bits to avoid trying to save a value that hasn't changed.
     //
-    if (show & _showNVS)
-        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): system start");
-    else
+    if (nvs == nullptr)
+        nvs = NVS::getInstance(); // First, get the nvs object handle if we didn't do this previously.
+
+    if (xSemaphoreTake(semNVSEntry, portMAX_DELAY) == pdTRUE)
     {
-        if (xSemaphoreTake(semNVSEntry, portMAX_DELAY) == pdTRUE)
+        if (!nvs->openNVSStorage("system", true)) // Read/Write
         {
-            if (!nvs->openNVSStorage("system", true)) // Read/Write
-            {
-                routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to OpenNVStorage inside saveVariablesToNVS");
-                xSemaphoreGive(semNVSEntry);
-                return false;
-            }
+            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to OpenNVStorage inside saveVariablesToNVS");
+            xSemaphoreGive(semNVSEntry);
+            return false;
         }
     }
+
+    if (show & _showNVS)
+        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): system namespace start");
 
     bool successFlag = true;
 
@@ -166,7 +162,7 @@ bool System::saveVariablesToNVS()
         if (nvs->saveU8IntegerToNVS("runStackSizeK", runStackSizeK))
         {
             if (show & _showNVS)
-                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): runStackSizeK = " + std::to_string(runStackSizeK));
+                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): runStackSizeK       = " + std::to_string(runStackSizeK));
         }
         else
         {
@@ -180,7 +176,7 @@ bool System::saveVariablesToNVS()
         if (nvs->saveU8IntegerToNVS("gpioStackSizeK", gpioStackSizeK))
         {
             if (show & _showNVS)
-                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): gpioStackSizeK = " + std::to_string(gpioStackSizeK));
+                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): gpioStackSizeK      = " + std::to_string(gpioStackSizeK));
         }
         else
         {
@@ -194,7 +190,7 @@ bool System::saveVariablesToNVS()
         if (nvs->saveU8IntegerToNVS("timerStackSizeK", timerStackSizeK))
         {
             if (show & _showNVS)
-                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): timerStackSizeK = " + std::to_string(timerStackSizeK));
+                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): timerStackSizeK     = " + std::to_string(timerStackSizeK));
         }
         else
         {
@@ -208,7 +204,7 @@ bool System::saveVariablesToNVS()
         if (nvs->saveU32IntegerToNVS("bootCount", bootCount))
         {
             if (show & _showNVS)
-                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): bootCount = " + std::to_string(bootCount));
+                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): bootCount           = " + std::to_string(bootCount));
         }
         else
         {
@@ -218,7 +214,7 @@ bool System::saveVariablesToNVS()
     }
 
     if (show & _showNVS)
-        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): system end");
+        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): system namespace end");
 
     if (successFlag)
     {
