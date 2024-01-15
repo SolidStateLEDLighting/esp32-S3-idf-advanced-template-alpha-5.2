@@ -7,7 +7,7 @@
 /* External Semaphores */
 extern SemaphoreHandle_t semIndEntry;
 extern SemaphoreHandle_t semWifiEntry;
-extern SemaphoreHandle_t semSysLoggingLock;
+extern SemaphoreHandle_t semSysRouteLock;
 extern SemaphoreHandle_t semSysUint8Lock;
 
 void System::runMarshaller(void *arg)
@@ -43,32 +43,42 @@ void System::run(void)
 
                 case SYS_NOTIFY::WIFI_CONNECTED:
                 {
-                    if unlikely (show & _showRun)
-                        ESP_LOGW(TAG, "SYS_NOTIFY::WIFI_CONNECTED");
-                    // Tell all parties who care that Internet is available.
+                    if (show & _showRun)
+                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::WIFI_CONNECTED"); // Tell all parties who care that Internet is available.
+
+                    sysWifiConnState = WIFI_CONN_STATE::WIFI_CONNECTED_STA;
+                    break;
+                }
+
+                case SYS_NOTIFY::WIFI_CONNECTING:
+                {
+                    if (show & _showRun)
+                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::WIFI_CONNECTING"); // Tell all parties who care that Internet is available.
+
+                    sysWifiConnState = WIFI_CONN_STATE::WIFI_CONNECTING_STA;
                     break;
                 }
 
                 case SYS_NOTIFY::WIFI_DISCONNECTING:
                 {
-                    if unlikely (show & _showRun)
-                        ESP_LOGW(TAG, "SYS_NOTIFY::WIFI_DISCONNECTING");
-                    // Tell all parties who care that the Internet is not avaiable.
+                    if (show & _showRun)
+                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::WIFI_DISCONNECTING"); // Tell all parties who care that the Internet is not avaiable.
                     break;
                 }
 
                 case SYS_NOTIFY::WIFI_DISCONNECTED:
                 {
-                    if unlikely (show & _showRun)
-                        ESP_LOGW(TAG, "SYS_NOTIFY::WIFI_DISCONNECTED");
-                    // Wifi is competlely ready to be connected again.
+                    if (show & _showRun)
+                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::WIFI_DISCONNECTED"); // Wifi is competlely ready to be connected again.
+
+                    sysWifiConnState = WIFI_CONN_STATE::WIFI_DISCONNECTED;
                     break;
                 }
 
                 case SYS_NOTIFY::WIFI_SHUTDOWN:
                 {
-                    if unlikely (show & _showRun)
-                        ESP_LOGW(TAG, "SYS_NOTIFY::WIFI_SHUTDOWN");
+                    if (show & _showRun)
+                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::WIFI_SHUTDOWN");
                     // System must now call the Wifi's destructor explicitly.
                     break;
                 }
@@ -82,7 +92,8 @@ void System::run(void)
                 if (ptrSYSCmdRequest->stringData != nullptr)
                 {
                     strCmdPayload = *ptrSYSCmdRequest->stringData; // We should always try to copy the payload even if we don't use that payload.
-                    // ESP_LOGI(TAG, "%s", strCmdPayload.c_str());
+                    if (show & _showPayload)
+                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Payload = " + strCmdPayload);
                 }
 
                 switch (ptrSYSCmdRequest->requestedCmd)
@@ -105,24 +116,26 @@ void System::run(void)
                 saveVariablesToNVS();
             }
 
-            if (diagSys) // We may run periodic or commanded diagnostics
+            if (lockGetUint8(&diagSys)) // We may run periodic or commanded diagnostics
             {
-                if (diagSys & _diagHeapCheck)
+                uint8_t diagSysValue = lockGetUint8(&diagSys);
+
+                if (diagSysValue & _diagHeapCheck)
                 {
                     lockAndUint8(&diagSys, _diagHeapCheck); // Clear the bit
                     heap_caps_check_integrity_all(true);    // Esp library test
                 }
-                else if (diagSys & _printRunTimeStats)
+                else if (diagSysValue & _printRunTimeStats)
                 {
                     lockAndUint8(&diagSys, _printRunTimeStats); // Clear the bit
                     printRunTimeStats();                        // This diagnostic will affect your process over a 45 seconds period.  Can't use without special Menuconfig settings set.
                 }
-                else if (diagSys & _printRunTimeStats)
+                else if (diagSysValue & _printRunTimeStats)
                 {
                     lockAndUint8(&diagSys, _printMemoryStats); // Clear the bit
                     printMemoryStats();
                 }
-                else if (diagSys & _printRunTimeStats)
+                else if (diagSysValue & _printRunTimeStats)
                 {
                     lockAndUint8(&diagSys, _printTaskInfo); // Clear the bit
                     printTaskInfo();

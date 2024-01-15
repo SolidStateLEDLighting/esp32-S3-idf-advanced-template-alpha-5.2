@@ -15,6 +15,7 @@ enum class SYS_NOTIFY : uint8_t // Task Notification definitions for the Run loo
 {
     NONE = 0,
     WIFI_CONNECTED,     // Wifi can be used
+    WIFI_CONNECTING,    // We have started the process to connect
     WIFI_DISCONNECTING, // Stop using Wifi
     WIFI_DISCONNECTED,  // Wifi is availiable to be connected again
     WIFI_SHUTDOWN,

@@ -27,7 +27,7 @@ bool System::restoreVariablesFromNVS()
 
         if (!nvs->openNVSStorage("system", true))
         {
-            ESP_LOGE(TAG, "Error, Unable to OpenNVStorage inside restoreVariablesFromNVS");
+            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to OpenNVStorage inside restoreVariablesFromNVS");
             xSemaphoreGive(semNVSEntry);
             return false;
         }
@@ -127,7 +127,7 @@ bool System::restoreVariablesFromNVS()
     }
     else
     {
-        ESP_LOGE(TAG, "restoreVariablesFromNVS Failed");
+        routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): restoreVariablesFromNVS Failed");
         nvs->closeNVStorage(false); // No changes
     }
 
@@ -152,7 +152,7 @@ bool System::saveVariablesToNVS()
         {
             if (!nvs->openNVSStorage("system", true)) // Read/Write
             {
-                ESP_LOGE(TAG, "Error, Unable to OpenNVStorage inside saveVariablesToNVS");
+                routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to OpenNVStorage inside saveVariablesToNVS");
                 xSemaphoreGive(semNVSEntry);
                 return false;
             }
@@ -170,7 +170,7 @@ bool System::saveVariablesToNVS()
         }
         else
         {
-            ESP_LOGE(TAG, "Error, Unable to saveU8IntegerToNVS runStackSizeK");
+            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to saveU8IntegerToNVS runStackSizeK");
             successFlag = false;
         }
     }
@@ -184,7 +184,7 @@ bool System::saveVariablesToNVS()
         }
         else
         {
-            ESP_LOGE(TAG, "Error, Unable to saveU8IntegerToNVS gpioStackSizeK");
+            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to saveU8IntegerToNVS gpioStackSizeK");
             successFlag = false;
         }
     }
@@ -198,7 +198,7 @@ bool System::saveVariablesToNVS()
         }
         else
         {
-            ESP_LOGE(TAG, "Error, Unable to saveU8IntegerToNVS timerStackSizeK");
+            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to saveU8IntegerToNVS timerStackSizeK");
             successFlag = false;
         }
     }
@@ -212,7 +212,7 @@ bool System::saveVariablesToNVS()
         }
         else
         {
-            ESP_LOGE(TAG, "Error, Unable to saveU32IntegerToNVS bootCount");
+            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to saveU32IntegerToNVS bootCount");
             successFlag = false;
         }
     }
@@ -223,12 +223,12 @@ bool System::saveVariablesToNVS()
     if (successFlag)
     {
         if (show & _showNVS)
-            ESP_LOGE(TAG, "saveVariablesToNVS Succeeded");
+            routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): saveVariablesToNVS Succeeded");
         nvs->closeNVStorage(true); // Commit changes
     }
     else if (show & _showNVS)
     {
-        ESP_LOGE(TAG, "saveVariablesToNVS Failed");
+        routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): saveVariablesToNVS Failed");
         nvs->closeNVStorage(false); // Discard changes
     }
 

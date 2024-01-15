@@ -49,6 +49,9 @@ extern "C"
         /* System_ */
         char TAG[5] = "_sys";
 
+        /* Object States */
+        WIFI_CONN_STATE sysWifiConnState = WIFI_CONN_STATE::WIFI_DISCONNECTED;
+
         /* Object References */
         NVS *nvs = nullptr;
         Indication *ind = nullptr;
@@ -64,14 +67,14 @@ extern "C"
         QueueHandle_t queHandleWIFICmdRequest = nullptr;
         QueueHandle_t queHandleIndCmdRequest = nullptr;
 
-        uint8_t runStackSizeK = 6;                  // Default size
+        uint8_t runStackSizeK = 6;                  // Default minimum size
         TaskHandle_t taskHandleSystemRun = nullptr; //
 
-        uint8_t gpioStackSizeK = 3;                     // Default size
+        uint8_t gpioStackSizeK = 3;                     // Default minimum size
         TaskHandle_t runTaskHandleSystemGPIO = nullptr; //
 
-        uint8_t timerStackSizeK = 4;
-        TaskHandle_t taskHandleRunSystemTimer = nullptr;
+        uint8_t timerStackSizeK = 4;                     // Default minimum size
+        TaskHandle_t taskHandleRunSystemTimer = nullptr; //
 
         System(void);
         System(const System &) = delete;         // Disable copy constructor

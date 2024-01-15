@@ -1,12 +1,12 @@
 #include "system_.hpp" // Class structure and variables
 
 /* External Semaphores */
-extern SemaphoreHandle_t semSysLoggingLock;
+extern SemaphoreHandle_t semSysRouteLock;
 
 /* Logging */
 void System::routeLogByRef(LOG_TYPE _type, std::string *_msg)
 {
-    if (xSemaphoreTake(semSysLoggingLock, portMAX_DELAY)) // We use this lock to prevent sys_evt and wifi_run tasks from having conflicts
+    if (xSemaphoreTake(semSysRouteLock, portMAX_DELAY)) // We use this lock to prevent sys_evt and wifi_run tasks from having conflicts
     {
         LOG_TYPE type = _type;   // Copy our parameters upon entry before they are over-written by another calling task.
         std::string *msg = _msg; // This will point back to the caller's variable.
@@ -15,13 +15,7 @@ void System::routeLogByRef(LOG_TYPE _type, std::string *_msg)
         {
         case LOG_TYPE::ERROR:
         {
-            // ESP_LOGE(TAG, "%s", (*msg).c_str()); // Print out our errors here so we see it in the console.
-
-            // if (xSemaphoreTake(semNVSEntry, portMAX_DELAY))
-            // {
-            //     nvs->writeErrorStringToNVS(msg); // Errors are stored in NVS in case they need to be accessed after a reboot
-            //     xSemaphoreGive(semNVSEntry);
-            // }
+            ESP_LOGE(TAG, "%s", (*msg).c_str()); // Print out our errors here so we see it in the console.
             break;
         }
 
@@ -38,13 +32,13 @@ void System::routeLogByRef(LOG_TYPE _type, std::string *_msg)
         }
         }
 
-        xSemaphoreGive(semSysLoggingLock);
+        xSemaphoreGive(semSysRouteLock);
     }
 }
 
 void System::routeLogByValue(LOG_TYPE _type, std::string _msg)
 {
-    if (xSemaphoreTake(semSysLoggingLock, portMAX_DELAY)) // We use this lock to prevent sys_evt and wifi_run tasks from having conflicts
+    if (xSemaphoreTake(semSysRouteLock, portMAX_DELAY)) // We use this lock to prevent sys_evt and wifi_run tasks from having conflicts
     {
         LOG_TYPE type = _type; // Copy our parameters upon entry before they are over-written by another calling task.
         std::string msg = _msg;
@@ -54,12 +48,6 @@ void System::routeLogByValue(LOG_TYPE _type, std::string _msg)
         case LOG_TYPE::ERROR:
         {
             ESP_LOGE(TAG, "%s", (msg).c_str()); // Print out our errors here so we see it in the console.
-
-            // if (xSemaphoreTake(semNVSEntry, portMAX_DELAY))
-            // {
-            //     nvs->writeErrorStringToNVS(msg); // Errors are stored in NVS in case they need to be accessed after a reboot
-            //     xSemaphoreGive(semNVSEntry);
-            // }
             break;
         }
 
@@ -76,6 +64,6 @@ void System::routeLogByValue(LOG_TYPE _type, std::string _msg)
         }
         }
 
-        xSemaphoreGive(semSysLoggingLock);
+        xSemaphoreGive(semSysRouteLock);
     }
 }

@@ -9,6 +9,8 @@
 // switch in software.   We handle switch input with espressive's recommendation to first catching the ISR and then routing that
 // to a queue.
 //
+extern SemaphoreHandle_t semNVSEntry;
+
 bool blnallowSwitchGPIOinput = true; // These variables are used for switch input debouncing
 uint8_t SwitchDebounceCounter = 0;
 
@@ -21,11 +23,15 @@ void System::initGPIOPins(void) // We initial all pins possible here.
     //
 
     //
+    // At may be important to disable all unused pins in a very specific ways to reduce power consumption.  This should be done here.
+    //
+
+    //
     // Tactile Switch(es)
     //
-    gpio_config_t gpioSW1; // GPIO_BOOT_SW
-    gpioSW1.pin_bit_mask = 1LL << SW1;
-    gpioSW1.mode = GPIO_MODE_INPUT;
+    gpio_config_t gpioSW1;             // We have one switch available in the S3 DevKitM   GPIO_BOOT_SW
+    gpioSW1.pin_bit_mask = 1LL << SW1; //
+    gpioSW1.mode = GPIO_MODE_INPUT;    //
     gpioSW1.pull_up_en = GPIO_PULLUP_ENABLE;
     gpioSW1.intr_type = GPIO_INTR_NEGEDGE;
     gpio_config(&gpioSW1);
@@ -54,7 +60,7 @@ void IRAM_ATTR GPIOIsrHandler(void *arg)
 void System::initGPIOTask(void)
 {
     if (show & _showInit)
-        ESP_LOGI(TAG, "%s()", __func__); // Our Error handlers and loggers may not be running yet.
+        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "()");
 
     esp_err_t ret = ESP_OK;
 
@@ -64,7 +70,7 @@ void System::initGPIOTask(void)
     ESP_GOTO_ON_ERROR(gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT), sys_GPIOIsrHandler_err, TAG, "() failed");
 
     if (show & _showInit)
-        ESP_LOGI(TAG, "%s(): Started gpio isr service...", __func__);
+        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Started gpio isr service...");
 
     ESP_GOTO_ON_ERROR(gpio_isr_handler_add(SW1, GPIOSwitchIsrHandler, (void *)SW1), sys_GPIOIsrHandler_err, TAG, "() failed");
 
@@ -75,7 +81,7 @@ void System::initGPIOTask(void)
     return;
 
 sys_GPIOIsrHandler_err:
-    ESP_LOGI(TAG, "%s(): error %s", __func__, esp_err_to_name(ret)); // Our Error handlers and loggers may not be running yet.
+    routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): " + std::string(esp_err_to_name(ret))); // Our Error handlers and loggers may not be running yet.
 }
 
 void System::runGPIOTaskMarshaller(void *arg) // This function can be resolved at run time by the compiler.
@@ -89,7 +95,7 @@ void System::runGPIOTask(void)
     uint32_t io_num = 0;
     // int32_t val = 0;
     // int32_t brightnessLevel = 0;
-    uint8_t gpioStep = 0;
+    uint8_t gpioIndex = 0;
 
     xQueueReset(xQueueGPIOEvents);
 
@@ -97,8 +103,6 @@ void System::runGPIOTask(void)
     {
         if (xQueueReceive(xQueueGPIOEvents, (void *)&io_num, portMAX_DELAY)) // There is never any reason to yield.
         {
-            // ESP_LOGW(TAG, "xQueueGPIOEvent...");
-
             if (sysOP == SYS_OP::Init) // If we haven't finished out our initialization -- discard items in our queue.
                 continue;
 
@@ -106,13 +110,13 @@ void System::runGPIOTask(void)
             {
             case SW1: // Call Test fuctions here
             {
-                ESP_LOGW(TAG, "SW1...");
+                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SW1...");
 
-                switch (gpioStep)
+                switch (gpioIndex)
                 {
                 case 0:
                 {
-                    while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_DISC_ROUTER), eSetValueWithoutOverwrite))
+                    while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_CONN_PRI_HOST), eSetValueWithoutOverwrite))
                         vTaskDelay(pdMS_TO_TICKS(10));
 
                     while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_RUN_DIRECTIVES), eSetValueWithoutOverwrite))
@@ -121,7 +125,7 @@ void System::runGPIOTask(void)
                 }
                 case 1:
                 {
-                    while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_CONN_PRI_ROUTER), eSetValueWithoutOverwrite))
+                    while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_DISC_HOST), eSetValueWithoutOverwrite))
                         vTaskDelay(pdMS_TO_TICKS(10));
 
                     while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_RUN_DIRECTIVES), eSetValueWithoutOverwrite))
@@ -150,22 +154,47 @@ void System::runGPIOTask(void)
                 }
                 }
 
-                if (++gpioStep > 1)
+                /*
+                switch (gpioIndex) // NVS testing
                 {
-                    ESP_LOGW(TAG, "gpioStep restart...");
-                    gpioStep = 0;
+                case 0: // Erases all the partition variables - defaults to "nvs"
+                {
+                    if (xSemaphoreTake(semNVSEntry, portMAX_DELAY))
+                    {
+                        ESP_LOGW(TAG, "eraseNVSPartition");
+                        nvs->eraseNVSPartition();
+                        xSemaphoreGive(semNVSEntry);
+                    }
                 }
 
-                // NVS
-                // char nameWifi[] = "wifi";
-                // eraseNVSPartition();         // Erases all the partition variables - defaults to "nvs"
-                // eraseNVSNamespace("system"); // Erases only System variables
-                // eraseNVSNamespace(nameWifi); // Erases only Wifi variables
+                case 1: // Only erases a single nvs namespace
+                {
+                    std::string strNameSpace = "wifi";
+                    // std::string strNameSpace = "system";
+                    // std::string strNameSpace = "sntp";
+                    // std::string strNameSpace = "indication";
+
+                    if (xSemaphoreTake(semNVSEntry, portMAX_DELAY))
+                    {
+                        ESP_LOGW(TAG, "eraseNVSNamespace %s", strNameSpace.c_str());
+                        nvs->eraseNVSNamespace((char *)strNameSpace.c_str()); // Erases all the partition variables - defaults to "nvs"
+                        xSemaphoreGive(semNVSEntry);
+                    }
+                }
+                }
+                */
+
+                if (++gpioIndex > 1)
+                {
+                    routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): gpioIndex restart...");
+                    gpioIndex = 0;
+                }
+
                 break;
             }
 
             default:
-                ESP_LOGI(TAG, "Missing Case for io_num  %ld...(runGPIOTask)", io_num);
+                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Missing Case for io_num  " + std::to_string(io_num));
                 break;
             }
         }

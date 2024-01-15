@@ -31,21 +31,14 @@ void System::initGenTimer(void)
         true,
     };
 
-    esp_err_t ret = esp_timer_create(&general_timer_args, &handleGenTimer);
+    esp_err_t ret = ESP_OK;
+    ESP_GOTO_ON_ERROR(esp_timer_create(&general_timer_args, &handleGenTimer), sys_initGenTimer_err, TAG, "esp_timer_create() failed");
+    ESP_GOTO_ON_ERROR(esp_timer_start_periodic(handleGenTimer, TIMER_PERIOD_100Hz), sys_initGenTimer_err, TAG, "esp_timer_create() failed");
+    return;
 
-    if (ret != ESP_OK)
-    {
-        ESP_LOGE(TAG, "%s::esp_timer_create failed.  err = 0x%X", __func__, ret);
-        return;
-    }
-
-    ret = esp_timer_start_periodic(handleGenTimer, TIMER_PERIOD_100Hz);
-
-    if (ret != ESP_OK)
-    {
-        ESP_LOGE(TAG, "%s::esp_timer_start_periodic failed.  err = 0x%X", __func__, ret);
-        return;
-    }
+sys_initGenTimer_err:
+    errMsg = std::string(__func__) + "(): " + esp_err_to_name(ret);
+    sysOP = SYS_OP::Error;
 }
 
 void IRAM_ATTR System::genTimerCallback(void *arg)
@@ -151,10 +144,9 @@ void System::oneSecondActions(void)
 {
     if (showSys & _showTimerSeconds)
         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): One Second");
-
     //
     // When we are working with multiple variables at the same time, we don't want 'save to NVS' being called too quickly.
-    // Allow a save even if we are in the process of reboot counte-down.
+    // Allow a save even if we are in the process of reboot count-down.
     //
     if (saveToNVSDelaySecs > 0)
     {
@@ -162,7 +154,8 @@ void System::oneSecondActions(void)
             saveToNVSFlag = true;
     }
 
-    if (rebootTimerSec > 0) // Reboot Timer
+    /* Reboot Request */
+    if (rebootTimerSec > 0)
     {
         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Reboot in " + std::to_string(rebootTimerSec));
         if (--rebootTimerSec < 1)
@@ -170,6 +163,22 @@ void System::oneSecondActions(void)
         else
             return; // Don't permit further entry into the oneSecondActions routine while waiting for the reboot to begin.
     }
+
+    //
+    // If Unconnected to a Host - flash Red
+    // If Connecting  to a Host - flash Green
+    // If Connected   to a Host - flash Blue
+    //
+    int32_t val = 0;
+    if (sysWifiConnState == WIFI_CONN_STATE::WIFI_DISCONNECTED)
+        val = 0x11000209;
+    if (sysWifiConnState == WIFI_CONN_STATE::WIFI_CONNECTING_STA)
+        val = 0x21000209;
+    else if (sysWifiConnState == WIFI_CONN_STATE::WIFI_CONNECTED_STA)
+        val = 0x41000209;
+
+    if (queHandleIndCmdRequest != nullptr)
+        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
 }
 
 void System::fiveSecondActions(void)
@@ -177,9 +186,10 @@ void System::fiveSecondActions(void)
     if (showSys & _showTimerSeconds)
         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Five Seconds");
 
-    int32_t val = 0x41000209; // 5 second heartbeat in blue
-    if (queHandleIndCmdRequest != nullptr)
-        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+    // int32_t val = 0x41000209; // 5 second heartbeat in blue
+
+    // if (queHandleIndCmdRequest != nullptr)
+    //     xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
 }
 
 void System::tenSecondActions(void)

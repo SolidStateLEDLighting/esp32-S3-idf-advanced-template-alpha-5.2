@@ -3,7 +3,7 @@
 /* Local Semaphores */
 SemaphoreHandle_t semSysEntry = NULL;
 SemaphoreHandle_t semSysEventLock = NULL;
-SemaphoreHandle_t semSysLoggingLock = NULL;
+SemaphoreHandle_t semSysRouteLock = NULL;
 
 /* External Semaphores */
 extern SemaphoreHandle_t semNVSEntry;
@@ -36,7 +36,11 @@ void System::setFlags()
     show |= _showInit;
     // show |= _showNVS;
     show |= _showRun;
-    // show |= _showJSONProcessing;
+    // show |= _showEvents;
+    // show |= _showJSONProcessing; //
+    // show |= _showDebugging;      //
+    // show |= _showProcess;        // NOTE: Not all show flags may be used in this object
+    // show |= _showPayload;        //       We have them all listed here for consistancy.
 
     showSys = 0;
     // showSys |= _showTimerSeconds;
@@ -66,9 +70,9 @@ void System::createSemaphores()
     if (semSysEventLock != NULL)
         xSemaphoreGive(semSysEventLock);
 
-    semSysLoggingLock = xSemaphoreCreateBinary(); // Route locking
-    if (semSysLoggingLock != NULL)
-        xSemaphoreGive(semSysLoggingLock);
+    semSysRouteLock = xSemaphoreCreateBinary(); // Route locking
+    if (semSysRouteLock != NULL)
+        xSemaphoreGive(semSysRouteLock);
 
     semSysBoolLock = xSemaphoreCreateBinary(); // Flag locking
     if (semSysBoolLock != NULL)
