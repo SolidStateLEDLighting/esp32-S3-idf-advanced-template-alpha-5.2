@@ -13,18 +13,18 @@ void System::printRunTimeStats()
     //  CONFIG_FREERTOS_SUPPORT_STATIC_ALLOCATION == 1
     //
     //  To use this function you must set the following in SKD Configuration editor.
-    //  [*] Enable FreeRTOS trace facility
-    //  [*] Enable FreeRTOS to collect run time stats
-    //  [*] Enable FreeRTOS stats formatting functions
-    //
+    //  [*] Enable FreeRTOS trace facility (configUSE_TRACE_FACILITY)
+    //  [*] Enable FreeRTOS to collect run time stats (configGENERATE_RUN_TIME_STATS)
+    //  [*] Enable FreeRTOS stats formatting functions (configUSE_STATS_FORMATTING_FUNCTIONS)
+//
 #if ((configGENERATE_RUN_TIME_STATS == 1) && (configUSE_STATS_FORMATTING_FUNCTIONS > 0) && (configSUPPORT_DYNAMIC_ALLOCATION == 1))
     char pcBuffer[800]; // About 40 bytes per task is needed.  Data will be missing if the buffer is short.
 
-    for (int i = 0; i < 3; i++) // We pull data 3 times to show the change in percentage of CPU use.
+    for (int i = 0; i < 1; i++) // We pull data i times to show the change in percentage of CPU use.
     {
         vTaskGetRunTimeStats(pcBuffer);
         ESP_LOGW("Task Runtime Stats", "\nTask name       Counter         Percent\n%s\n\n", pcBuffer);
-        vTaskDelay(pdMS_TO_TICKS(15000));
+        // vTaskDelay(pdMS_TO_TICKS(15000)); // Delay before pulling next test values.
     }
 #endif
     //
@@ -54,14 +54,13 @@ void System::printMemoryStats()
     ESP_LOGW(TAG, "SPI RAM Largest free block:      %d bytes", heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM));
 }
 
-/* Debugging and Testing Routines.  All these will be removed before Distribution */
 void System::printTaskInfo()
 {
     uint32_t totalNumTasks = uxTaskGetNumberOfTasks();
 
     printf("...................................................\n");
     printf("  Total Number of Tasks %ld\n", totalNumTasks);
-    printf("  name         priority    high water mark\n");
+    printf("  name         priority     high water mark\n");
 
     // char *name = nullptr;
     std::string name = "";
@@ -88,7 +87,7 @@ void System::printTaskInfo()
         printf("  %-10s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
     }
 
-    name = "Tmr Svc";
+    name = "wifi"; // wifi task
     hd = xTaskGetHandle(name.c_str());
     if (hd != NULL)
     {
@@ -124,29 +123,54 @@ void System::printTaskInfo()
         printf("  %-10s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
     }
 
-    // NOTE:  If you call these functions on the Timer task too early, that task will not be created yet.  Instead,
-    //        you will see information given for the main task.
+    // NOTE:  If you call these functions on the Timer task too early, that task will not be created yet.
     name = pcTaskGetName(taskHandleRunSystemTimer);
     priority = uxTaskPriorityGet(taskHandleRunSystemTimer);
     highWaterMark = uxTaskGetStackHighWaterMark(taskHandleRunSystemTimer);
-    printf("  %s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
+    printf("  %-10s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
 
     name = pcTaskGetName(taskHandleSystemRun);
     priority = uxTaskPriorityGet(taskHandleSystemRun);
     highWaterMark = uxTaskGetStackHighWaterMark(taskHandleSystemRun);
-    printf("  %s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
+    printf("  %-10s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
 
     name = pcTaskGetName(runTaskHandleSystemGPIO);
     priority = uxTaskPriorityGet(runTaskHandleSystemGPIO);
     highWaterMark = uxTaskGetStackHighWaterMark(runTaskHandleSystemGPIO);
-    printf("  %s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
+    printf("  %-10s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
+
+    if (wifi != nullptr)
+        wifi->printTaskInfoByColumns();
 
     if (ind != nullptr)
-        ind->printTaskInfo();
+        ind->printTaskInfoByColumns();
 
-    // if (wifi != nullptr)
-    //     wifi->printTaskInfo();
+    name = "Tmr Svc";
+    hd = xTaskGetHandle(name.c_str());
+    if (hd != NULL)
+    {
+        priority = uxTaskPriorityGet(hd);
+        highWaterMark = uxTaskGetStackHighWaterMark(hd);
+        printf("  %-10s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
+    }
 
-    printf("  IDLE0 and IDLE1 tasks are always priority 0.\n");
+    name = "IDLE0";
+    hd = xTaskGetHandle(name.c_str());
+    if (hd != NULL)
+    {
+        priority = uxTaskPriorityGet(hd);
+        highWaterMark = uxTaskGetStackHighWaterMark(hd);
+        printf("  %-10s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
+    }
+
+    name = "IDLE1";
+    hd = xTaskGetHandle(name.c_str());
+    if (hd != NULL)
+    {
+        priority = uxTaskPriorityGet(hd);
+        highWaterMark = uxTaskGetStackHighWaterMark(hd);
+        printf("  %-10s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
+    }
+
     printf("...................................................\n");
 }

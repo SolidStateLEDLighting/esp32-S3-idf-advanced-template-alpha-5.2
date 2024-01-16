@@ -87,7 +87,7 @@ extern "C"
 
         /* System_Diagnostics */
         void printRunTimeStats(void);
-        void printMemoryStats();
+        void printMemoryStats(void);
         void printTaskInfo(void);
 
         /* System_gpio */
