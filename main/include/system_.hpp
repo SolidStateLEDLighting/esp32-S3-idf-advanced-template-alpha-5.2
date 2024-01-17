@@ -106,8 +106,8 @@ extern "C"
         bool saveToNVSFlag = false;
         uint8_t saveToNVSDelaySecs = 0;
 
-        bool restoreVariablesFromNVS(void);
-        bool saveVariablesToNVS(void);
+        void restoreVariablesFromNVS(void);
+        void saveVariablesToNVS(void);
 
         /* System_Run */
         SYS_NOTIFY sysTaskNotifyValue = SYS_NOTIFY::NONE;

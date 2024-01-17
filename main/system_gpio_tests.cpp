@@ -5,38 +5,49 @@
 /*
 case 0: // Testing of reading and writing a boolean to nvs
 {
-    if (nvs->openNVSStorage("test", true) == false) // Read/Write
-        routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Error, Unable to nvs->openNVStorage()");
+    if (xSemaphoreTake(semNVSEntry, portMAX_DELAY))
+    {
+        ESP_ERROR_CHECK(nvs->openNVSStorage("test"));
 
-    if (nvs->getBooleanFromNVS("autoConnect", &autoConnect))
-        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): autoConnect restored = " + std::to_string(autoConnect));
-    else
-        routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Error, Unable to restore autoConnect");
-    nvs->closeNVStorage(true); // Commit changes
+        ret = nvs->getBooleanFromNVS("autoConnect", &autoConnect);
+
+        if (ret == ESP_OK)
+            routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): autoConnect restored = " + std::to_string(autoConnect));
+        else
+            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to restore autoConnect");
+
+        ESP_ERROR_CHECK(nvs->closeNVStorage());
+        xSemaphoreGive(semNVSEntry);
+    }
     break;
 }
 
 case 1:
 {
-    autoConnect = !autoConnect;
+    autoConnect = !autoConnect; // toggle the value
     routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): autoConnect changed to " + std::to_string(autoConnect));
     break;
 }
 
 case 2:
 {
-    if (nvs->openNVSStorage("test", true) == false) // Read/Write
-        routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Error, Unable to nvs->openNVStorage()");
+    if (xSemaphoreTake(semNVSEntry, portMAX_DELAY))
+    {
+        ESP_ERROR_CHECK(nvs->openNVSStorage("test"));
 
-    if (nvs->saveBooleanToNVS("autoConnect", autoConnect))
-        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): autoConnect saved   = " + std::to_string(autoConnect));
-    else
-        routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to save autoConnect");
-    nvs->closeNVStorage(true); // Commit changes
+        ret = nvs->saveBooleanToNVS("autoConnect", autoConnect);
+
+        if (ret == ESP_OK)
+            routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): autoConnect saved   = " + std::to_string(autoConnect));
+        else
+            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to save autoConnect");
+
+        ESP_ERROR_CHECK(nvs->closeNVStorage());
+        xSemaphoreGive(semNVSEntry);
+    }
     break;
 }
 */
-
 // 2) Erasing NVS
 /*
 case 0: // Erases all the partition's variables - defaults to "nvs"

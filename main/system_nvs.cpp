@@ -10,30 +10,20 @@
 /* External Variables */
 extern SemaphoreHandle_t semNVSEntry;
 
-bool System::restoreVariablesFromNVS()
+void System::restoreVariablesFromNVS()
 {
+    esp_err_t ret = ESP_OK;
+    bool successFlag = true;
     uint8_t temp = 0;
 
     if (nvs == nullptr)
         nvs = NVS::getInstance(); // First, get the nvs object handle if we didn't do this previously.
 
-    if (xSemaphoreTake(semNVSEntry, portMAX_DELAY) == pdTRUE)
-    {
-        if (!nvs->openNVSStorage("system", true))
-        {
-            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to OpenNVStorage inside restoreVariablesFromNVS");
-            xSemaphoreGive(semNVSEntry);
-            return false;
-        }
-    }
+    if (xSemaphoreTake(semNVSEntry, portMAX_DELAY))
+        ESP_GOTO_ON_ERROR(nvs->openNVSStorage("system"), sys_restoreVariablesFromNVS_err, TAG, "nvs->openNVSStorage('system') failed");
 
     if (show & _showNVS)
         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): system namespace start");
-
-    bool successFlag = true;
-
-    if (show & _showNVS)
-        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): system start");
 
     if (successFlag) // Restore runStackSizeK
     {
@@ -119,21 +109,23 @@ bool System::restoreVariablesFromNVS()
     {
         if (show & _showNVS)
             routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Succeeded");
-
-        nvs->closeNVStorage(true); // Commit changes
     }
     else
-    {
         routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): restoreVariablesFromNVS Failed");
-        nvs->closeNVStorage(false); // No changes
-    }
 
+    nvs->closeNVStorage();
     xSemaphoreGive(semNVSEntry);
-    return successFlag;
+    return;
+
+sys_restoreVariablesFromNVS_err:
+    routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Error " + esp_err_to_name(ret));
+    xSemaphoreGive(semNVSEntry);
 }
 
-bool System::saveVariablesToNVS()
+void System::saveVariablesToNVS()
 {
+    esp_err_t ret = ESP_OK;
+    bool successFlag = true;
     //
     // The best idea is to save only changed values.  Right now, we try to save everything.
     // The NVS object we call will avoid over-writing variables which already hold the correct value.
@@ -142,20 +134,11 @@ bool System::saveVariablesToNVS()
     if (nvs == nullptr)
         nvs = NVS::getInstance(); // First, get the nvs object handle if we didn't do this previously.
 
-    if (xSemaphoreTake(semNVSEntry, portMAX_DELAY) == pdTRUE)
-    {
-        if (!nvs->openNVSStorage("system", true)) // Read/Write
-        {
-            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to OpenNVStorage inside saveVariablesToNVS");
-            xSemaphoreGive(semNVSEntry);
-            return false;
-        }
-    }
+    if (xSemaphoreTake(semNVSEntry, portMAX_DELAY))
+        ESP_GOTO_ON_ERROR(nvs->openNVSStorage("system"), sys_saveVariablesToNVS_err, TAG, "nvs->openNVSStorage('system') failed");
 
     if (show & _showNVS)
         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): system namespace start");
-
-    bool successFlag = true;
 
     if (successFlag) // Save runStackSizeK
     {
@@ -220,14 +203,15 @@ bool System::saveVariablesToNVS()
     {
         if (show & _showNVS)
             routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): saveVariablesToNVS Succeeded");
-        nvs->closeNVStorage(true); // Commit changes
     }
     else if (show & _showNVS)
-    {
         routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): saveVariablesToNVS Failed");
-        nvs->closeNVStorage(false); // Discard changes
-    }
 
+    nvs->closeNVStorage();
     xSemaphoreGive(semNVSEntry);
-    return successFlag;
+    return;
+
+sys_saveVariablesToNVS_err:
+    routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Error " + esp_err_to_name(ret));
+    xSemaphoreGive(semNVSEntry);
 }
