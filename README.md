@@ -1,5 +1,4 @@
 # README
->
 ---
 This is a sample boiler plate project for a dual core Esp32 microcontroller running FreeRTOS.  This hardware is equivalent to a DevKit-M or C running an Esp32s3N16R8, but this project could be ported to other duel and single core Esp32 processors.
 
@@ -8,7 +7,6 @@ If run on a single core processor, some of the features might not be necessary, 
 * Downloading, compiling, and running the application are all standard common processes and needs no special instruction.  This project only uses the ESP-IDF and is compiled on version 5.2.
 * 
 # Quick Start
->
 ---
 1) Close the project.
 2) Run the ESP-IDF SDK Configure Editor (menuconfig)
@@ -17,10 +15,14 @@ If run on a single core processor, some of the features might not be necessary, 
 
 >2 Apply the correct SSID and Password for your Wifi connection under **Wifi STA Manual Setting**
 
+>3 Set your time zone under **Simple Network Time Protocol Settings**  (there is a link in the sourc code to help find your correct time zone.)
 
+3) Set your COM port and flash method (UART) and you should be ready to go.
 
+4) Compile, Flash, and Monitor.
 
-
+# Block Diagram
+---
 
 
 * For specific information about components, please exampine doc directories in each respective component area.  
