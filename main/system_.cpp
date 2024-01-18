@@ -33,9 +33,9 @@ System::System(void)
 void System::setFlags()
 {
     show = 0; // Set show flags
-    show |= _showInit;
-    show |= _showNVS;
-    show |= _showRun;
+    // show |= _showInit;
+    // show |= _showNVS;
+    // show |= _showRun;
     // show |= _showEvents;
     // show |= _showJSONProcessing; //
     // show |= _showDebugging;      //

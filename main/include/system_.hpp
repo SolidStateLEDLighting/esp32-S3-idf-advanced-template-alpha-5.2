@@ -67,7 +67,7 @@ extern "C"
         QueueHandle_t queHandleWIFICmdRequest = nullptr;
         QueueHandle_t queHandleIndCmdRequest = nullptr;
 
-        uint8_t runStackSizeK = 6;                  // Default minimum size
+        uint8_t runStackSizeK = 8;                  // Default minimum size
         TaskHandle_t taskHandleSystemRun = nullptr; //
 
         uint8_t gpioStackSizeK = 5;                     // Default minimum size

@@ -95,8 +95,16 @@ void System::runGPIOTask(void)
     uint32_t io_num = 0;
     uint8_t gpioIndex = 0;
 
-    esp_err_t ret = ESP_OK;
-    bool autoConnect = false;
+    // esp_err_t ret = ESP_OK;
+
+    // bool testBool = false;
+    // std::string testString = "";
+    // std::string string1 = "The quick brown fox jumps over the lazy dog";
+    // std::string string2 = "Now is the time for all good men to come to the aid of their country.";
+    // uint8_t testUInteger8 = 0;
+    // uint32_t testUInteger32 = 0;
+    // int32_t testInteger32 = 555; // Should test number going negative
+
     // int32_t val = 0;
     // int32_t brightnessLevel = 0;
 
@@ -117,78 +125,44 @@ void System::runGPIOTask(void)
 
                 switch (gpioIndex)
                 {
-                    /* case 0:
-                    {
-                        while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_CONN_PRI_HOST), eSetValueWithoutOverwrite))
-                            vTaskDelay(pdMS_TO_TICKS(10));
-
-                        while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_RUN_DIRECTIVES), eSetValueWithoutOverwrite))
-                            vTaskDelay(pdMS_TO_TICKS(10));
-                        break;
-                    }
-
-                    case 2:
-                    {
-                        while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_DISC_HOST), eSetValueWithoutOverwrite))
-                            vTaskDelay(pdMS_TO_TICKS(10));
-
-                        while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_RUN_DIRECTIVES), eSetValueWithoutOverwrite))
-                            vTaskDelay(pdMS_TO_TICKS(10));
-                        break;
-                    } */
-
-                case 0: // Testing of reading and writing a boolean to nvs
+                case 0:
                 {
-                    if (xSemaphoreTake(semNVSEntry, portMAX_DELAY))
-                    {
-                        ESP_ERROR_CHECK(nvs->openNVSStorage("test"));
+                    while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_CONN_PRI_HOST), eSetValueWithoutOverwrite))
+                        vTaskDelay(pdMS_TO_TICKS(10));
 
-                        ret = nvs->getBooleanFromNVS("autoConnect", &autoConnect);
-
-                        if (ret == ESP_OK)
-                            routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): autoConnect restored = " + std::to_string(autoConnect));
-                        else
-                            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to restore autoConnect");
-
-                        ESP_ERROR_CHECK(nvs->closeNVStorage());
-                        xSemaphoreGive(semNVSEntry);
-                    }
+                    while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_RUN_DIRECTIVES), eSetValueWithoutOverwrite))
+                        vTaskDelay(pdMS_TO_TICKS(10));
                     break;
                 }
 
                 case 1:
                 {
-                    autoConnect = !autoConnect; // toggle the value
-                    routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): autoConnect changed to " + std::to_string(autoConnect));
+                    while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_DISC_HOST), eSetValueWithoutOverwrite))
+                        vTaskDelay(pdMS_TO_TICKS(10));
+
+                    while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_RUN_DIRECTIVES), eSetValueWithoutOverwrite))
+                        vTaskDelay(pdMS_TO_TICKS(10));
                     break;
                 }
 
                 case 2:
                 {
-                    if (xSemaphoreTake(semNVSEntry, portMAX_DELAY))
-                    {
-                        ESP_ERROR_CHECK(nvs->openNVSStorage("test"));
-
-                        ret = nvs->saveBooleanToNVS("autoConnect", autoConnect);
-
-                        if (ret == ESP_OK)
-                            routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): autoConnect saved   = " + std::to_string(autoConnect));
-                        else
-                            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to save autoConnect");
-
-                        ESP_ERROR_CHECK(nvs->closeNVStorage());
-                        xSemaphoreGive(semNVSEntry);
-                    }
-                    break;
-                }
-
-                case 4:
-                case 3:
-                {
                     printTaskInfo();
                     // printRunTimeStats();
                     break;
                 }
+
+                    // case 3: // Erases all the partition's variables - defaults to "nvs"
+                    // {
+                    //     if (xSemaphoreTake(semNVSEntry, portMAX_DELAY))
+                    //     {
+                    //         ESP_LOGW(TAG, "eraseNVSPartition");
+                    //         nvs->eraseNVSPartition();
+                    //         esp_restart(); // Must do a complete reboot immediately or system will crash in any nvs instruction.  Must completely reinitialize nvs at startup.
+                    //         xSemaphoreGive(semNVSEntry);
+                    //     }
+                    //     break;
+                    // }
                 }
 
                 if (++gpioIndex > 2)

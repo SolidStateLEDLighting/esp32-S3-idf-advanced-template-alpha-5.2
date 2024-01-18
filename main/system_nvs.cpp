@@ -27,20 +27,22 @@ void System::restoreVariablesFromNVS()
 
     if (successFlag) // Restore runStackSizeK
     {
-        temp = runStackSizeK; // This will save the default size if value doesn't exist yet in nvs.
+        temp = runStackSizeK;
+        ret = nvs->readU8IntegerFromNVS("runStackSizeK", &temp); // This will save the default size if that value doesn't exist yet in nvs.
 
-        if (nvs->getU8IntegerFromNVS("runStackSizeK", &temp))
+        if (ret == ESP_OK)
         {
             if (temp > runStackSizeK) // Ok to use any value greater than the default size.
             {
                 runStackSizeK = temp;
-                lockSetUint8(&saveToNVSDelaySecs, 2); // Save it
+                ret = nvs->writeU8IntegerToNVS("runStackSizeK", runStackSizeK); // Over-write the value with the default minumum value.
             }
 
             if (show & _showNVS)
                 routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): runStackSizeK       is " + std::to_string(runStackSizeK));
         }
-        else
+
+        if (ret != ESP_OK)
         {
             successFlag = false;
             routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Error, Unable to restore runStackSizeK");
@@ -49,20 +51,22 @@ void System::restoreVariablesFromNVS()
 
     if (successFlag) // Restore gpioStackSizeK
     {
-        temp = gpioStackSizeK; // This will save the default size if value doesn't exist yet in nvs.
+        temp = gpioStackSizeK;                                    // This will save the default size if value doesn't exist yet in nvs.
+        ret = nvs->readU8IntegerFromNVS("gpioStackSizeK", &temp); // This will save the default size if that value doesn't exist yet in nvs.
 
-        if (nvs->getU8IntegerFromNVS("gpioStackSizeK", &temp))
+        if (ret == ESP_OK)
         {
             if (temp > gpioStackSizeK) // Ok to use any value greater than the default size.
             {
                 gpioStackSizeK = temp;
-                lockSetUint8(&saveToNVSDelaySecs, 2); // Save it
+                ret = nvs->writeU8IntegerToNVS("gpioStackSizeK", gpioStackSizeK); // Over-write the value with the default minumum value.
             }
 
             if (show & _showNVS)
                 routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): gpioStackSizeK      is " + std::to_string(gpioStackSizeK));
         }
-        else
+
+        if (ret != ESP_OK)
         {
             successFlag = false;
             routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Error, Unable to restore gpioStackSizeK");
@@ -71,20 +75,22 @@ void System::restoreVariablesFromNVS()
 
     if (successFlag) // Restore timerStackSizeK
     {
-        temp = timerStackSizeK; // This will save the default size if value doesn't exist yet in nvs.
+        temp = timerStackSizeK;                                    // This will save the default size if value doesn't exist yet in nvs.
+        ret = nvs->readU8IntegerFromNVS("timerStackSizeK", &temp); // This will save the default size if that value doesn't exist yet in nvs.
 
-        if (nvs->getU8IntegerFromNVS("timerStackSizeK", &temp))
+        if (ret == ESP_OK)
         {
             if (temp > timerStackSizeK) // Ok to use any value greater than the default size.
             {
                 timerStackSizeK = temp;
-                lockSetUint8(&saveToNVSDelaySecs, 2); // Save it
+                ret = nvs->writeU8IntegerToNVS("timerStackSizeK", timerStackSizeK); // Over-write the value with the default minumum value.
             }
 
             if (show & _showNVS)
-                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): timerStackSizeK     is " + std::to_string(timerStackSizeK));
+                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): timerStackSizeK      is " + std::to_string(timerStackSizeK));
         }
-        else
+
+        if (ret != ESP_OK)
         {
             successFlag = false;
             routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Error, Unable to restore timerStackSizeK");
@@ -93,13 +99,16 @@ void System::restoreVariablesFromNVS()
 
     if (successFlag) // Restore bootCount
     {
-        if (nvs->getU32IntegerFromNVS("bootCount", &bootCount))
+        if (nvs->readU32IntegerFromNVS("bootCount", &bootCount) == ESP_OK)
         {
             if (show & _showNVS)
                 routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): bootCount           is " + std::to_string(bootCount));
         }
         else
+        {
             successFlag = false;
+            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Error, Unable to restore bootCount. Error = " + esp_err_to_name(ret));
+        }
     }
 
     if (show & _showNVS)
@@ -142,57 +151,57 @@ void System::saveVariablesToNVS()
 
     if (successFlag) // Save runStackSizeK
     {
-        if (nvs->saveU8IntegerToNVS("runStackSizeK", runStackSizeK))
+        if (nvs->writeU8IntegerToNVS("runStackSizeK", runStackSizeK) == ESP_OK)
         {
             if (show & _showNVS)
                 routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): runStackSizeK       = " + std::to_string(runStackSizeK));
         }
         else
         {
-            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to saveU8IntegerToNVS runStackSizeK");
             successFlag = false;
+            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to writeU8IntegerToNVS runStackSizeK");
         }
     }
 
     if (successFlag) // Save gpioStackSizeK
     {
-        if (nvs->saveU8IntegerToNVS("gpioStackSizeK", gpioStackSizeK))
+        if (nvs->writeU8IntegerToNVS("gpioStackSizeK", gpioStackSizeK) == ESP_OK)
         {
             if (show & _showNVS)
                 routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): gpioStackSizeK      = " + std::to_string(gpioStackSizeK));
         }
         else
         {
-            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to saveU8IntegerToNVS gpioStackSizeK");
             successFlag = false;
+            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to writeU8IntegerToNVS gpioStackSizeK");
         }
     }
 
     if (successFlag) // Save timerStackSizeK
     {
-        if (nvs->saveU8IntegerToNVS("timerStackSizeK", timerStackSizeK))
+        if (nvs->writeU8IntegerToNVS("timerStackSizeK", timerStackSizeK) == ESP_OK)
         {
             if (show & _showNVS)
                 routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): timerStackSizeK     = " + std::to_string(timerStackSizeK));
         }
         else
         {
-            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to saveU8IntegerToNVS timerStackSizeK");
             successFlag = false;
+            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to writeU8IntegerToNVS timerStackSizeK");
         }
     }
 
     if (successFlag) // Save bootCount
     {
-        if (nvs->saveU32IntegerToNVS("bootCount", bootCount))
+        if (nvs->writeU32IntegerToNVS("bootCount", bootCount) == ESP_OK)
         {
             if (show & _showNVS)
                 routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): bootCount           = " + std::to_string(bootCount));
         }
         else
         {
-            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to saveU32IntegerToNVS bootCount");
             successFlag = false;
+            routeLogByValue(LOG_TYPE::ERROR, std::string(__func__) + "(): Unable to writeU32IntegerToNVS bootCount");
         }
     }
 
