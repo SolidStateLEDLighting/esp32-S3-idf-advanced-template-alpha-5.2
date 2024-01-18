@@ -19,7 +19,7 @@ set(REQUIRES
 # Anything that must be included, but may remain hidden from the public header files.
 # Limiting component exposure can reduce Undefined Reference linking problems in larger applications.
 set(PRIV_REQUIRES
-    nvs
+    nvs_5.2
 )
 #
 #

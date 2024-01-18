@@ -22,9 +22,9 @@
 #include "esp_sntp.h"
 #include "esp_log.h"
 
-#include "nvs/nvs_.hpp" // Our components
-#include "indication/indication_.hpp"
-#include "wifi/wifi_.hpp"
+#include "nvs/nvs_.hpp"               // Our components
+#include "indication/indication_.hpp" //
+#include "wifi/wifi_.hpp"             // NOTE: SNTP is completely isolated from the System
 
 class NVS; // Forward declarations
 class Indication;

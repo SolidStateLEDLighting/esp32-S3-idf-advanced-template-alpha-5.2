@@ -1,9 +1,16 @@
 #include "system_.hpp" // Class structure and variables
-
+//
+// I bring most logging formation here (inside each object) because in a more advanced project, I route logging
+// information back to the cloud.  We could also just as easily log to a file storage location like an SD card.
+//
+// At is also at this location (in my more advanced project) that I store Error information to Flash.  This makes is possible
+// to transmit error logging to the cloud after a reboot.
+//
 /* External Semaphores */
 extern SemaphoreHandle_t semSysRouteLock;
 
 /* Logging */
+// Logging by reference potentially allows a better algorithm for accessing large data throught a pointer.
 void System::routeLogByRef(LOG_TYPE _type, std::string *_msg)
 {
     if (xSemaphoreTake(semSysRouteLock, portMAX_DELAY)) // We use this lock to prevent sys_evt and wifi_run tasks from having conflicts
