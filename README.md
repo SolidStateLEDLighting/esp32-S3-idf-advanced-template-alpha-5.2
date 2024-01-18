@@ -11,9 +11,9 @@ If run on a single core processor, some of the features might not be necessary, 
 1) Clone the project and open in VS Code.  
 2) Run the ESP-IDF SDK Configure Editor (menuconfig)  
 
-    >A. Select the correct GPIO pin under **WS2812 RGB LED**
-    >B. Apply the correct SSID and Password for your Wifi connection under **Wifi STA Manual Setting**
-    >C. Set your time zone under **Simple Network Time Protocol Settings**  (there is a link in the sourc code to help find your correct time zone.)
+    >A. Select the correct GPIO pin under **WS2812 RGB LED**  
+    >B. Apply the correct SSID and Password for your Wifi connection under **Wifi STA Manual Setting**  
+    >C. Set your time zone under **Simple Network Time Protocol Settings**  (there is a link in the sourc code to help find your correct time zone.)  
 
 3) Set your COM port and flash method (UART) and you should be ready to go.  
 4) Compile, Flash, and Monitor.  
