@@ -1,8 +1,25 @@
-This is a sample boiler plate project for dual core Esp32 microcontroller running FreeRTOS.  This hardware is equivalent to a DevKit-C running an Esp32s3N16R8, but this project could be adapted to other duel core processors.
+# README
+>
+---
+This is a sample boiler plate project for dual core Esp32 microcontroller running FreeRTOS.  This hardware is equivalent to a DevKit-M or C running an Esp32s3N16R8, but this project could be ported to other duel and single core Esp32 processors.
 
-If run on a single core processor, some of the included features might not be necessary (like varable locking between two tasks), but operation should still appear normal.
+If run on a single core processor, some of the features might not be necessary, but operation should still appear normal.
 
 * Downloading, compiling, and running the application are all standard common processes and needs no special instruction.  This project only uses the ESP-IDF and is compiled on version 5.2.
+* 
+# Quick Start
+>
+---
+1) Close the project.
+2) Run the ESP-IDF SDK Configure Editor (menuconfig)
+> Select the correct GPIO pin under **WS2812 RGB LED**
+> Apply the correct SSID and Password for your Wifi connection under **Wifi STA Manual Setting**
+
+
+
+
+
+
 
 * For specific information about components, please exampine doc directories in each respective component area.  
 
