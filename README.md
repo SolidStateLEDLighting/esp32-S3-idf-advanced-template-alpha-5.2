@@ -17,7 +17,7 @@ If run on a single core processor, some of the features might not be necessary, 
         (there is a link in the source code to help find your correct time zone.)  
 
 3) Set your COM port and flash method (UART) and you should be ready to go.  
-4) Compile, Flash, and Monitor.  
+4) Compile, Flash, and Monitor.  Apply input through GPIO0 push button switch.  
 
 # Block Diagram
 ---
