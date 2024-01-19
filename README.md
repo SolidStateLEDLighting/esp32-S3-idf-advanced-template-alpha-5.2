@@ -4,7 +4,16 @@ This is a boiler plate project for a dual core Esp32 microcontroller running Fre
 
 The intent of this example project is to prepare a suitable development code base for large scale advanced project development. In pursuit of that goal, this project will evolve to include many other features which are not included here at this time. When this Alpha project can not expanded further, we will release Beta, and Gamma projects that will allow for more expansion
 
-* Downloading, compiling, and running the application are all standard common processes and needs no special instruction.  This project only uses the ESP-IDF and is compiled on version 5.2.  
+* Downloading, compiling, and running the application are all standard common processes and needs no special instruction.  This project calls on the ESP-IDF version 5.2.
+* This project has been built in VS Code with the following plugs ins:
+  * Espressif IDF
+  * C/C++ Microsoft
+  * C/C++ Extension Pack
+  * C/C++ Themes
+  * CMake (twxs)
+  * CMake Tools
+  * Git Graph (optional extra)
+  
 # Quick Start
 ---
 1) Clone the project and open the root directory in VS Code.  
