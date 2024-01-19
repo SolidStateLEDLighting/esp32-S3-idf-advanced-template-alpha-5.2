@@ -30,10 +30,10 @@ The intent of this example project is to prepare a suitable development code bas
 
 
 # Telling the Story
-Software documentation doesn't exactly lend itself well to telling a chronological story.  Instead we will use software engineering concepts to present viewpoints which we think will deliver not only what is in the software, but also why the software is developed the way that it is.   We will present the topics to you with Abstractions, Block Diagrams, Flowcharts, Sequence Diagrams, and State Transition Diagrams.  With all the different perspectives, you should be able to key in on the ideas in the way that registers with you best.
+Software documentation doesn't exactly lend itself well to telling a chronological story.  Instead we will use software engineering concepts to present viewpoints which we think will deliver not only how the software functions, but also why the software is developed the way that it is.   We will present the topics to you with **Abstractions**, **Block Diagrams**, **Flowcharts**, **Sequence Diagrams**, and **State Transition Diagrams**.  With all these different perspectives, you should be able to key in on the understanding in the way that registers with you best.
 
 ## Abstractions  
-On a project level, the primary abstraction is the operation of the entire system.  At present, the project doesn't interact much with the surrounding world, so it's abstraction value is limited.  [project abstraction](./docs/project_abstractions.md)
+On a project level, the primary abstraction is the operation of the entire system.  At present, the project doesn't interact much with the surrounding world, so it's abstraction is of limited value.  [project abstraction](./docs/project_abstractions.md)
 
 ## Block Diagram
 ---
@@ -43,20 +43,20 @@ You are looking at an over-view of the classes, translation units and the FreeRT
 
 Features which are included, explained, or demonstrated are:
 1. C++ Construction (excluding inheritance and polymorphism).
-2. Component Construction with CMake build processes.
+2. Component Construction with CMake build directives.
 3. State Transition Program Flow.
 4. Semaphores, Task Notification, and Queues (freeRTOS).
 5. Basic Wifi Connectivity.
 6. Simple Network Time Protocol integration.
 7. WS2812 Addressable Indication RGB LED (employs the remote control transceiver (RMT) driver).
 
-For more detailed information about the system blocks at a project level, follow this link: [project blocks](./docs/project_blocks.md)
+For more detailed information about the system (translation units, objects, and tasks), follow this link: [project blocks](./docs/project_blocks.md)
 
 ## Flowcharts  
-At a project level, there is not much to show in a flowchart except for app_main().  Our flowchart page will also provide link to allow you to drill down to other areas.  [flowcharts](./docs/project_flowcharts.md)
+At a project level, there is not much to show in a flowchart except for app_main().  Our flowchart page will also provide links to allow you to drill down to other areas.  [flowcharts](./docs/project_flowcharts.md)
 
 ## Sequence Diagrams  
-There are a few key sequences which are worth examining on a global level.  The one that is most interesting is how a object with a task is constructed and spun up.    [sequence diagrams](./docs/project_sequences.md)
+There are a few key sequences which are worth examining on a global level.  The one that is most interesting is how an supporting object with a task is constructed and spun up.    [sequence diagrams](./docs/project_sequences.md)
 
 ## State Transition Program Flow
 One of the basic premises of development in a cooperative multi-tasking system is that the processes (tasks) must yield back to the operating system's scheduler on a regular basis frequently enough to supply enough processor time to service all tasks.   If any task doesn't yield, the system will starve of CPU time and the watchdog timer will expire causing a core panic followed by (in most cases) a reboot.  If you have worked for any length of time with Esp32 and FreeRTOS, you have seen the watchdog timer many time (as well as stack over-flows).
