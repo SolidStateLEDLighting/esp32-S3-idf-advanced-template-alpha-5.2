@@ -4,8 +4,7 @@ This is a sample boiler plate project for a dual core Esp32 microcontroller runn
 
 If run on a single core processor, some of the features might not be necessary, but operation should still appear normal.
 
-* Downloading, compiling, and running the application are all standard common processes and needs no special instruction.  This project only uses the ESP-IDF and is compiled on version 5.2.
-* 
+* Downloading, compiling, and running the application are all standard common processes and needs no special instruction.  This project only uses the ESP-IDF and is compiled on version 5.2.  
 # Quick Start
 ---
 1) Clone the project and open in VS Code.  
@@ -22,7 +21,7 @@ If run on a single core processor, some of the features might not be necessary, 
 # Block Diagram
 ---
 You're looking at an over-view of the classes, translation units and the FreeRTOS tasks (threads) for the entire project.  
-![system_block](./docs/images/project-block.svg)  
+![project_block](./docs/drawings/project_block.svg)  
 The intent of this sample project is to prepare a suitable development code base for large scale advanced project development.  In pursuit of that goal, this project will evolve to include many other features which are not included here at this time.
 
 Features which are included, explained, or demonstrated are:
