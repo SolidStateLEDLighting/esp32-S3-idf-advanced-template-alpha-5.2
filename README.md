@@ -22,7 +22,7 @@ If run on a single core processor, some of the features might not be necessary, 
 # Block Diagram
 ---
 You're looking at an over-view of the classes, translation units and the FreeRTOS task (thread) distribution for the entire project.  
-![system_block](./docs/images/project_block.png)  
+![system_block](./docs/images/project_block.svg)  
 The intent of this sample project is to prepare a suitable development code base for large scale advanced project development.  In pursuit of that goal, this project will evolve to include many other features which are not included here at this time.
 
 Features which are included, explained, or demonstrated are:
