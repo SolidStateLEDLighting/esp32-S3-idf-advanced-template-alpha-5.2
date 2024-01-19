@@ -2,7 +2,7 @@
 ---
 This is a boiler plate project for a dual core Esp32 microcontroller running FreeRTOS.  The hardware is equivalent to a DevKit-M or C running an Esp32S3N16R8, but this project should be portable to other duel and single core Esp32 processors without any changes.
 
-If run on a single core processor, some of the contained features might not be necessary, but operation should still appear normal.
+The intent of this example project is to prepare a suitable development code base for large scale advanced project development. In pursuit of that goal, this project will evolve to include many other features which are not included here at this time. When this Alpha project can not expanded further, we will release Beta, and Gamma projects that will allow for more expansion
 
 * Downloading, compiling, and running the application are all standard common processes and needs no special instruction.  This project only uses the ESP-IDF and is compiled on version 5.2.  
 # Quick Start
@@ -26,8 +26,8 @@ On a project level, the primary abstraction is the operation of the entire syste
 ## Block Diagram
 ---
 You are looking at an over-view of the classes, translation units and the FreeRTOS tasks (threads) for the entire project.  
+
 ![project_block](./docs/drawings/project_block.svg)  
-The intent of this example project is to prepare a suitable development code base for large scale advanced project development.  In pursuit of that goal, this project will evolve to include many other features which are not included here at this time.  When this Alpha project can not expanded further, we will release Beta, and Gamma projects that will allow for more expansion.
 
 Features which are included, explained, or demonstrated are:
 1. C++ Construction (excluding inheritance and polymorphism).
