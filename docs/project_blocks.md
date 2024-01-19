@@ -1,5 +1,5 @@
 # Project Blocks
-Here again is our project block diagram.  We are also see in this diagram some detail on what would be considered the system object.
+Here again is our project block diagram.  Below, we will provide some descriptions and links to drill-down into the components of interest.
 
 ![system_block](./drawings/project_block.svg)
 
@@ -7,25 +7,28 @@ Here again is our project block diagram.  We are also see in this diagram some d
 The main is just the app entry point and doesn't do much for the application.  Shortly after starting the system by calling the system's constructor, the main exits and it's task memory is reclaimed.  Main does nothing else at this time.
 
 ### System:
-The System is a singleton object and remains resident and active for the entire lifetime of the application.  The System will only be destroyed and restarted upon a hardware reboot.
+The System is a singleton object and remains resident and active for the entire lifetime of the application.  The System will only be destroyed and restarted upon a hardware reboot.  From a practical perspective, the System owns all the other objects and controls their life cycles and activity states.
 
-From a practical perspective, the System owns all the other objects and controls their life cycles and activity states.
-
-The System contains 3 core services:
+**The System contains 3 task driven core services:**
 * **GPIO**
 This service runs a task that manages GPIO and responds to GPIO interrupts.  Any number of pins and pin interupts can be handled or monitored here.  It is worth mentioning that many peripherals will initialize their own pins and handle their own interrupts without the need for this service.
 
 * **Run**
-The Run service is a task based service that would be considered the "super loop" for the entire system.  Run spins up all the objects, handles centeralized Task Notification, Commands, and can make decisions on operation based on various input.  Run is also the service that would take the entire system into and out of sleep states (currently not implemented).
+The **syste_run** service sends and received all our RTOS bases inter-task communication.  This task based service is loosely considered the "super loop" for the entire system.  **system_run** spins up all the objects, handles centeralized Task Notification, Command Queue, and can make system wide decisions on operation based on various input.  **system_run** is also the service that would take the entire system into and out of sleep states (currently not implemented).
 
 * **Timer**
-The system supplies a timer service that offers a highly accurate way to trigger actions on a period basis.  Action can be taken in seconds, minutes, hours even possibly days and months provided that the timer loop continue to run for the designated period.  The majority of work is done on fairly short time lengths (less than 1 minute).
+The **system_timer** supplies a timer service that offers a highly accurate way to trigger actions on a periodic basis.  Action can be taken in seconds, minutes, hours even possibly days and months provided that the timer loop continue to run for the designated period.  The majority of work is done on fairly short time lengths (less than 1 minute).
 
-Currently the timer handles:
+Currently the **system_timer** handles:
 - Switch debouncing
 - One second LED heartbeat indication (if enabled in code)
 - NVS storage action delay (saves varibles after a prescribed number of seconds)
 - Runs periodic diagnostics
+
+## Components:
+
+### Wifi:
+The Wifi component handles all the communication to the TCP/IP stack.  It may also optionally make calls to SNTP, and handle Wifi Provisioning (not included in this base project)
 
 ### Indication:
 The Indication component controls an exteral LED indicator for feedback to the user.  Any object inside the system may supply a Task Notification to the Indication object to trigger a 1 or 2 number flashing code in variety colors.  The brightness of the ws2812 LED color channels can also be set (and remembered in nvs).   As a final option, single colors can be permanently turned on or off.  The benefit of this component is that complete control of the RBG LED can be taken through some simple commands. 
@@ -34,11 +37,11 @@ NOTE: At start-up, this object outputs the firmware version number in RGB color.
 
 This version of the indication object is programmed to operate a 1 wire output using the RMT (remote control transceiver) driver to control an WS2812 LED.
 
-### Wifi:
-The Wifi component handles all the communication to the TCP/IP stack.  It may also optionally make calls to SNTP, and handle Wifi Provisioning (not included in this base project)
+### NVS
+The non-volatile storage component is a middle abstraction object for accessing the ESP's non-volatile flash storage.  It is an extension object which by itself has no running task.  A calling object first takes a semaphone to gain access to nvs, and then calls on its function for nvs work.   This object is a singleton (like the System) and it never shut down under normal circumstances (this could change once the project impliments deep sleep functions).
 
 ## Tasks
-Behind the scenes, the IDF starts a number of tasks which are important to be aware of.   A complete task list can be generated a run time with the printRunTimeStats() function which is located in system_diagnostics.   (printRunTimeStats() is a special function and you'll need to be aware of its limited use.)
+Behind the scenes, the IDF starts a number of tasks which are important to be aware of.   A complete task list can be generated at run time with the printRunTimeStats() function which is located in system_diagnostics.   (printRunTimeStats() is a special function and you'll need to be aware of it is to be used on a limited basis only.)
 
 ### IDLE Tasks:
 IDLE tasks are freeRTOS processes which run when a CPU cores are in the idle state.   Each IDLE task (IDLE0 and IDLE1) is pinned to their respective cores.  Priority for IDLE tasks are always 0 (lowest priority).

@@ -6,13 +6,13 @@ The intent of this example project is to prepare a suitable development code bas
 
 * Downloading, compiling, and running the application are all standard common processes and needs no special instruction.  This project calls on the ESP-IDF version 5.2.
 * This project has been built in VS Code with the following plugs ins:
-  * Espressif IDF (running **Configure ESP-IDF Extension** will do most of the heavy lifting for you.)
   * C/C++ Microsoft
   * C/C++ Extension Pack
-  * C/C++ Themes
   * CMake (twxs)
   * CMake Tools
-  * Git Graph (optional extra)
+  * Espressif IDF (running **Configure ESP-IDF Extension** will do most of the heavy lifting for you.)
+  * Git Graph (optional extras)
+  * C/C++ Themes
   
 # Quick Start
 ---
