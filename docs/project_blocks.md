@@ -1,7 +1,7 @@
 # Project Blocks
 Here again is our project block diagram.  We are also see in this diagram some detail on what would be considered the system object.
 
-![system_block](./images/project-block.svg)
+![system_block](./drawings/project_block.svg)
 
 ### Main:
 The main is just the app entry point and doesn't do much for the application.  Shortly after starting the system, the main exits and it's task memory is reclaimed.  Main does nothing else at this time.
