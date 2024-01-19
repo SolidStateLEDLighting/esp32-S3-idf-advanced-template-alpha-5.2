@@ -2,26 +2,26 @@
 Here again is our project block diagram.  Below, we will provide some descriptions and links to drill-down into the components of interest.
 ![system_block](./drawings/project_block.svg)
 ### Main:
-The main is just the app entry point and doesn't do much for the application.  Shortly after starting the system by calling the system's constructor, the main exits and it's task memory is reclaimed.  Main does nothing else at this time.
+The main is just the app entry point and doesn't do much for the application as a whole.  Shortly after starting the system by calling the system's constructor, the main exits and it's task memory is reclaimed.  Main does nothing else at this time.   All the task memeory for main is reclaimed once that task ends (which is a benefit for exiting from app_main()).
 
 ### System:
-The System is a singleton object and remains resident and active for the entire lifetime of the application.  The System will only be destroyed and restarted upon a hardware reboot.  From a practical perspective, the System owns all the other objects and controls their life cycles and activity states.
+The System is a singleton object and remains resident and active for the entire lifetime of the application.  The System will only be destroyed and restarted upon a hardware reboot.  From a practical perspective, the System owns all the other objects and controls their life cycles.
 
 **The System contains 3 task driven core services:**
 * **GPIO**
-This service runs a task that manages GPIO and responds to GPIO interrupts.  Any number of pins and pin interupts can be handled or monitored here.  It is worth mentioning that many peripherals will initialize their own pins and handle their own interrupts without the need for this service.
+The **system_gpio** service runs a task that initializes and manages GPIO and responds to GPIO interrupts.  Any number of pins and pin interupts can be handled or monitored here.  It is worth mentioning that many peripherals will initialize their own pins and handle their own interrupts without the need for this service.  Some attention and thought should be given to initializing unused pins so they are effectly neutral during operation and possible sleep states. 
 
 * **Run**
-The **syste_run** service sends and received all our RTOS bases inter-task communication.  This task based service is loosely considered the "super loop" for the entire system.  **system_run** spins up all the objects, handles centeralized Task Notification, Command Queue, and can make system wide decisions on operation based on various input.  **system_run** is also the service that would take the entire system into and out of sleep states (currently not implemented).
+The **system_run** service sends and received all our RTOS bases inter-task communication.  This task based service is loosely considered the "super loop" for the entire system.  **system_run** spins up all the objects, handles centeralized Task Notification, Command Queue, and can make system wide decisions on operation based on various input.  **system_run** is also the service that would take the entire system into and out of sleep states (currently not implemented).
 
 * **Timer**
 The **system_timer** supplies a timer service that offers a highly accurate way to trigger actions on a periodic basis.  Action can be taken in seconds, minutes, hours even possibly days and months provided that the timer loop continue to run for the designated period.  The majority of work is done on fairly short time lengths (less than 1 minute).
 
-Currently the **system_timer** handles:
-- Switch debouncing
-- One second LED heartbeat indication (if enabled in code)
-- NVS storage action delay (saves varibles after a prescribed number of seconds)
-- Runs periodic diagnostics
+    Currently the **system_timer** handles:
+    - Switch debouncing
+    - One second LED heartbeat indication (if enabled in code)
+    - NVS storage action delay (saves varibles after a prescribed number of seconds)
+    - Runs periodic diagnostics
 
 ## Components:
 
