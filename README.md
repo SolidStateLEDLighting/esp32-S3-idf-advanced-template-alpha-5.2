@@ -22,12 +22,15 @@ The intent of this example project is to prepare a suitable development code bas
     >A. Select the correct GPIO output pin under **WS2812 RGB LED**  
     >B. Apply the correct SSID and Password for your Wifi connection under **Wifi STA Manual Settings**  
     >C. Set your time zone under **Simple Network Time Protocol Settings**  
-        (there is a link in the source code to help find your correct time zone on the web.)  
+            (there is a link in the source code to help find your correct time zone on the web.)  
 
 3) Set your COM port and flash method (UART) and you should be ready to go.  
 4) Compile, Flash, and Monitor.  Apply input through GPIO0 push button switch as needed.
 5) NOTE: Test software can be swapped into system_gpio_cpp source file so that the switch (GPIO0) and make various command calls.  
 
+
+# Telling the Story
+Software documentation doesn't exactly lend itself well to telling a chronological story.  Instead we will use software engineering concepts to present viewpoints which we think will deliver not only what is in the software, but also why the software is developed the way that it is.   We will present the topics to you with Abstractions, Block Diagrams, Flowcharts, Sequence Diagrams, and State Transition Diagrams.  With all the different perspectives, you should be able to key in on the ideas in the way that registers with you best.
 
 ## Abstractions  
 On a project level, the primary abstraction is the operation of the entire system.  At present, the project doesn't interact much with the surrounding world, so it's abstraction value is limited.  [project abstraction](./docs/project_abstractions.md)
