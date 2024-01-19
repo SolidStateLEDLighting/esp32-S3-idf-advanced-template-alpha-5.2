@@ -19,7 +19,7 @@ The **system_timer** supplies a timer service that offers a highly accurate way 
 
     Currently the **system_timer** handles:
     - Switch debouncing
-    - One second LED heartbeat indication (if enabled in code)
+    - LED heartbeat indication (if enabled in code)
     - NVS storage action delay (saves varibles after a prescribed number of seconds)
     - Runs periodic diagnostics
 
