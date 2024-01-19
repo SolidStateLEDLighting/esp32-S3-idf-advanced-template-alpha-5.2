@@ -1,8 +1,6 @@
 # Project Blocks
 Here again is our project block diagram.  Below, we will provide some descriptions and links to drill-down into the components of interest.
-
 ![system_block](./drawings/project_block.svg)
-
 ### Main:
 The main is just the app entry point and doesn't do much for the application.  Shortly after starting the system by calling the system's constructor, the main exits and it's task memory is reclaimed.  Main does nothing else at this time.
 
