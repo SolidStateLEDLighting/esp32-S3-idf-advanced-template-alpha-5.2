@@ -1,10 +1,10 @@
-# Sample Project Alpha 5.2
+# Project Alpha 5.2
 ---
-This is a boiler plate project for a dual core Esp32 microcontroller running FreeRTOS.  The hardware is equivalent to a DevKit-M or C running an Esp32S3N16R8, but this project should be portable to other duel and single core Esp32 processors without any changes.
+This is a starter project for a dual core Esp32 microcontroller running FreeRTOS.  The hardware is equivalent to a DevKit-M or C running an Esp32S3 N16R8, but this project should be portable to other duel and single core Esp32 processors without any changes.
 
-The intent of this example project is to prepare a suitable development code base for large scale advanced project development. In pursuit of that goal, this project will evolve to include many other features which are not included here at this time. When this Alpha project can not expanded further, we will release Beta, and Gamma projects that will allow for more expansion
+The intent of this example project is to prepare a suitable development code base for high-performance, commercial, large scale advanced project development. In pursuit of that goal, this project will evolve to include many other features which are not included here at this time. When this Alpha project can not expanded further, we will create a Beta, and Gamma projects that will allow for more expansion.
 
-* Downloading, compiling, and running the application are all standard common processes and needs no special instruction.  This project calls on the ESP-IDF version 5.2.
+* Downloading, compiling, and running the application are all standard common processes and needs no special instruction.  This project calls for the ESP-IDF version 5.2.
 * This project has been built in VS Code with the following plugs ins:
   * C/C++ Microsoft
   * C/C++ Extension Pack
@@ -26,8 +26,7 @@ The intent of this example project is to prepare a suitable development code bas
 
 3) Set your COM port and flash method (UART) and you should be ready to go.  
 4) Compile, Flash, and Monitor.  Apply input through GPIO0 push button switch as needed.
-5) NOTE: Test software can be swapped into system_gpio_cpp source file so that the switch (GPIO0) and make various command calls.  
-
+5) NOTE: Test software can be swapped into system_gpio.cpp source file so that the switch (GPIO0) can make various command calls.  
 
 # Telling the Story
 Software documentation doesn't exactly lend itself well to telling a chronological story.  Instead we will use software engineering concepts to present viewpoints which we think will deliver not only how the software functions, but also why the software is developed the way that it is.   We will present the topics to you with **Abstractions**, **Block Diagrams**, **Flowcharts**, **Sequence Diagrams**, and **State Transition Diagrams**.  With all these different perspectives, you should be able to key in on the understanding in the way that registers with you best.
