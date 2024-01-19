@@ -1,6 +1,6 @@
 # README
 ---
-This is a sample boiler plate project for a dual core Esp32 microcontroller running FreeRTOS.  This hardware is equivalent to a DevKit-M or C running an Esp32s3N16R8, but this project could be ported to other duel and single core Esp32 processors.
+This is a sample boiler plate project for a dual core Esp32 microcontroller running FreeRTOS.  This hardware is equivalent to a DevKit-M or C running an Esp32s3N16R8, but this project shoulb be portable to other duel and single core Esp32 processors without any changes.
 
 If run on a single core processor, some of the features might not be necessary, but operation should still appear normal.
 
@@ -14,28 +14,27 @@ If run on a single core processor, some of the features might not be necessary, 
     >A. Select the correct GPIO pin under **WS2812 RGB LED**  
     >B. Apply the correct SSID and Password for your Wifi connection under **Wifi STA Manual Settings**  
     >C. Set your time zone under **Simple Network Time Protocol Settings**  
-        (there is a link in the source code to help find your correct time zone.)  
+        (there is a link in the source code to help find your correct time zone on the web.)  
 
 3) Set your COM port and flash method (UART) and you should be ready to go.  
 4) Compile, Flash, and Monitor.  Apply input through GPIO0 push button switch.  
 
 # Block Diagram
 ---
-You're looking at an over-view of the classes, translation units and the FreeRTOS task (thread) distribution for the entire project.  
+You're looking at an over-view of the classes, translation units and the FreeRTOS tasks (threads) for the entire project.  
 ![system_block](./docs/images/project-block.svg)  
 The intent of this sample project is to prepare a suitable development code base for large scale advanced project development.  In pursuit of that goal, this project will evolve to include many other features which are not included here at this time.
 
 Features which are included, explained, or demonstrated are:
 1. C++ Construction
 2. Component Construction
-3. Task Coordination
-4. State Transition Program Flow.
-5. Task Notification (freeRTOS)
-6. Queues (which send commands and data)
-7. Semaphore Locking (code entry and variables)
-8. Basic Wifi Connectivity
-9. Simple Network Time Protocol
-10. WS2812 Addressable Indication RGB LED (employs the remote control transceiver (RMT) driver)
+3. State Transition Program Flow.
+4. Task Notification (freeRTOS)
+5. Queues (which send commands and data)
+6. Semaphore Locking (code entry and variables)
+7. Basic Wifi Connectivity
+8. Simple Network Time Protocol
+9. WS2812 Addressable Indication RGB LED (employs the remote control transceiver (RMT) driver)
 
 For more information about the system blocks at a project level, follow this link:
 
