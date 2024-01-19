@@ -1,4 +1,4 @@
-# README
+# Sample Project Alpha 5.2
 ---
 This is a boiler plate project for a dual core Esp32 microcontroller running FreeRTOS.  The hardware is equivalent to a DevKit-M or C running an Esp32S3N16R8, but this project should be portable to other duel and single core Esp32 processors without any changes.
 
@@ -23,7 +23,7 @@ If run on a single core processor, some of the contained features might not be n
 ## Abstractions  
 On a project level, the primary abstraction is the operation of the entire system.  At present, the project doesn't interact much with the surrounding world, so it's abstraction value is limited.  [project abstraction](./docs/project_abstractions.md)
 
-# Block Diagram
+## Block Diagram
 ---
 You are looking at an over-view of the classes, translation units and the FreeRTOS tasks (threads) for the entire project.  
 ![project_block](./docs/drawings/project_block.svg)  
@@ -55,5 +55,4 @@ State transition modeling provides a well understood mechanism that upon input a
 
 On the down side, state modelling can't be seen in a single page of source code.  State modelling isn't a linear list of things to do (as is seen in most of Espressif's small code examples).  State modelling resembles a series of inter-related repeating loops.  With time and experience, state modelling becomes easier to see and understand, but one way to more quickly some up to speed with it is to view state modelling diagrams and consider how it is a road map to the source code.  As a rule, if you can easily diagram your intended state transition process, then it is likely to be expressable in code.   Additionally, explanaing why you are doing something is typically very important so, always include good documentation about your design intent.
 
-View this page for our state models at a project level.  [state models](./docs/project_state_models.md)  
-\<end of document>
+View this page for our state models at a project level.  [state models](./docs/project_state_models.md)
