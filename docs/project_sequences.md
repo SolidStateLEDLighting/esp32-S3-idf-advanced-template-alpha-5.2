@@ -33,10 +33,7 @@ The entry point calls sys->getInstance and this task (main task) run through the
 * Step 7: The System, now knowing that the create object is fully initialized, calls back to several "task unsafe" member functions to gather key RTOS handles.  These calls, though unsafe are typically not dangerous either as the variables are written once at the created object and read once by the System object.  The chance for unsafe read/write collisions at start up are impossible at present because the created object never reads or writes those particular variable RTOS handles again after the first time in the contructor.
 
 * Step 8: The System releases the object locking semaphore.  It is important to understand that most object locking semaphores are never used again after intialization of the object.  The notiable exception to this are objects without RTOS access features (Task Notification or Queues).  Without RTOS entry, the only want to abritrate entrance to an object is with a locking semaphore (or mutex, or some other construct).
-
-
 ![non_tasking_object_creation](./drawings/project_startup_non_tasking_sequence_diagram.svg)
-
 * Step 1: Calling object is already initialized and running its own task.
 
 * Step 2: Calling object calls the created object's constructer.  These member functions are called:
