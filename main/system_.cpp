@@ -17,15 +17,10 @@ System::System(void)
     createSemaphores();        // Creates any locking semaphores owned by this object.
     restoreVariablesFromNVS(); // Brings back all our persistant data.
 
-    /* GPIO */
-    initGPIOPins(); // Set up all our pin General Purpose Input Output pin definitions
-    initGPIOTask(); // Assigning ISRs to pins and start GPIO Task
-
-    // NOTE: Timer task will be not be started until System initialization is complete.
+    // NOTE: Don't 'take' our own semSysEntry semaphore here, as new objects are calling back to the System for handles throughout initialization.
 
     initSysStep = SYS_INIT::Start; // Allow the object to initialize when the task becoming operational
     sysOP = SYS_OP::Init;
-
     xTaskCreate(runMarshaller, "sys_run", 1024 * runStackSizeK, this, 7, &taskHandleSystemRun);
 }
 
@@ -82,12 +77,12 @@ void System::createSemaphores()
         xSemaphoreGive(semSysUint8Lock);
 }
 
-TaskHandle_t System::get_runTaskHandle(void)
+TaskHandle_t System::getRunTaskHandle(void)
 {
     return taskHandleSystemRun;
 }
 
-QueueHandle_t System::get_CmdRequestQueue(void) // Other subsystems need access to the Cmd Request Queue
+QueueHandle_t System::getCmdRequestQueue(void) // Other subsystems need access to the Cmd Request Queue
 {
     return systemCmdRequestQue;
 }

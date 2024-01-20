@@ -42,8 +42,8 @@ extern "C"
             return &sysInstance;
         }
 
-        TaskHandle_t get_runTaskHandle(void);
-        QueueHandle_t get_CmdRequestQueue(void);
+        TaskHandle_t getRunTaskHandle(void);
+        QueueHandle_t getCmdRequestQueue(void);
 
     private:
         /* System_ */

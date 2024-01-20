@@ -219,12 +219,25 @@ void System::run(void)
                     routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::Create_Default_Event_Loop - Step " + std::to_string((int)SYS_INIT::Create_Default_Event_Loop));
 
                 ESP_GOTO_ON_ERROR(esp_event_loop_create_default(), sys_Create_Default_Event_Loop_err, TAG, "esp_event_loop_create_default() failure.");
-                initSysStep = SYS_INIT::Create_Indication;
+                initSysStep = SYS_INIT::Start_GPIO;
                 break;
 
             sys_Create_Default_Event_Loop_err:
                 errMsg = std::string(__func__) + "(): SYS_INIT::Create_Default_Event_Loop: error: " + esp_err_to_name(ret);
                 initSysStep = SYS_INIT::Error;
+                break;
+            }
+
+            case SYS_INIT::Start_GPIO:
+            {
+                if (show & _showInit)
+                    routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::Start_GPIO - Step " + std::to_string((int)SYS_INIT::Start_GPIO));
+
+                initGPIOPins(); // Set up all our pin General Purpose Input Output pin definitions
+                initGPIOTask(); // Assigning ISRs to pins and start GPIO Task
+
+                // NOTE: Timer task will be not be started until System initialization is complete.
+                initSysStep = SYS_INIT::Create_Indication;
                 break;
             }
 

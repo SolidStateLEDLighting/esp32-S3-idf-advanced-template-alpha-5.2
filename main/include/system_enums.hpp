@@ -69,6 +69,7 @@ enum class SYS_INIT : uint8_t
     Init_Queues_Commands,
     Start_Network_Interface,
     Create_Default_Event_Loop,
+    Start_GPIO,
     Create_Indication,
     Wait_On_Indication,
     Create_Wifi,
