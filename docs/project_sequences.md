@@ -45,3 +45,4 @@ The entry point calls sys->getInstance and this task (main task) run through the
   * createSemaphores() - Creates any locking semaphores owned by this object.
   * restoreVariablesFromNVS() - Brings back all our persistant data for the created object.
 
+There are no other project level sequences that would be of global interest.
