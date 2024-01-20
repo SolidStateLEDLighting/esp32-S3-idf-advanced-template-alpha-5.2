@@ -1,4 +1,5 @@
 # Project State Transition Diagrams
-At the top level, we might consider the system going to sleep a state change, but low power modes have not be added to this sample project yet.
+At the top level, we might consider the system going to sleep a state change, but low power modes have not be added to this sample project yet.  
 
-For now, our project level state transition can be summed up as follows:
+Our intended level state transition model can be summed up as follows:
+![project_state_model](./drawings/project_state_model.svg)
