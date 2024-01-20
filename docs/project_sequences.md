@@ -8,9 +8,9 @@ The app_main() starts the System.  Each in turn, the System instantiates the rem
 app_main -> System
 The entry point calls sys->getInstance and this task (main task) run through the entire System contructor.
 
-![system_starup_sequence](./drawings/project_startup_pattern_sequence.svg)
+![system_starup_sequence](./drawings/project_startup_self_tasking_sequence_diagram.svg)
 
-**Throughout the project, this pattern is applied to all independant objects.**  An independant object is one with its own running task.  A task-less object is depicted below.
+**Throughout the project, this pattern is applied to all independant objects.**  An independant object is one with its own running task.  A task-less object is depicted in the next section of this document.
 
 * Step 1: app_main calls getInstance() of the System.  That constructer calls the member functions:
   * setFlags() - Static enabling of logging statements for any area of concern during development.
