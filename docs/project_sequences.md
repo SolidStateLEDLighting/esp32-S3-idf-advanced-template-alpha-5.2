@@ -8,7 +8,7 @@ The app_main() starts the System.  Each in turn, the System instantiates the rem
 app_main -> System
 The entry point calls sys->getInstance and this task (main task) run through the entire System contructor.
 
-![system_starup_sequence](./drawings/project_startup_self_tasking_sequence_diagram.svg)
+![tasking_object_creatation](./drawings/project_startup_self_tasking_sequence_diagram.svg)
 
 **Throughout the project, this pattern is applied to all independant objects.**  An independant object is one with its own running task.  A task-less object is depicted in the next section of this document.
 
@@ -34,3 +34,6 @@ The entry point calls sys->getInstance and this task (main task) run through the
 
 * Step 8: The System releases the object locking semaphore.  It is important to understand that most object locking semaphores are never used again after intialization of the object.  The notiable exception to this are objects without RTOS access features (Task Notification or Queues).  Without RTOS entry, the only want to abritrate entrance to an object is with a locking semaphore (or mutex, or some other construct).
 
+
+
+![non_tasking_object_creation](./drawings/project_startup_non_tasking_sequence_diagram.svg)
