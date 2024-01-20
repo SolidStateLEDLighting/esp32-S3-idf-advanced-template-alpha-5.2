@@ -83,7 +83,6 @@ extern "C"
         void setFlags(void);
         void setLogLevels(void);
         void createSemaphores(void);
-        void setConditionalCompVariables(void);
 
         /* System_Diagnostics */
         void printRunTimeStats(void);

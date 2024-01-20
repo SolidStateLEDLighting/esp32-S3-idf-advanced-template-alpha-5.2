@@ -9,7 +9,13 @@ The entry point calls sys->getInstance and this task (main task) run through the
 ![system_starup_sequence](./drawings/project_startup_pattern_sequence.svg)
 
 
-*Step1 
+* Step 1: app_main calls getInstance() of the System.  That main task (thread) calls the following:
+  * setFlags() - Static enabling of logging statements for any area of concern during development.
+  * setLogLevels() - Manually sets log levels for tasks down the call stack for development.
+  * createSemaphores() - Creates any locking semaphores owned by this object.
+  * restoreVariablesFromNVS() - Brings back all our persistant data.
+
+Throughout the project, this pattern follows all objects.  
 
 
 
