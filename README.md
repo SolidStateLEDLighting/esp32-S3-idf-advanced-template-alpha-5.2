@@ -16,9 +16,9 @@ The intent of this example project is to prepare a suitable development code bas
   
 ## Links to Components    
 [System Readme Document](./main/docs/README.md)  
-[NVS Readme Document](../components/nvs_5.2/README.md)  
-[Wifi/SNTP Readme Document](../components/wifi_5.2/README.md)  
-[Indication Readme Document](../components/indication_ws2812_5.2/README.md)  
+[NVS Readme Document](./components/nvs_5.2/README.md)  
+[Wifi/SNTP Readme Document](./components/wifi_5.2/README.md)  
+[Indication Readme Document](./components/indication_ws2812_5.2/README.md)  
 
 
 # Quick Start
