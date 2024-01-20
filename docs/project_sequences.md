@@ -29,10 +29,8 @@ The entry point calls sys->getInstance and this task (main task) run through the
 
 * Step 6: Created object begins to operating inside its normal Run loop.
 
-* Step 7: The System, now knowing that the create object is fully initialized, calls back to several "task unsafe" member functions to gather key RTOS handles.  These calls, though unsafe are typically not dangerous either as the variables are written once at the created object and read once by the System object.  The chance for unsafe read/write collisions at start up are impossible at present.
+    **Warning is here**  
+* Step 7: The System, now knowing that the create object is fully initialized, calls back to several "task unsafe" member functions to gather key RTOS handles.  These calls, though unsafe are typically not dangerous either as the variables are written once at the created object and read once by the System object.  The chance for unsafe read/write collisions at start up are impossible at present because the created object never reads or writes those particular variable RTOS handles again after the first time in the contructor.
 
-**Warning:** The final calls to the component object are dangerous with respect to cross Task (thread) safety. The calls are in most cases just retreiving important RTOS varibles that are needed to setup cross Task sharing of data.   For example, we can't send a Task Notification or send to a Queue without handles to those items.
+* Step 8: The System releases the object locking semaphore.  It is important to understand that most object locking semaphores are never used again after intialization of the object.  The notiable exception to this are objects without RTOS access features (Task Notification or Queues).  Without RTOS entry, the only want to abritrate entrance to an object is with a locking semaphore (or mutex, or some other construct).
 
-To mitigate risks, the component initializes those data varibles early before it "gives" its entrySemaphore.   And the calling System object "takes" the component's entrySemaphore before reading those variable handles.   All this typically happens during startup when all system activity is very limited and very predicatble and the result so far have been very trouble free.
-
-This is enough detail for a Project Level description.
