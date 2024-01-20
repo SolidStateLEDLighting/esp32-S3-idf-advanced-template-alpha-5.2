@@ -32,13 +32,13 @@ The intent of this example project is to prepare a suitable development code bas
 Software documentation doesn't exactly lend itself well to telling a chronological story.  Instead we will use software engineering concepts to present viewpoints which we think will deliver not only how the software functions, but also why the software is developed the way that it is.   We will present the topics to you with **Abstractions**, **Block Diagrams**, **Flowcharts**, **Sequence Diagrams**, and **State Transition Diagrams**.  With all these different perspectives, you should be able to key in on the understanding in the way that registers with you best.
 
 ## Abstractions  
-On a project level, the primary abstraction is the operation of the entire system.  At present, the project doesn't interact much with the surrounding world, so its abstraction is of limited value.  [project abstraction](./docs/project_abstractions.md)
+On a project level, the primary abstraction is the operation of the entire system.  At present, the project doesn't interact much with the surrounding world, so its abstraction is of limited value.  [project abstraction document](./docs/project_abstractions.md)
 
 ## Block Diagram
 ---
 You are looking at an overview of the classes, translation units and the FreeRTOS tasks (threads) for the entire project.  
 
-![project_block](./docs/drawings/project_block.svg)  
+![project block diagram](./docs/drawings/project_block.svg)  
 
 Features which are included, explained, or demonstrated are:
 1. C++ Construction (excluding inheritance and polymorphism).
@@ -49,13 +49,13 @@ Features which are included, explained, or demonstrated are:
 6. Simple Network Time Protocol integration.
 7. WS2812 Addressable Indication RGB LED (employs the remote control transceiver (RMT) driver).
 
-For more detailed information about the system (translation units, objects, and tasks), follow this link: [project blocks](./docs/project_blocks.md)
+For more detailed information about the system (translation units, objects, and tasks), follow this link:  [project block document](./docs/project_block document.md)
 
 ## Flowcharts  
-At a project level, there is not much to show in a flowchart except for app_main().  Our flowchart page will also provide links to allow you to drill down to other areas.  [flowcharts](./docs/project_flowcharts.md)
+At a project level, there is not much to show in a flowchart except for app_main().  Our flowchart page will also provide links to allow you to drill down to other areas.  [project flowchart document](./docs/project_flowcharts.md)
 
 ## Sequence Diagrams  
-There are a few key sequences which are worth examining on a global level.  The one that is most interesting is how a supporting object is constructed and how its task is spun up.    [sequence diagrams](./docs/project_sequences.md)
+There are a few key sequences which are worth examining on a global level.  The one that is most interesting is how a supporting object is constructed and how its task is spun up.    [project sequence diagram document](./docs/project_sequences.md)
 
 ## State Transition Program Flow
 One of the basic premises of development in a predominately cooperative multitasking system is that the processes (tasks) must yield back to the operating system's scheduler on a regular basis frequently enough to supply enough processor time to service all tasks.   If any task doesn't yield, the system will starve of CPU time and the watchdog timer will expire causing a core panic followed by a reboot.  If you have worked for any length of time with Esp32 and FreeRTOS, you have seen the watchdog timer many times (as well as stack overflows).
@@ -66,4 +66,4 @@ State transition modeling provides a well understood mechanism that upon input a
 
 On the down side, state modeling can't be seen in a single page of source code.  State modeling isn't a linear list of things to do (as is seen in most of Espressif's small code examples).  State modeling resembles a series of interrelated repeating loops.  With time and experience, state modeling becomes easier to see and understand, and one way to quickly get up to speed with it is to view state modeling diagrams and consider how it is a road map to the source code.  As a rule, if you can easily diagram your intended state transition process, then it is likely to be expressible in code.   Additionally, explaining why you are doing something is typically very important, so always include good documentation about your design intent.
 
-View this page for our state models at a project level.  [state models](./docs/project_state_models.md)
+View this page for our state models at a project level.  [project state model document](./docs/project_state_models.md)
