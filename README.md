@@ -1,4 +1,4 @@
-# Project Alpha 5.2
+# Project Alpha 5.2 V1
 ---
 This is a starter project for a dual core Esp32 microcontroller running FreeRTOS.  The hardware is equivalent to a DevKit-M or C running an Esp32S3 N16R8, but this project should be portable to other dual and single core Esp32 processors without any changes.
 
