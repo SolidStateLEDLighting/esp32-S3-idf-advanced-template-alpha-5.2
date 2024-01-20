@@ -14,6 +14,13 @@ The intent of this example project is to prepare a suitable development code bas
   * Git Graph (optional extras)
   * C/C++ Themes
   
+## Links to Components    
+[System Readme Document](./main/README.md)
+[NVS Readme Document](./components/nvs_5.2/README.md)
+[Wifi/SNTP Readme Document](./components/wifi_5.2/README.md)
+[Indication Readme Document](./components/indication_ws2812_5.2/README.md)
+
+
 # Quick Start
 ---
 1) Clone the project and open the root directory in VS Code.  
@@ -55,7 +62,7 @@ For more detailed information about the system (translation units, objects, and 
 At a project level, there is not much to show in a flowchart except for app_main().  Our flowchart page will also provide links to allow you to drill down to other areas.  [project flowchart document](./docs/project_flowcharts.md)
 
 ## Sequence Diagrams  
-There are a few key sequences which are worth examining on a global level.  The one that is most interesting is how a supporting object is constructed and how its task is spun up.    [project sequence diagram document](./docs/project_sequences.md)
+There are a few key sequences which are worth examining on a global level.  The one that is most interesting is how a supporting object is constructed and how its task is spun up.    [project sequence document](./docs/project_sequences.md)
 
 ## State Transition Program Flow
 One of the basic premises of development in a predominately cooperative multitasking system is that the processes (tasks) must yield back to the operating system's scheduler on a regular basis frequently enough to supply enough processor time to service all tasks.   If any task doesn't yield, the system will starve of CPU time and the watchdog timer will expire causing a core panic followed by a reboot.  If you have worked for any length of time with Esp32 and FreeRTOS, you have seen the watchdog timer many times (as well as stack overflows).
