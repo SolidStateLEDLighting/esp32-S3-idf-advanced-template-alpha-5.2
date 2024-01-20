@@ -1,5 +1,7 @@
 # Project Sequences
-At a project level, this sequence explains the general startup process between the System and all other objects which run their own tasks.  Here, the app_main() starts the System.  In turn the System instantiates the remaining supporting components.
+At a project level, this sequence explains the general startup process between the System and all other objects which run their own tasks.  
+
+The app_main() starts the System.  Each in turn, the System instantiates the remaining supporting components.
 
 **The key thing to observe here is how the System starts another object.**
 
@@ -8,6 +10,7 @@ The entry point calls sys->getInstance and this task (main task) run through the
 
 ![system_starup_sequence](./drawings/project_startup_pattern_sequence.svg)
 
+**Throughout the project, this pattern is applied to all independant objects.**  An independant object is one with its own running task.  A task-less object is depicted below.
 
 * Step 1: app_main calls getInstance() of the System.  That constructer calls the member functions:
   * setFlags() - Static enabling of logging statements for any area of concern during development.
@@ -16,7 +19,9 @@ The entry point calls sys->getInstance and this task (main task) run through the
   * restoreVariablesFromNVS() - Brings back all our persistant data.
   * Starts a run task (if the object is designed to have a task).
 
-Throughout the project, this pattern follows all objects during construction.  
+* Step 2: System calls on a class constructor.  The system's run task runs a set of member functions much like those of the system's constructor.  This pattern stays consistance for the sake of solid programming practice.
+
+* Step 3:
 
 
 
