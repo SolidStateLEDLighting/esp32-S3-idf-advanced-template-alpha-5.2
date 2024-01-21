@@ -145,7 +145,7 @@ void System::printTaskInfo()
     if (ind != nullptr)
         ind->printTaskInfoByColumns();
 
-    name = "Tmr Svc";
+    name = "tmr_svc";
     hd = xTaskGetHandle(name.c_str());
     if (hd != NULL)
     {

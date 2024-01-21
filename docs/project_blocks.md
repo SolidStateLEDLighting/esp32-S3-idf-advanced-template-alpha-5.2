@@ -53,14 +53,14 @@ The default system event loop creates this task to handle events on that loop.  
 ### tiT Task:
 This is the main task for the TCP-IP stack (LwIP).
 
-### Tmr Svc Task:
+### tmr_svc Task:
 This is the primary freeRTOS Daemon Task.
 
 ### esp_timer:
 This task is created in response to any esp timer tasks that you create.  This Task is the one that makes a timer call-back.
 
 ### Other Tasks:
-Other than the list above, most other tasks are created in code.  These will be servicing objects in system created components (in our case, our Wifi, nvs, and Indication objects).
+Other than the list above, most other tasks are created in our project's source code.  These will be objects in components (in our case, our Wifi, nvs, and Indication objects).
 
 ## ESP-IDF:
 This is the primary library that Espressif creates to provide you all the services that you need, but where is Arduino?  Now that you're an expert, or becomming an expert, you won't need an intermedate library like Arduino, MicroPython, MongooseOS or (fill in the blank).  Intermediate libraries can add trouble with software bugs that you just can't solve.  If you can accept the IDF library, then the whole world is your oyster, so it is up to you to master key software concepts and produce the best possible product with Esp32 hardware.  If you can master the IDF, then no one on the planet can make a smaller, faster, better, Esp32 application than you can.
