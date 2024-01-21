@@ -16,8 +16,10 @@ The intent of this example project is to prepare a suitable development code bas
   
 ## Links to Components    
 [System Readme Document](./main/README.md)  
+
+
 [NVS Readme Document](./nvs_5.2/README.md)  
-[Wifi/SNTP Readme Document](./wifi_5.2/README.md)  
+[Wifi/SNTP Readme Document](https://github.com/SolidStateLEDLighting/wifi_5.2/blob/main/README.md)  
 [Indication Readme Document](./indication_ws2812_5.2/README.md)  
 
 
