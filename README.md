@@ -14,14 +14,13 @@ The intent of this example project is to prepare a suitable development code bas
   * Git Graph (optional extras)
   * C/C++ Themes
   
-## Links to Components    
+## System Documents (Main component)
 [System Readme Document](./main/README.md)  
 
-
-[NVS Readme Document](./nvs_5.2/README.md)  
+## Links to Component Documents
+[NVS Readme Document](https://github.com/SolidStateLEDLighting/nvs_5.2/blob/main/README.md)  
 [Wifi/SNTP Readme Document](https://github.com/SolidStateLEDLighting/wifi_5.2/blob/main/README.md)  
-[Indication Readme Document](./indication_ws2812_5.2/README.md)  
-
+[Indication Readme Document](https://github.com/SolidStateLEDLighting/indication_ws2812_5.2/blob/main/README.md)  
 
 # Quick Start
 ---
@@ -38,7 +37,7 @@ The intent of this example project is to prepare a suitable development code bas
 5) NOTE: Test software can be swapped into system_gpio.cpp source file so that the switch (GPIO0) can make various command calls.  
 
 # Telling the Story
-Software documentation doesn't exactly lend itself well to telling a chronological story.  Instead we will use software engineering concepts to present viewpoints which we think will deliver not only how the software functions, but also why the software is developed the way that it is.   We will present the topics to you with **Abstractions**, **Block Diagrams**, **Flowcharts**, **Sequence Diagrams**, and **State Transition Diagrams**.  With all these different perspectives, you should be able to key in on the understanding in the way that registers with you best.
+Software documentation doesn't exactly lend itself well to telling a chronological story.  Instead we will use software engineering concepts to present viewpoints which should deliver not only how the software functions, but also why the software is developed the way that it is.   The topics will be presented through **Abstractions**, **Block Diagrams**, **Flowcharts**, **Sequence Diagrams**, and **State Transition Diagrams**.  With all these different perspectives, you should be able to key in on the understanding in the way that registers with you best.
 
 ## Abstractions  
 On a project level, the primary abstraction is the operation of the entire system.  At present, the project doesn't interact much with the surrounding world, so its abstraction is of limited value.  [project abstraction document](./docs/project_abstractions.md)
