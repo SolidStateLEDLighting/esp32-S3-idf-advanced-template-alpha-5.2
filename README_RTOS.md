@@ -1,4 +1,4 @@
-## Adjuststing Maximum Priorty Value
+## Adjusting Maximum Priorty Value
 
 This project "task tunes" the range of priorities for RTOS.  The default range for task priorities is 0 through 25.  Priority 25 is the highest priority were 0 is the lowest.
 
@@ -8,20 +8,22 @@ On the down-side, after you optimize the full number range downward, there is al
 
 In this project we have 14 tasks.  With the assertion that configMAX_PRIORITIES is set to 7, their prorites are assigned as follow:
 
-ipc0       configMAX_PRIORITIES - 1                   = 6
-ipc1       configMAX_PRIORITIES - 1                   = 6
-wifi       configMAX_PRIORITIES - 2                   = 5
-tit        manually assigned in menuconfig            = 5
-esp_timer  configMAX_PRIORITIES - 3                   = 4
-tmr_svc    manually assigned in menuconfig            = 3
-sys_tmr    manually assigned configMAX_PRIORITIES - 4 = 3
-sys_evt    configMAX_PRIORITIES - 5                   = 2
-sys_run    manually assigned configMAX_PRIORITIES - 5 = 2
-sys_gpio   manually assigned configMAX_PRIORITIES - 5 = 2
-wifi_run   manually assigned configMAX_PRIORITIES - 5 = 2
-ind_run    manually assigned configMAX_PRIORITIES - 6 = 1
-IDLE0      set by freeRTOS                              0
-IDLE1      set by freeRTOS                              0
+
+
+ipc0       |configMAX_PRIORITIES - 1                   = 6
+ipc1       |configMAX_PRIORITIES - 1                   = 6
+wifi       |configMAX_PRIORITIES - 2                   = 5
+tit        |manually assigned in menuconfig            = 5
+esp_timer  |configMAX_PRIORITIES - 3                   = 4
+tmr_svc    |manually assigned in menuconfig            = 3
+sys_tmr    |manually assigned configMAX_PRIORITIES - 4 = 3
+sys_evt    |configMAX_PRIORITIES - 5                   = 2
+sys_run    |manually assigned configMAX_PRIORITIES - 5 = 2
+sys_gpio   |manually assigned configMAX_PRIORITIES - 5 = 2
+wifi_run   |manually assigned configMAX_PRIORITIES - 5 = 2
+ind_run    |manually assigned configMAX_PRIORITIES - 6 = 1
+IDLE0      |set by freeRTOS                              0
+IDLE1      |set by freeRTOS                              0
 
 ### Instructions:
 If you installed the IDF in the default location, then you can find the header file here:
