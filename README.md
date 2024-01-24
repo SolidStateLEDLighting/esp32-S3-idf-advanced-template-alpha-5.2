@@ -57,7 +57,7 @@ Features which are included, explained, or demonstrated are:
 6. Simple Network Time Protocol integration.
 7. WS2812 Addressable Indication RGB LED (employs the remote control transceiver (RMT) driver).
 
-For more detailed information about the system (translation units, objects, and tasks), follow this link:  [project block document](./docs/project_block document.md)
+For more detailed information about the system (translation units, objects, and tasks), follow this link:  [project block document](./docs/project_blocks.md)
 
 ## Flowcharts  
 At a project level, there is not much to show in a flowchart except for app_main().  Our flowchart page will also provide links to allow you to drill down to other areas.  [project flowchart document](./docs/project_flowcharts.md)
