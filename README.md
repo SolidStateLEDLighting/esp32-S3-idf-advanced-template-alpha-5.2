@@ -34,7 +34,7 @@ The intent of this example project is to prepare a suitable development code bas
 
 4) Set your COM port and flash method (UART) and you should be ready to go.  
 5) Compile, Flash, and Monitor.  Apply input through GPIO0 push button switch as needed.
-6) NOTE: Test software can be swapped into system_gpio.cpp source file so that the switch (GPIO0) can make various command calls.  
+6) NOTE: Test software snippets can be swapped into system_gpio.cpp source file so that the switch (GPIO0) can make various command calls.  
 
 # Telling the Story
 Software documentation doesn't exactly lend itself well to telling a chronological story.  Instead we will use software engineering concepts to present viewpoints which should deliver not only how the software functions, but also why the software is developed the way that it is.   The topics will be presented through **Abstractions**, **Block Diagrams**, **Flowcharts**, **Sequence Diagrams**, and **State Transition Diagrams**.  With all these different perspectives, you should be able to key in on the understanding in the way that registers with you best.
@@ -70,13 +70,11 @@ One of the basic premises of development in a predominately cooperative multitas
 
 However, as you may know, freeRTOS by default configures a new project as preemptive mulitasking.   So, why do we see watchdogs timers expiring when we don't cooperativly release back to the scheduler?   This may be confusing to some developers but the explaination is not very complex.
 
+When the operating system has a higher priority task ready, it pre-emptively stops a lower priorty task and starts the higher priorty task.  You see nothing and do nothing for that action to work as expect.
 
+BUT, when the operating system has a low priorty task that needs to run as some point, you can't hog the system.  Any upper priority task must yield as soon as it can lower priority tasks will run.   In this case, you must do somthing to yield.  If you don't yield, the Task Watchdog Timers will complain and abort the program (assuming those WDTs are active).  So, the key idea here is that all software designers, whether its is freeRTOS developers, or IDF developers, or YOU -- all must be thoughtfull enough to release the CPU when it is time to do so.
 
-
-
-
-
-A strong development approach must include a smart, efficient, and easily understood way to complete discrete  work and systematically yield to freeRTOS.  There may be several approaches to solving this problem, but one well known approach is to use state transition modeling.
+So, a strong development approach must include a smart, efficient, and easily understood way to complete discrete work and systematically yield to freeRTOS.  There may be several approaches to solving this problem, but one well known approach is to use state transition modeling.
 
 State transition modeling provides a well understood mechanism that upon input and time, a system moves from one state to another.  Incrementally, the system completes a task, creates output, and reaches a possible stopping point.   It is at these stopping points, that we can yield back to the operating system.  When that task resumes work, it considers new input and has a next task to complete and does what is required before yielding again.  This cycle repeats continuously to achieve the system's objectives.  Most of our programming will follow the state transition programming model.
 

@@ -8,7 +8,7 @@ On the down-side, after you optimize the full number range downward, there is al
 
 In this project we have 14 tasks.  With the assertion that configMAX_PRIORITIES is set to 7, their prorites are assigned as follow:
 
-| Task      | Calculations                               | Value |
+| Task      | Calculation                                | Value |
 | :-------- | :----------------------------------------- | :---: |
 | ipc0      | configMAX_PRIORITIES - 1                   |   6   |
 | ipc1      | configMAX_PRIORITIES - 1                   |   6   |
@@ -27,6 +27,8 @@ In this project we have 14 tasks.  With the assertion that configMAX_PRIORITIES 
 
 ### Instructions:
 If you installed the IDF in the default location, then you can find the header file here:  
-**C:\Users\<user name>\esp\v5.2\esp-idf\components\freertos\config\include\freertos\FreeRTOSConfig.h*
+
+*C:\Users\<user name>\esp\v5.2\esp-idf\components\freertos\config\include\freertos\FreeRTOSConfig.h*
 
 1) Open the FreeRTOSConfig.h file and edit     #define configMAX_PRIORITIES (25)    -- change 25 to the value 7
+2) Save all, full clean project, rebuild.
