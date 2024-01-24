@@ -26,7 +26,7 @@ In this project we have 14 tasks.  With the assertion that configMAX_PRIORITIES 
 | IDLE1     | set by freeRTOS                            |   0   |
 
 ### Instructions:
-If you installed the IDF in the default location, then you can find the header file here:
+If you installed the IDF in the default location, then you can find the header file here:  
 C:\Users\<user name>\esp\v5.2\esp-idf\components\freertos\config\include\freertos\FreeRTOSConfig.h
 
 1) Open the FreeRTOSConfig.h file and edit     #define configMAX_PRIORITIES (25)    -- change 25 to the value 7
