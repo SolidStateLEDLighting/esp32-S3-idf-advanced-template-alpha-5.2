@@ -21,7 +21,7 @@ uint8_t FiveMinutes = 5;
 //
 void System::initGenTimer(void)
 {
-    xTaskCreate(runGenTimerTaskMarshaller, "sys_tmr", 1024 * timerStackSizeK, this, 8, &taskHandleRunSystemTimer);
+    xTaskCreate(runGenTimerTaskMarshaller, "sys_tmr", 1024 * timerStackSizeK, this, TASK_PRIORITY_OFFSET_HIGH, &taskHandleRunSystemTimer);
 
     const esp_timer_create_args_t general_timer_args = {
         &System::genTimerCallback,

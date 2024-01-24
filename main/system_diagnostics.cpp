@@ -96,6 +96,15 @@ void System::printTaskInfo()
         printf("  %-10s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
     }
 
+    name = "tiT"; // tc/pip task
+    hd = xTaskGetHandle(name.c_str());
+    if (hd != NULL)
+    {
+        priority = uxTaskPriorityGet(hd);
+        highWaterMark = uxTaskGetStackHighWaterMark(hd);
+        printf("  %-10s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
+    }
+
     name = "esp_timer";
     hd = xTaskGetHandle(name.c_str());
     if (hd != NULL)
@@ -105,16 +114,7 @@ void System::printTaskInfo()
         printf("  %-10s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
     }
 
-    name = "sys_evt";
-    hd = xTaskGetHandle(name.c_str());
-    if (hd != NULL)
-    {
-        priority = uxTaskPriorityGet(hd);
-        highWaterMark = uxTaskGetStackHighWaterMark(hd);
-        printf("  %-10s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
-    }
-
-    name = "tiT"; // tc/pip task
+    name = "tmr_svc";
     hd = xTaskGetHandle(name.c_str());
     if (hd != NULL)
     {
@@ -128,6 +128,15 @@ void System::printTaskInfo()
     priority = uxTaskPriorityGet(taskHandleRunSystemTimer);
     highWaterMark = uxTaskGetStackHighWaterMark(taskHandleRunSystemTimer);
     printf("  %-10s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
+
+    name = "sys_evt";
+    hd = xTaskGetHandle(name.c_str());
+    if (hd != NULL)
+    {
+        priority = uxTaskPriorityGet(hd);
+        highWaterMark = uxTaskGetStackHighWaterMark(hd);
+        printf("  %-10s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
+    }
 
     name = pcTaskGetName(taskHandleSystemRun);
     priority = uxTaskPriorityGet(taskHandleSystemRun);
@@ -144,15 +153,6 @@ void System::printTaskInfo()
 
     if (ind != nullptr)
         ind->printTaskInfoByColumns();
-
-    name = "tmr_svc";
-    hd = xTaskGetHandle(name.c_str());
-    if (hd != NULL)
-    {
-        priority = uxTaskPriorityGet(hd);
-        highWaterMark = uxTaskGetStackHighWaterMark(hd);
-        printf("  %-10s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
-    }
 
     name = "IDLE0";
     hd = xTaskGetHandle(name.c_str());

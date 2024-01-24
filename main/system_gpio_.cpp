@@ -44,7 +44,7 @@ void IRAM_ATTR GPIOSwitchIsrHandler(void *arg)
     {
         // Important Note:  We are breaking the rules here by accessing variables in 2 different tasks without locking them.
         // In this particular case any errors that would result can not be seen.  We might have a skipped count or a
-        // slightly longer delay.  The error would not matter.
+        // slightly longer delay.  This error would not matter.
         xQueueSendToBackFromISR(xQueueGPIOEvents, &arg, NULL);
         SwitchDebounceCounter = 50; // Reject all input for 5/10 of a second -- counter is running in system_timer
         blnallowSwitchGPIOinput = false;
@@ -77,7 +77,7 @@ void System::initGPIOTask(void)
     SwitchDebounceCounter = 30;
     blnallowSwitchGPIOinput = true;
 
-    xTaskCreate(runGPIOTaskMarshaller, "sys_gpio", 1024 * gpioStackSizeK, this, 7, &runTaskHandleSystemGPIO); // (1) Low number indicates low priority task
+    xTaskCreate(runGPIOTaskMarshaller, "sys_gpio", 1024 * gpioStackSizeK, this, TASK_PRIORITY_OFFSET_MID, &runTaskHandleSystemGPIO); // (1) Low number indicates low priority task
     return;
 
 sys_GPIOIsrHandler_err:

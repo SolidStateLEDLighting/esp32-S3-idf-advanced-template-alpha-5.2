@@ -24,17 +24,17 @@ The intent of this example project is to prepare a suitable development code bas
 
 # Quick Start
 ---
-1) Clone the project and open the root directory in VS Code.  
-2) Run the ESP-IDF SDK Configuration Editor (menuconfig)  
-
+1) Clone the project and open the root directory in VS Code.
+2) Make an adjustment to freeRTOS Maximum priority [README_RTOS Document](./README_RTOS.md) 
+3) Run the ESP-IDF SDK Configuration Editor (menuconfig)  
     >A. Select the correct GPIO output pin under **WS2812 RGB LED**  
     >B. Apply the correct SSID and Password for your Wifi connection under **Wifi STA Manual Settings**  
     >C. Set your time zone under **Simple Network Time Protocol Settings**  
             (there is a link in the source code to help find your correct time zone on the web.)  
 
-3) Set your COM port and flash method (UART) and you should be ready to go.  
-4) Compile, Flash, and Monitor.  Apply input through GPIO0 push button switch as needed.
-5) NOTE: Test software can be swapped into system_gpio.cpp source file so that the switch (GPIO0) can make various command calls.  
+4) Set your COM port and flash method (UART) and you should be ready to go.  
+5) Compile, Flash, and Monitor.  Apply input through GPIO0 push button switch as needed.
+6) NOTE: Test software can be swapped into system_gpio.cpp source file so that the switch (GPIO0) can make various command calls.  
 
 # Telling the Story
 Software documentation doesn't exactly lend itself well to telling a chronological story.  Instead we will use software engineering concepts to present viewpoints which should deliver not only how the software functions, but also why the software is developed the way that it is.   The topics will be presented through **Abstractions**, **Block Diagrams**, **Flowcharts**, **Sequence Diagrams**, and **State Transition Diagrams**.  With all these different perspectives, you should be able to key in on the understanding in the way that registers with you best.
@@ -66,7 +66,15 @@ At a project level, there is not much to show in a flowchart except for app_main
 There are a few key sequences which are worth examining on a global level.  The one that is most interesting is how a supporting object is constructed and how its task is spun up.    [project sequence document](./docs/project_sequences.md)
 
 ## State Transition Program Flow
-One of the basic premises of development in a predominately cooperative multitasking system is that the processes (tasks) must yield back to the operating system's scheduler on a regular basis frequently enough to supply enough processor time to service all tasks.   If any task doesn't yield, the system will starve of CPU time and the watchdog timer will expire causing a core panic followed by a reboot.  If you have worked for any length of time with Esp32 and FreeRTOS, you have seen the watchdog timer many times (as well as stack overflows).
+One of the basic premises of development in a predominately cooperative multitasking system is that the threads (tasks) must yield back to the operating system's scheduler on a regular basis frequently enough to supply enough processor time to service all tasks.  If any task doesn't yield, the system will starve of CPU time and the watchdog timer will expire causing a core panic followed by a reboot.  If you have worked for any length of time with Esp32 and FreeRTOS, you have seen the watchdog timer many times (as well as stack overflows).
+
+However, as you may know, freeRTOS by default configures a new project as preemptive mulitasking.   So, why do we see watchdogs timers expiring when we don't cooperativly release back to the scheduler?   This may be confusing to some developers but the explaination is not very complex.
+
+
+
+
+
+
 
 A strong development approach must include a smart, efficient, and easily understood way to complete discrete  work and systematically yield to freeRTOS.  There may be several approaches to solving this problem, but one well known approach is to use state transition modeling.
 

@@ -6,6 +6,10 @@
 #define APP_VERSION_MINOR 2
 #define APP_VERSION_PATCH 3 // I personally prefer the word "revision" over "patch"
 
+#define TASK_PRIORITY_OFFSET_HIGH configMAX_PRIORITIES - 4
+#define TASK_PRIORITY_OFFSET_MID configMAX_PRIORITIES - 5
+#define TASK_PRIORITY_OFFSET_LOW configMAX_PRIORITIES - 6
+
 #define ESP_INTR_FLAG_DEFAULT 0
 
 /* System Timer contant */
