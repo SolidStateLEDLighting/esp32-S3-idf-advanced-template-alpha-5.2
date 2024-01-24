@@ -8,6 +8,11 @@ On the down-side, after you optimize the full number range downward, there is al
 
 In this project we have 14 tasks.  With the assertion that configMAX_PRIORITIES is set to 7, their prorites are assigned as follow:
 
+| Month    | Savings |
+| -------- | ------- |
+| January  | $250    |
+| February | $80     |
+| March    | $420    |
 
 Task         Calculations
 |:----------|:-----------------------------------------|:--|
