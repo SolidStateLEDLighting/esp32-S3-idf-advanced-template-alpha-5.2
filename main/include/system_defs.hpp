@@ -29,8 +29,8 @@
 #define _showPayload 0x80
 
 /* showSys */
-#define _showTimerSeconds 0x00000001
-#define _showTimerMinutes 0x00000002
+#define _showSysTimerSeconds 0x00000001
+#define _showSysTimerMinutes 0x00000002
 
 /* diagSys */
 #define _diagHeapCheck 0x01

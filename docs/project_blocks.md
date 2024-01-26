@@ -54,7 +54,7 @@ The default system event loop creates this task to handle events on that loop.  
 This is the main task for the TCP-IP stack (LwIP).
 
 ### tmr_svc Task:
-This is the primary freeRTOS Daemon Task.
+This is the primary freeRTOS Daemon Task.  This is the timer service that can be provided by freeRTOS.  Currently, we don't use this feature.
 
 ### esp_timer:
 This task is created in response to any esp timer tasks that you create.  This Task is the one that makes a timer call-back.

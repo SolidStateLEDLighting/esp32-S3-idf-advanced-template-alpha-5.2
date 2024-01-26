@@ -27,7 +27,7 @@ System::System(void)
 void System::setFlags()
 {
     show = 0; // Set show flags
-    // show |= _showInit;
+    show |= _showInit;
     // show |= _showNVS;
     // show |= _showRun;
     // show |= _showEvents;
@@ -37,8 +37,8 @@ void System::setFlags()
     // show |= _showPayload;        //       We have them all listed here for consistancy.
 
     showSys = 0;
-    // showSys |= _showTimerSeconds;
-    // showSys |= _showTimerMinutes;
+    // showSys |= _showSysTimerSeconds;
+    // showSys |= _showSysTimerMinutes;
 
     diagSys = 0;               // We may be running diagnostics from time to time.
     diagSys |= _diagHeapCheck; // This diag test should run during all development work.

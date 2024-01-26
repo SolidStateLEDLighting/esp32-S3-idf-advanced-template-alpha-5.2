@@ -1,6 +1,6 @@
-## Adjusting Maximum Priorty Value
+## Adjusting Maximum Priorty Values
 
-This project "task tunes" the range of priorities for RTOS.  The default range for task priorities is 0 through 25.  Priority 25 is the highest priority were 0 is the lowest.
+This project "task tunes" the range of priorities for RTOS.  The default range for task priorities is 0 through 25.  Priority 25 is the highest priority whereas 0 is the lowest.
 
 The working theory on tuning would be to reduce the full range of priorities down to the very minimum number of priorities in actual use so that compare and branching instructions run in micro-code would result in the bare minumum number of instruction cycles used when the schedular looks for the next task to run.
 

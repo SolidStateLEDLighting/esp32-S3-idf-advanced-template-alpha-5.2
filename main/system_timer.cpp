@@ -136,13 +136,13 @@ void System::runGenTimerTask(void)
 /* Periodic Actions */
 void System::halfSecondActions(void)
 {
-    if (showSys & _showTimerSeconds)
+    if (showSys & _showSysTimerSeconds)
         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Half Second");
 }
 
 void System::oneSecondActions(void)
 {
-    if (showSys & _showTimerSeconds)
+    if (showSys & _showSysTimerSeconds)
         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): One Second");
     //
     // When we are working with multiple variables at the same time, we don't want 'save to NVS' being called too quickly.
@@ -167,7 +167,7 @@ void System::oneSecondActions(void)
 
 void System::fiveSecondActions(void)
 {
-    if (showSys & _showTimerSeconds)
+    if (showSys & _showSysTimerSeconds)
         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Five Seconds");
 
     // int32_t val = 0x41000209; // 5 second heartbeat in blue
@@ -178,7 +178,7 @@ void System::fiveSecondActions(void)
 
 void System::tenSecondActions(void)
 {
-    if (showSys & _showTimerSeconds)
+    if (showSys & _showSysTimerSeconds)
         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Ten Seconds");
 
     lockOrUint8(&diagSys, _diagHeapCheck); // Set the diag bit to run the heap_caps_check_integrity_all(true) test
@@ -186,12 +186,12 @@ void System::tenSecondActions(void)
 
 void System::oneMinuteActions(void)
 {
-    if (showSys & _showTimerMinutes)
+    if (showSys & _showSysTimerMinutes)
         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): One Minute");
 }
 
 void System::fiveMinuteActions(void)
 {
-    if (showSys & _showTimerMinutes)
+    if (showSys & _showSysTimerMinutes)
         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Five Minutes");
 }

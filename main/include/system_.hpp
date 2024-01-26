@@ -123,7 +123,6 @@ extern "C"
         TaskHandle_t taskHandleIndRun = nullptr; // RTOS
         TaskHandle_t taskHandleSNTPRun = nullptr;
         TaskHandle_t taskHandleWIFIRun = nullptr;
-        TaskHandle_t taskHandleMeshRun = nullptr;
 
         static void runMarshaller(void *); // Handles all System activites
         void run(void);                    //
