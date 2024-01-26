@@ -261,7 +261,7 @@ void System::run(void)
 
             case SYS_INIT::Wait_On_Indication:
             {
-                if (xSemaphoreTake(semIndEntry, 100) == pdTRUE)
+                if (xSemaphoreTake(semIndEntry, 100))
                 {
                     taskHandleIndRun = ind->getRunTaskHandle();
                     queHandleIndCmdRequest = ind->getCmdRequestQueue();
@@ -291,7 +291,7 @@ void System::run(void)
 
             case SYS_INIT::Wait_On_Wifi:
             {
-                if (xSemaphoreTake(semWifiEntry, 100) == pdTRUE)
+                if (xSemaphoreTake(semWifiEntry, 100))
                 {
                     taskHandleWIFIRun = wifi->getRunTaskHandle();
                     queHandleWIFICmdRequest = wifi->getCmdRequestQueue();
