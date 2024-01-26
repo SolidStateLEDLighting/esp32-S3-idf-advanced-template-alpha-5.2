@@ -1,6 +1,6 @@
 # SNTP Abstractions
-> Taking note of our planned abstraction levels helps us keep the design intent clear between files and functions.
 ---
+> Taking note of our planned abstraction levels helps us keep the design intent clear between files and functions.
 
 ## System Class: 
 The system class in itself is a top level class in our project.  The intent of the System is to be the foundation of the project.  Master control is held here.

@@ -57,10 +57,9 @@ extern "C"
         Indication *ind = nullptr;
         Wifi *wifi = nullptr;
 
-        uint8_t show = 0;      // Flags
-        uint8_t showSys = 0;   //
-        uint8_t diagSys = 0;   //
-        uint16_t iotDirty = 0; //
+        uint8_t show = 0;    // Flags
+        uint8_t showSys = 0; //
+        uint8_t diagSys = 0; //
 
         uint32_t bootCount = 0;
 

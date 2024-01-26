@@ -1,0 +1,3 @@
+If you are viewing components from Github, you will see these are just links to other repositories.  These components may be used by multiple projects.  The plan is to have each project include the components as a submodule.
+
+If you don't want to pull from these repositories then you can just clone the entire respository into your project directly.  You would also remove ".gitmodules" from your projects root directory.

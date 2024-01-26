@@ -26,8 +26,9 @@ System::System(void)
 
 void System::setFlags()
 {
+    // show variable is system wide defined and this exposes for viewing any general processes.
     show = 0; // Set show flags
-    show |= _showInit;
+    // show |= _showInit;
     // show |= _showNVS;
     // show |= _showRun;
     // show |= _showEvents;
@@ -36,14 +37,13 @@ void System::setFlags()
     // show |= _showProcess;        // NOTE: Not all show flags may be used in this object
     // show |= _showPayload;        //       We have them all listed here for consistancy.
 
+    // showSys exposes system sub-processes.
     showSys = 0;
     // showSys |= _showSysTimerSeconds;
     // showSys |= _showSysTimerMinutes;
 
     diagSys = 0;               // We may be running diagnostics from time to time.
     diagSys |= _diagHeapCheck; // This diag test should run during all development work.
-
-    iotDirty = 0; // The application always starts out assuming all iot values are not dirty
 }
 
 void System::setLogLevels()
