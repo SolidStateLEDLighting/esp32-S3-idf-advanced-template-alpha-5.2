@@ -1,5 +1,5 @@
 # freeRTOS Changes
----
+
 ## Adjusting Maximum Priorty Values
 
 This project "task tunes" the range of priorities for RTOS.  The default range for task priorities is 0 through 25.  Priority 25 is the highest priority whereas 0 is the lowest.
