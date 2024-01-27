@@ -1,7 +1,7 @@
 # Project Sequences
 At a project level, this sequence explains the general startup process between the System and all other objects which run their own tasks.  
 
-## Object Startup Pattern
+## Object Startup Pattern - with New Task
 The app_main() starts the System.  Each in turn, the System instantiates the remaining supporting components.
 
 **The key thing to observe here is how the System starts another object.**
@@ -34,6 +34,8 @@ The entry point calls sys->getInstance and this task (main task) run through the
 * Step 7: The System, now knowing that the create object is fully initialized, calls back to several task **unsafe** member functions to gather key RTOS handles.  These calls, though unsafe are typically not dangerous as the variables are written once at the created object and read once by the System object.  The chance for unsafe read/write collisions at start up are impossible at present because the created object never reads or writes those particular variable RTOS handles again after they are initialized.
 
 * Step 8: The System releases the object locking semaphore.  It is important to note that most object locking semaphores are never used again after intialization of the object because after this point, we will use Task Notifications or Queues to gain task safe access.  Without these RTOS entry mechanisms, the only way to abritrate entrance to an object is with a locking semaphore (or mutex, or some other construct).   In this project the singleton nvs object uses only an object level locking semaphore.  All other objects expose Task Notifictions or Queues.
+
+## Object Startup Pattern - without Task
 ![non_tasking_object_creation](./drawings/project_startup_non_tasking_sequence_diagram.svg)
 * Step 1: Calling object is already initialized and running its own task.
 
