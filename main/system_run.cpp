@@ -77,12 +77,56 @@ void System::run(void)
                     break;
                 }
 
-                case SYS_NOTIFY::WIFI_SHUTDOWN:
+                case SYS_NOTIFY::CMD_DESTROY_WIFI:
                 {
                     if (show & _showRun)
                         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::WIFI_SHUTDOWN");
-                    // System must now call the Wifi's destructor explicitly.
+
+                    if (wifi != nullptr)
+                    {
+                        if (semWifiEntry != nullptr)
+                        {
+                            xSemaphoreTake(semWifiEntry, portMAX_DELAY); // Wait here until we gain the lock.
+
+                            // Send out notifications to any object that uses the wifi and tell them wifi is no longer available.
+
+                            taskHandleWIFIRun = nullptr;       // Clear the wifi task handle
+                            queHandleWIFICmdRequest = nullptr; // Clear the wifi Command Queue handle
+
+                            delete wifi; // Locking the object will be done inside the destructor.
+
+                            if (wifi != nullptr)
+                                wifi = nullptr; // Destructor will not set pointer null.  We must to do that manually.
+
+                            if (show & _showRun)
+                                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): wifi deleted");
+                        }
+                    }
                     break;
+                }
+
+                case SYS_NOTIFY::CMD_DESTROY_INDICATION:
+                {
+                    if (semIndEntry != nullptr)
+                    {
+                        xSemaphoreTake(semIndEntry, portMAX_DELAY); // Wait here until we gain the lock.
+
+                        if (ind != nullptr) // Make sure we already have a indication object
+                        {
+                            // Send out notifications to any object that uses indication -- and tell them indication is no longer available.
+
+                            taskHandleIndRun = nullptr;       // Clear the indication task handle
+                            queHandleIndCmdRequest = nullptr; // Clear the indication Command Queue handle
+
+                            delete ind; // Locking the object will be done inside the destructor.
+
+                            if (ind != nullptr)
+                                ind = nullptr; // Destructor will not set pointer null.  We do that manually.
+
+                            if (show & _showRun)
+                                routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): indication deleted");
+                        }
+                    }
                 }
                 }
             }

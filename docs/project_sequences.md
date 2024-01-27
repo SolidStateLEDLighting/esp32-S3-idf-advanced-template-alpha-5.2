@@ -1,6 +1,7 @@
 # Project Sequences
 At a project level, this sequence explains the general startup process between the System and all other objects which run their own tasks.  
 
+## Object Startup Pattern
 The app_main() starts the System.  Each in turn, the System instantiates the remaining supporting components.
 
 **The key thing to observe here is how the System starts another object.**
