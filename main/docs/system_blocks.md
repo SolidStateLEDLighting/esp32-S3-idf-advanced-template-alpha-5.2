@@ -15,12 +15,17 @@ Items which are always handled here:
 * Starting the Run task.
 
 ### system_diagnostics.cpp
-Just a collection of member functions that are used for diagnostics at a system level.
+Just a collection of member functions that are used for printable diagnostics at a system level.
 * Run Time Statistics
 * Memory Statistics
 * Task Information
 
 ### system_gpio.cpp
+This translation unit does eveything we need at a system level for all GPIO pins.  It also needs to be understood that some perpherials and their drivers may handle all GPIO pins for their own need.  This area is used for any and all GPIO pins which are not cared for elsewhere.  Some of thing we handle here are:
+* Initialization of GPIO pins.
+* Establishment of an RTOS Queue to capture GPIO ISR Events.
+* Starts up the GPIO task which services the RTOS Queue.
+* Event handler to act on (or appropriately route) captured GPIO input.
 
 ### system_logging.cpp
 
