@@ -38,7 +38,7 @@ The entry point calls sys->getInstance and this task (main task) runs inside the
 
 * Step 8: The System releases the object locking semaphore.  It is important to note that most object locking semaphores are never used again after intialization of the object because after this point, we will use Task Notifications or Queues to gain task safe access.  Without these RTOS entry mechanisms, the only way to abritrate entrance to an object is with a locking semaphore (or mutex, or some other construct).   In this project the singleton nvs object uses only an object level locking semaphore.  All other objects expose Task Notifictions or Queues.
 
-## Object Startup Pattern - without Task
+## Object Startup Pattern - without New Task
 ![non_tasking_object_creation](./drawings/project_startup_non_tasking_sequence_diagram.svg)
 * Step 1: Calling object is already initialized and running its own task.
 
