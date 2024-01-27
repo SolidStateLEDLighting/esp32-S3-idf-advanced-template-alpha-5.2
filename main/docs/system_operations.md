@@ -4,6 +4,8 @@ We define a list of system operations in system_enum.hpp.  There currently only 
 
 ### Run Operation
 
+![Run Operation Diagram](./drawings/operations/operation_run.svg)
+
 ### Init Operation
 
 ### Error Operation

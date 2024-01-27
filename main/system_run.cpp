@@ -155,7 +155,7 @@ void System::run(void)
                 xQueueReceive(systemCmdRequestQue, (void *)&ptrSYSCmdRequest, pdMS_TO_TICKS(10));
             }
 
-            /* Pending actions */
+            /* Pending Actions */
             if (lockGetBool(&saveToNVSFlag))
             {
                 lockSetBool(&saveToNVSFlag, false);
