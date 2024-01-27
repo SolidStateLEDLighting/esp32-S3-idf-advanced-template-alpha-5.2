@@ -21,18 +21,23 @@ Just a collection of member functions that are used for printable diagnostics at
 * Task Information
 
 ### system_gpio.cpp
-This translation unit does eveything we need at a system level for all GPIO pins.  It also needs to be understood that some perpherials and their drivers may handle all GPIO pins for their own need.  This area is used for any and all GPIO pins which are not cared for elsewhere.  Some of thing we handle here are:
+This translation unit does eveything we need at a system level for all GPIO pins.  It also needs to be understood that some perpherials and their drivers may handle all GPIO pins for their own needs.  This area is used for any and all GPIO pins which are not cared for elsewhere.  Some of thing we handle here are:
 * Initialization of GPIO pins.
 * Establishment of an RTOS Queue to capture GPIO ISR Events.
+* Create the Event handler to act on (or appropriately route) captured GPIO input.
 * Starts up the GPIO task which services the RTOS Queue.
-* Event handler to act on (or appropriately route) captured GPIO input.
 
 ### system_logging.cpp
+A collections of functions for routing debugging information.  Right now, all logging is done to the serial ports, but later will be routed to cloud storage as well.
 
 ### system_nvs.cpp
+This is the highest level of abstraction for saving and restoring data from non-volatile storage to the System object.
 
 ### system_run.cpp
+All our run time loops are contained within the system_run translation unit.  For other object with event handling, there will also be a run-time driven event handling function.
 
 ### system_timer.cpp
+This translation unit contains a high accuracy esp32 timers and a callback timer handler.  This timer is used for repetative periodic operations.
 
 ### system_utilities.cpp
+Utility functions can gernalized functions that are shared by several translation unit from within the System object.  Currently, all our semaphore variable locking functions are located here.

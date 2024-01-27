@@ -19,7 +19,6 @@ void System::runMarshaller(void *arg)
 void System::run(void)
 {
     esp_err_t ret;
-
     int8_t oneSecCounter = 7;
 
     while (true)
