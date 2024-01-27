@@ -1,15 +1,16 @@
 # Project Sequences
-At a project level, this sequence explains the general startup process between the System and all other objects which run their own tasks.  This pattern is also used in other cases where a parent object starts a child object (new object has its own task).
+At a project level, this sequence explains the general startup process.  At the beginning, app_main() creates the System object and then the System object creates all other objects.  The System and all over main objects run their own tasks.  
+
+The start up process is a pattern that can also be used in other cases where a parent object starts a child object (new object has its own task).
 
 Below, there is also an example of a parent object starts a new object without a task.
 
 ## Object Startup Pattern - with New Task
 The app_main() starts the System.  Each in turn, the System instantiates the remaining supporting components.
 
-**The key thing to observe here is how the System starts another object.**
+**The key thing to observe here is how the System starts another object.  This pattern will be used in all parts of the project where the new object has a run task**
 
-app_main -> System
-The entry point calls sys->getInstance and this task (main task) run through the entire System contructor.
+The entry point calls sys->getInstance and this task (main task) runs inside the System contructor.
 
 ![tasking_object_creatation](./drawings/project_startup_self_tasking_sequence_diagram.svg)
 
@@ -19,7 +20,7 @@ The entry point calls sys->getInstance and this task (main task) run through the
   * setFlags() - Static enabling of logging statements for any area of concern during development.
   * setLogLevels() - Manually sets log levels for tasks down the call stack for development.
   * createSemaphores() - Creates any locking semaphores owned by this object.
-  * restoreVariablesFromNVS() - Brings back all our persistant data.
+  * restoreVariablesFromNVS() - Brings back all persistant data for this new object.
   * Starts a run task (if the object is designed to have a task).
 
 * Step 2: System calls on a class constructor.  The system's run task (thread) runs a set of member functions much like those of the system's constructor.  This pattern stays consistant for the sake of good programming practice.
