@@ -1,3 +1,3 @@
 # System blocks
-This is just the system block diagram.  The blocks are in decending alphabetic order so they appear here just as they do inside the project.
+This is just the system block diagram.  The blocks are in decending alphabetic order so they appear here just as they do inside the project.   Take note that the pattern you see here is universally applied to all object for consistancy.  Not all object contain all the same functions and files, but where possible, we match patterns throughout.  In this way, we can forge a familarity with the design and techniques used to handle tasks and problems.
 ![System Block Diagram](./drawings/system_block.svg)
