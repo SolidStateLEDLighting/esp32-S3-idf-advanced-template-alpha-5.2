@@ -36,8 +36,13 @@ This is the highest level of abstraction for saving and restoring data from non-
 ### system_run.cpp
 All our run time loops are contained within the system_run translation unit.  For other object with event handling, there will also be a run-time driven event handling function.
 
+**Our run loop contains all the possible System Operations.**
+[System Operations](./system_operations.md)
+
 ### system_timer.cpp
 This translation unit contains a high accuracy esp32 timers and a callback timer handler.  This timer is used for repetative periodic operations.
 
 ### system_utilities.cpp
-Utility functions can gernalized functions that are shared by several translation unit from within the System object.  Currently, all our semaphore variable locking functions are located here.
+Utility functions can gernalized functions that are shared by several translation unit from within the System object.  
+
+Currently, all our semaphore variable locking functions are located here.   This locking can be important as there are 3 tasks inside the System object and if any of these task share any variables they must be guarded when read from and written to.
