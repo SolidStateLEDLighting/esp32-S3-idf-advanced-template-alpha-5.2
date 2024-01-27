@@ -1,5 +1,7 @@
 # Project Sequences
-At a project level, this sequence explains the general startup process between the System and all other objects which run their own tasks.  
+At a project level, this sequence explains the general startup process between the System and all other objects which run their own tasks.  This pattern is also used in other cases where a parent object starts a child object (new object has its own task).
+
+Below, there is also an example of a parent object starts a new object without a task.
 
 ## Object Startup Pattern - with New Task
 The app_main() starts the System.  Each in turn, the System instantiates the remaining supporting components.
