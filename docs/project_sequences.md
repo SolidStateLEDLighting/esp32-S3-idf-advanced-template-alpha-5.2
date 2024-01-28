@@ -48,4 +48,6 @@ The entry point calls sys->getInstance and this task (main task) runs inside the
   * createSemaphores() - Creates any locking semaphores owned by this object.
   * restoreVariablesFromNVS() - Brings back all our persistant data for the created object.
 
+**NOTE: For the child object to do anything useful, the parent object must call its functions.**  
+
 There are no other project level sequences that would be of global interest.
