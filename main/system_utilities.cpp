@@ -6,6 +6,7 @@
 /* Local Semaphores */
 SemaphoreHandle_t semSysBoolLock = NULL;
 SemaphoreHandle_t semSysUint8Lock = NULL;
+SemaphoreHandle_t semSysIndLock = NULL; // Local Indication Lock
 
 const char *System::convertWifiStateToChars(uint8_t state)
 {

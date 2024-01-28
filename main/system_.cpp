@@ -9,6 +9,7 @@ SemaphoreHandle_t semSysRouteLock = NULL;
 extern SemaphoreHandle_t semNVSEntry;
 extern SemaphoreHandle_t semSysBoolLock;
 extern SemaphoreHandle_t semSysUint8Lock;
+extern SemaphoreHandle_t semSysIndLock;
 
 System::System(void)
 {
@@ -75,6 +76,10 @@ void System::createSemaphores()
     semSysUint8Lock = xSemaphoreCreateBinary(); // Boolean locking
     if (semSysUint8Lock != NULL)
         xSemaphoreGive(semSysUint8Lock);
+
+    semSysIndLock = xSemaphoreCreateBinary(); // Local Indication locking
+    if (semSysIndLock != NULL)
+        xSemaphoreGive(semSysIndLock);
 }
 
 TaskHandle_t System::getRunTaskHandle(void)

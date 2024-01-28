@@ -9,6 +9,7 @@ extern SemaphoreHandle_t semIndEntry;
 extern SemaphoreHandle_t semWifiEntry;
 extern SemaphoreHandle_t semSysRouteLock;
 extern SemaphoreHandle_t semSysUint8Lock;
+extern SemaphoreHandle_t semSysIndLock; // Local Indication Lock
 
 void System::runMarshaller(void *arg)
 {
@@ -19,6 +20,7 @@ void System::runMarshaller(void *arg)
 void System::run(void)
 {
     esp_err_t ret;
+
     int8_t oneSecCounter = 7;
 
     while (true)
@@ -114,8 +116,12 @@ void System::run(void)
                         {
                             // Send out notifications to any object that uses indication -- and tell them indication is no longer available.
 
-                            taskHandleIndRun = nullptr;       // Clear the indication task handle
-                            queHandleIndCmdRequest = nullptr; // Clear the indication Command Queue handle
+                            if (xSemaphoreTake(semSysIndLock, portMAX_DELAY)) // Several tasks can access Indication varaibles.
+                            {
+                                taskHandleIndRun = nullptr;       // Clear the indication task handle
+                                queHandleIndCmdRequest = nullptr; // Clear the indication Command Queue handle
+                                xSemaphoreGive(semSysIndLock);
+                            }
 
                             delete ind; // Locking the object will be done inside the destructor.
 
@@ -205,8 +211,12 @@ void System::run(void)
 
                 if (val > 0)
                 {
-                    if (queHandleIndCmdRequest != nullptr)
-                        xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+                    if (xSemaphoreTake(semSysIndLock, portMAX_DELAY))
+                    {
+                        if (queHandleIndCmdRequest != nullptr)
+                            xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+                        xSemaphoreGive(semSysIndLock);
+                    }
                 }
             }
 

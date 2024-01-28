@@ -6,6 +6,7 @@
 /* External Variables */
 extern bool blnallowSwitchGPIOinput;
 extern uint8_t SwitchDebounceCounter;
+extern SemaphoreHandle_t semSysIndLock; // Local Indication Lock
 
 // Local Variables
 uint8_t halfSecond = 50;
@@ -81,7 +82,7 @@ void System::runGenTimerTask(void)
         {
             if (--halfSecond < 1)
             {
-                halfSecondActions();
+                // halfSecondActions();
 
                 if (OneSecond > 0)
                 {
@@ -136,8 +137,6 @@ void System::runGenTimerTask(void)
 /* Periodic Actions */
 void System::halfSecondActions(void)
 {
-    if (showSys & _showSysTimerSeconds)
-        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Half Second");
 }
 
 void System::oneSecondActions(void)
@@ -170,10 +169,16 @@ void System::fiveSecondActions(void)
     if (showSys & _showSysTimerSeconds)
         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Five Seconds");
 
-    // int32_t val = 0x41000209; // 5 second heartbeat in blue
+    /*
+    if (xSemaphoreTake(semSysIndLock, portMAX_DELAY)) // Several tasks can access Indication varaibles.
+    {
+        int32_t val = 0x41000209; // 5 second heartbeat in blue
 
-    // if (queHandleIndCmdRequest != nullptr)
-    //     xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+        if (queHandleIndCmdRequest != nullptr)
+            xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+        xSemaphoreGive(semSysIndLock);
+    }
+    */
 }
 
 void System::tenSecondActions(void)
