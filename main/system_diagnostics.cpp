@@ -2,6 +2,32 @@
 #include "esp_heap_task_info.h"
 #include "esp_heap_caps.h"
 
+void System::runDiagnostics()
+{
+    uint8_t diagSysValue = lockGetUint8(&diagSys);
+
+    if (diagSysValue & _diagHeapCheck)
+    {
+        lockAndUint8(&diagSys, _diagHeapCheck); // Clear the bit
+        heap_caps_check_integrity_all(true);    // Esp library test
+    }
+    else if (diagSysValue & _printRunTimeStats)
+    {
+        lockAndUint8(&diagSys, _printRunTimeStats); // Clear the bit
+        printRunTimeStats();                        // This diagnostic will affect your process over a 45 seconds period.  Can't use without special Menuconfig settings set.
+    }
+    else if (diagSysValue & _printMemoryStats)
+    {
+        lockAndUint8(&diagSys, _printMemoryStats); // Clear the bit
+        printMemoryStats();
+    }
+    else if (diagSysValue & _printTaskInfo)
+    {
+        lockAndUint8(&diagSys, _printTaskInfo); // Clear the bit
+        printTaskInfo();
+    }
+}
+
 void System::printRunTimeStats()
 {
     //

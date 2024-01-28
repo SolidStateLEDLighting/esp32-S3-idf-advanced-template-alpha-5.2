@@ -50,7 +50,7 @@ extern "C"
         char TAG[5] = "_sys";
 
         /* Object States */
-        WIFI_CONN_STATE sysWifiConnState = WIFI_CONN_STATE::WIFI_DISCONNECTED;
+        WIFI_CONN_STATE sysWifiConnState = WIFI_CONN_STATE::NFY_WIFI_DISCONNECTED;
 
         /* Object References */
         NVS *nvs = nullptr;
@@ -84,6 +84,7 @@ extern "C"
         void createSemaphores(void);
 
         /* System_Diagnostics */
+        void runDiagnostics(void);
         void printRunTimeStats(void);
         void printMemoryStats(void);
         void printTaskInfo(void);
@@ -108,7 +109,7 @@ extern "C"
         void saveVariablesToNVS(void);
 
         /* System_Run */
-        SYS_NOTIFY sysTaskNotifyValue = SYS_NOTIFY::NONE;
+        SYS_NOTIFY sysTaskNotifyValue = (SYS_NOTIFY)0;
 
         QueueHandle_t systemCmdRequestQue = nullptr; // Command Queue
         SYS_CmdRequest *ptrSYSCmdRequest = nullptr;
@@ -148,8 +149,8 @@ extern "C"
         const char *convertWifiStateToChars(uint8_t);
         std::string getDeviceID(void);
 
-        void lockSetBool(bool *, bool);
-        bool lockGetBool(bool *);
+        void lockSetBool(bool *, bool);                      // Locking bool variables
+        bool lockGetBool(bool *);                            //
         uint8_t lockGetUint8(uint8_t *);                     // Locking uint8_t variables
         void lockOrUint8(uint8_t *, uint8_t);                //
         void lockAndUint8(uint8_t *variable, uint8_t value); //

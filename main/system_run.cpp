@@ -19,8 +19,7 @@ void System::runMarshaller(void *arg)
 
 void System::run(void)
 {
-    esp_err_t ret;
-
+    esp_err_t ret = ESP_OK;
     int8_t oneSecCounter = 7;
 
     while (true)
@@ -33,48 +32,39 @@ void System::run(void)
             /* Task Notifications should be used for notifications or commands which need no input and return no data. */
             sysTaskNotifyValue = static_cast<SYS_NOTIFY>(ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(95))); // Wait 30 ticks for any message then move on.
 
-            if (sysTaskNotifyValue > SYS_NOTIFY::NONE)
+            if (sysTaskNotifyValue > static_cast<SYS_NOTIFY>(0))
             {
                 switch (sysTaskNotifyValue)
                 {
-                case SYS_NOTIFY::NONE:
+                case SYS_NOTIFY::NFY_WIFI_CONNECTING:
                 {
                     if (show & _showRun)
-                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::NONE");
+                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::NFY_WIFI_CONNECTING"); // Tell all parties who care that Internet is available.
+                    sysWifiConnState = WIFI_CONN_STATE::NFY_WIFI_CONNECTING_STA;
                     break;
                 }
 
-                case SYS_NOTIFY::WIFI_CONNECTED:
+                case SYS_NOTIFY::NFY_WIFI_CONNECTED:
                 {
                     if (show & _showRun)
-                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::WIFI_CONNECTED"); // Tell all parties who care that Internet is available.
-
-                    sysWifiConnState = WIFI_CONN_STATE::WIFI_CONNECTED_STA;
+                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::NFY_WIFI_CONNECTED"); // Tell all parties who care that Internet is available.
+                    sysWifiConnState = WIFI_CONN_STATE::NFY_WIFI_CONNECTED_STA;
                     break;
                 }
 
-                case SYS_NOTIFY::WIFI_CONNECTING:
+                case SYS_NOTIFY::NFY_WIFI_DISCONNECTING:
                 {
                     if (show & _showRun)
-                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::WIFI_CONNECTING"); // Tell all parties who care that Internet is available.
-
-                    sysWifiConnState = WIFI_CONN_STATE::WIFI_CONNECTING_STA;
+                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::NFY_WIFI_DISCONNECTING"); // Tell all parties who care that the Internet is not avaiable.
+                    sysWifiConnState = WIFI_CONN_STATE::NFY_WIFI_DISCONNECTING_STA;
                     break;
                 }
 
-                case SYS_NOTIFY::WIFI_DISCONNECTING:
+                case SYS_NOTIFY::NFY_WIFI_DISCONNECTED:
                 {
                     if (show & _showRun)
-                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::WIFI_DISCONNECTING"); // Tell all parties who care that the Internet is not avaiable.
-                    break;
-                }
-
-                case SYS_NOTIFY::WIFI_DISCONNECTED:
-                {
-                    if (show & _showRun)
-                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::WIFI_DISCONNECTED"); // Wifi is competlely ready to be connected again.
-
-                    sysWifiConnState = WIFI_CONN_STATE::WIFI_DISCONNECTED;
+                        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::NFY_WIFI_DISCONNECTED"); // Wifi is competlely ready to be connected again.
+                    sysWifiConnState = WIFI_CONN_STATE::NFY_WIFI_DISCONNECTED;
                     break;
                 }
 
@@ -137,7 +127,7 @@ void System::run(void)
             }
 
             /* Service all Incoming Commands */
-            /* Queue based commands should be used for commands which may provide input and perhaps return data. */
+            /* Queue based commands should be used for commands which may provide input or perhaps return data. */
             if (xQueuePeek(systemCmdRequestQue, (void *)&ptrSYSCmdRequest, pdMS_TO_TICKS(95))) // We cycle through here and look for incoming mail box command requests
             {
                 if (ptrSYSCmdRequest->stringData != nullptr)
@@ -160,7 +150,7 @@ void System::run(void)
                 xQueueReceive(systemCmdRequestQue, (void *)&ptrSYSCmdRequest, pdMS_TO_TICKS(10));
             }
 
-            /* Pending Actions */
+            /* Pending Actions and State Change Actions */
             if (lockGetBool(&saveToNVSFlag))
             {
                 lockSetBool(&saveToNVSFlag, false);
@@ -168,31 +158,11 @@ void System::run(void)
             }
 
             if (lockGetUint8(&diagSys)) // We may run periodic or commanded diagnostics
-            {
-                uint8_t diagSysValue = lockGetUint8(&diagSys);
+                runDiagnostics();
 
-                if (diagSysValue & _diagHeapCheck)
-                {
-                    lockAndUint8(&diagSys, _diagHeapCheck); // Clear the bit
-                    heap_caps_check_integrity_all(true);    // Esp library test
-                }
-                else if (diagSysValue & _printRunTimeStats)
-                {
-                    lockAndUint8(&diagSys, _printRunTimeStats); // Clear the bit
-                    printRunTimeStats();                        // This diagnostic will affect your process over a 45 seconds period.  Can't use without special Menuconfig settings set.
-                }
-                else if (diagSysValue & _printRunTimeStats)
-                {
-                    lockAndUint8(&diagSys, _printMemoryStats); // Clear the bit
-                    printMemoryStats();
-                }
-                else if (diagSysValue & _printRunTimeStats)
-                {
-                    lockAndUint8(&diagSys, _printTaskInfo); // Clear the bit
-                    printTaskInfo();
-                }
-            }
-
+            //
+            // Temporary helper - RGB visual indicator is see if we are disconnected, in process, or connected to a Wifi host
+            //
             if (--oneSecCounter < 1) // Low accuracy counter based on normal delays inside this run function.
             {
                 oneSecCounter = 7; // Can be adjusted up or down to yield are more pleasant result.
@@ -202,11 +172,11 @@ void System::run(void)
                 // If Connected   to a Host - flash Blue
                 //
                 int32_t val = 0;
-                if (sysWifiConnState == WIFI_CONN_STATE::WIFI_DISCONNECTED)
+                if (sysWifiConnState == WIFI_CONN_STATE::NFY_WIFI_DISCONNECTED)
                     val = 0x11000209;
-                if (sysWifiConnState == WIFI_CONN_STATE::WIFI_CONNECTING_STA)
+                if (sysWifiConnState == WIFI_CONN_STATE::NFY_WIFI_CONNECTING_STA)
                     val = 0x21000209;
-                else if (sysWifiConnState == WIFI_CONN_STATE::WIFI_CONNECTED_STA)
+                else if (sysWifiConnState == WIFI_CONN_STATE::NFY_WIFI_CONNECTED_STA)
                     val = 0x41000209;
 
                 if (val > 0)
@@ -219,7 +189,6 @@ void System::run(void)
                     }
                 }
             }
-
             break;
         }
 

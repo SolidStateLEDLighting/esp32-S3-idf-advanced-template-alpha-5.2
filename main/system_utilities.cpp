@@ -17,13 +17,13 @@ const char *System::convertWifiStateToChars(uint8_t state)
     else if (state == 1)
         rc = "WIFI_READY_TO_CONNECT";
     else if (state == 2)
-        rc = "WIFI_CONNECTING_STA";
+        rc = "NFY_WIFI_CONNECTING_STA";
     else if (state == 3)
-        rc = "WIFI_CONNECTED_STA";
+        rc = "NFY_WIFI_CONNECTED_STA";
     else if (state == 4)
-        rc = "WIFI_DISCONNECTING_STA";
+        rc = "NFY_WIFI_DISCONNECTING_STA";
     else if (state == 5)
-        rc = "WIFI_DISCONNECTED";
+        rc = "NFY_WIFI_DISCONNECTED";
     else
         rc = "Unknown";
 

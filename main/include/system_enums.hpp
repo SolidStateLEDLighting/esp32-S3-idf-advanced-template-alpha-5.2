@@ -13,13 +13,12 @@
 // Task Notifications should be used for notifications or commands which need no input and return no data.
 enum class SYS_NOTIFY : uint8_t // Task Notification definitions for the Run loop
 {
-    NONE = 0,
-    WIFI_CONNECTED,         // Wifi can be used
-    WIFI_CONNECTING,        // We have started the process to connect
-    WIFI_DISCONNECTING,     // Stop using Wifi
-    WIFI_DISCONNECTED,      // Wifi is availiable to be connected again
-    CMD_DESTROY_WIFI,       // Receives a request to destroy Wifi
-    CMD_DESTROY_INDICATION, // Receives a request to destroy Indication
+    NFY_WIFI_CONNECTING = 1, // We have started the process to connect
+    NFY_WIFI_CONNECTED,      // Wifi can be used
+    NFY_WIFI_DISCONNECTING,  // Stop using Wifi
+    NFY_WIFI_DISCONNECTED,   // Wifi is availiable to be connected again
+    CMD_DESTROY_WIFI,        // Receives a request to destroy Wifi
+    CMD_DESTROY_INDICATION,  // Receives a request to destroy Indication
 };
 
 // Queue based commands should be used for commands which may provide input and perhaps return data.
