@@ -355,12 +355,6 @@ void System::run(void)
         case SYS_OP::Idle:
         {
             routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Idle...");
-            sysOP = SYS_OP::Idle_Silent;
-            [[fallthrough]];
-        }
-
-        case SYS_OP::Idle_Silent:
-        {
             vTaskDelay(pdMS_TO_TICKS(5000));
             break;
         }

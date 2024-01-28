@@ -60,7 +60,6 @@ enum class SYS_OP : uint8_t
     Init,
     Error,
     Idle,
-    Idle_Silent,
 };
 
 enum class SYS_INIT : uint8_t
