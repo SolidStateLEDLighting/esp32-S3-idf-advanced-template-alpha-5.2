@@ -8,3 +8,12 @@ The system mangages everything at a high level.  It does the following:
 * Triggers periodic tasks.
 * Handles error recovery on a system scale.
 * Is in charge of putting the system to sleep. (not yet impliemented)
+
+The following categories will help you visualize different aspects of the system:
+
+1) [System Abstractions](./docs/system_abstractions.md)
+2) [System Block Diagram](./docs/system_blocks.md)
+3) [System Flowcharts](./docs/system_flowcharts.md)
+4) [System Operations](./docs/system_operations.md)
+5) [System Sequences](./docs/system_sequences.md)
+6) [System State Models](./docs/system_state_models.md)
