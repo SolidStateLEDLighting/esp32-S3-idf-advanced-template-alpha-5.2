@@ -83,7 +83,8 @@ void System::initGPIOTask(void)
     return;
 
 sys_GPIOIsrHandler_err:
-    routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): " + std::string(esp_err_to_name(ret))); // Our Error handlers and loggers may not be running yet.
+    errMsg = std::string(__func__) + "(): " + std::string(esp_err_to_name(ret));
+    sysOP = SYS_OP::Error;
 }
 
 void System::runGPIOTaskMarshaller(void *arg) // This function can be resolved at run time by the compiler.
