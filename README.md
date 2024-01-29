@@ -1,9 +1,21 @@
 # Project Alpha 5.2 V1
 This is a starter project for a dual core Esp32 microcontroller running FreeRTOS.  The hardware is equivalent to a DevKit-M or C running an Esp32S3 N16R8, but this project should be portable to other dual and single core Esp32 processors without any changes.
 
+* **Alpha** refers to the hardware for which this project will run on. 
 * **5.2** refers to the version of ESP-IDF for which this project is built with.
-* **Alpha** refers to the hardware for which this project will run.  
-* **V1** refers to the number or level of key features in this sample project.
+* **V1** refers to the level of features in this sample project.
+
+Hardware Supported:
+  * Esp32s3 DevKitC / DevKitM
+  * Esp32 DevKitC / DevKitM
+
+Features:
+  * Full SMP support
+  * C++ Construction/Destruction
+  * Wifi STA (basic connection/disconnection)
+  * SNTP support
+  * NVS support
+  * RGB Indicator for ws2812 LED
 
 The intent of this example project is to prepare a suitable development code base for high-performance, commercial, large scale advanced project development. In pursuit of that goal, this project will evolve to include many other features which are not included here at this time. When this Alpha project can not expanded upon further, we will create a Beta, and Gamma projects that will allow for more expansion.
 
