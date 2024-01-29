@@ -79,7 +79,7 @@ void System::initGPIOTask(void)
     SwitchDebounceCounter = 30;
     blnallowSwitchGPIOinput = true;
 
-    xTaskCreate(runGPIOTaskMarshaller, "sys_gpio", 1024 * gpioStackSizeK, this, TASK_PRIORITY_OFFSET_MID, &runTaskHandleSystemGPIO); // (1) Low number indicates low priority task
+    xTaskCreate(runGPIOTaskMarshaller, "sys_gpio", 1024 * gpioStackSizeK, this, TASK_PRIORITY_MID, &runTaskHandleSystemGPIO); // (1) Low number indicates low priority task
     return;
 
 sys_GPIOIsrHandler_err:

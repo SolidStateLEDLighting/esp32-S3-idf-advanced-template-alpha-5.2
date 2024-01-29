@@ -22,7 +22,7 @@ System::System(void)
 
     initSysStep = SYS_INIT::Start; // Allow the object to initialize when the task becoming operational
     sysOP = SYS_OP::Init;
-    xTaskCreate(runMarshaller, "sys_run", 1024 * runStackSizeK, this, TASK_PRIORITY_OFFSET_MID, &taskHandleSystemRun);
+    xTaskCreate(runMarshaller, "sys_run", 1024 * runStackSizeK, this, TASK_PRIORITY_MID, &taskHandleSystemRun);
 }
 
 void System::setFlags()
