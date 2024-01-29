@@ -5,11 +5,11 @@ This is a starter project for a dual core Esp32 microcontroller running FreeRTOS
 * **5.2** refers to the version of ESP-IDF for which this project is built with.
 * **V1** refers to the level of features in this sample project.
 
-Hardware Supported:
-  * Esp32s3 DevKitC / DevKitM
-  * Esp32 DevKitC / DevKitM
+**Hardware Supported:**
+    * Esp32s3 DevKitC / DevKitM
+    * Esp32 DevKitC / DevKitM
 
-Features:
+**Features:**
   * Full SMP support
   * C++ Construction/Destruction
   * Wifi STA (basic connection/disconnection)
