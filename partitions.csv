@@ -2,7 +2,7 @@
 # AWS IOT Core services and the ability to OTA.  Future examples will require
 # this more advanced partition table.
 #
-# Note: We allow the system to calculate the Offsets.
+# Note: We allow the system to calculate the memory Offsets.
 #
 # ESP-IDF Partition Table
 # Name,     Type,   SubType,    Offset,   Size,      Flags
@@ -16,6 +16,8 @@ ota_1,      app,    ota_1,            ,   0x63E000,
 #
 # factory partition  is set to  3.0Mb (never changes)
 # ota app partitions are set to 6.5Mb
+#
+# FYI - Encryption information is supplied here for instruction, but none of it is active until you actually invoke encryption.
 #
 # NOTE: nvs partition cannot be encrypted - but data is still stored in encrypted form. (requires Flash encryption)
 # NOTE: app partitions are always treated as encrypted when encryption enabled at a system level (no need to flag it)

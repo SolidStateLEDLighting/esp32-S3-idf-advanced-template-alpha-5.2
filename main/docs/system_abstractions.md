@@ -4,7 +4,7 @@
 ## System Class: 
 The system class in itself is a top level class in our project.  The intent of the System is to be the foundation of the project.  Master control is held here.
 
----
+---  
 # Top-Level
 
 * **Diagnostics:** 
@@ -20,17 +20,16 @@ We can start and stop other objects in the project.  We can also invoke actions.
 * **Timer Handling:** 
 Timers are limited in hardware.  We offer up a timing service to the System which can be used to invoke actions on the system level. 
 
----
+---  
 # Mid-Level
 
 * **Logging:** 
 Logging is a mid-level activity because all classes control their own logging.  This code may be viewed as redundant between class and perhaps should be moved to it's own class.
 
 * **NVS:** 
-This is a mid-level activity because the system_nvs routines call on the nvs class object to handle the lowest level access in the project.  System_nvs retreives/stores
-only system level values of interest.  During storage, our areas of concern are to evaluate default values and to catch and exclude values outside of defined bounds.
+This is a mid-level activity because the system_nvs routines call on the nvs class object to handle the lowest level access in the project.  System_nvs retreives/stores only system level values of interest.  During storage, our areas of concern are to evaluate default values and to catch and exclude values outside of defined bounds.
 
----
+---  
 # Low-Level
 
 The system will make calls directly back to the ESP-IDF.  There are no other intermediary actors between the System and the IDF.
