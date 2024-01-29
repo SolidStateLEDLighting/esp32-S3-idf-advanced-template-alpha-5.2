@@ -8,7 +8,7 @@ The working theory on tuning would be to reduce the full range of priorities dow
 
 On the down-side, after you optimize the full number range downward, there is always a chance in the future that you may need to revisit your optimization again and expand it.
 
-In this project we have 14 tasks.  With the assertion that configMAX_PRIORITIES is set to 7, their prorites are assigned as follow:
+In this project we have 14 tasks.  With configMAX_PRIORITIES is set to 7, their prorites are assigned as follow:
 
 | Task      | Calculation                                        | Value |
 | :-------- | :------------------------------------------------- | :---: |
@@ -19,7 +19,7 @@ In this project we have 14 tasks.  With the assertion that configMAX_PRIORITIES 
 | esp_timer | configMAX_PRIORITIES - 3 (automatic)               |   4   |
 | tmr_svc   | manually assigned in menuconfig                    |   3   |
 | sys_tmr   | manually assigned in code configMAX_PRIORITIES - 4 |   3   |
-| sys_evt   | configMAX_PRIORITIES - 5                           |   2   |
+| sys_evt   | configMAX_PRIORITIES - 5 (automatic)               |   2   |
 | sys_run   | manually assigned in code configMAX_PRIORITIES - 5 |   2   |
 | sys_gpio  | manually assigned in code configMAX_PRIORITIES - 5 |   2   |
 | wifi_run  | manually assigned in code configMAX_PRIORITIES - 5 |   2   |
@@ -33,4 +33,7 @@ If you installed the IDF in the default location, then you can find the header f
 *C:\Users\<user name>\esp\v5.2\esp-idf\components\freertos\config\include\freertos\FreeRTOSConfig.h*
 
 1) Open the FreeRTOSConfig.h file and edit     #define configMAX_PRIORITIES (25)    -- changing 25 to the value 7
-2) Save all, full clean project, rebuild.
+2) Save all, full clean project, rebuild.  
+
+
+**NOTE:** "tmr_svc" is a name that set in menuConfig for **configTIMER_SERVICE_TASK_NAME**
