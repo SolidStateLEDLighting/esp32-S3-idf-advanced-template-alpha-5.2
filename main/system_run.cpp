@@ -165,6 +165,7 @@ void System::run(void)
             //
             if (--oneSecCounter < 1) // Low accuracy counter based on normal delays inside this run function.
             {
+                // ESP_LOGW(TAG, "sysWifiConnState is %d", (int)sysWifiConnState); // Testing and debugging
                 oneSecCounter = 7; // Can be adjusted up or down to yield are more pleasant result.
                 //
                 // If Unconnected to a Host - flash Red

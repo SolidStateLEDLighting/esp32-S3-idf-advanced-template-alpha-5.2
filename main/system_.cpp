@@ -29,7 +29,7 @@ void System::setFlags()
 {
     // show variable is system wide defined and this exposes for viewing any general processes.
     show = 0; // Set show flags
-    // show |= _showInit;
+    show |= _showInit;
     // show |= _showNVS;
     // show |= _showRun;
     // show |= _showEvents;

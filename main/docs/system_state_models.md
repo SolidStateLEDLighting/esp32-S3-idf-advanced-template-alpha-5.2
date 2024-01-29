@@ -1,7 +1,7 @@
 # System State Models
 Most of the state transition models for the System are related to System Operations.  These operations take place in the run() function located in system_run.cpp.  You can reference descriptions of System Operations [here](./system_operations.md)
 
-**This is our top levle model for the System (main) component:**
+**This is our top level model for the System (main) component:**
 
 ![System State Model](./drawings/system_state_model.svg)
 
