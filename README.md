@@ -6,16 +6,16 @@ This is a starter project for a dual core Esp32 microcontroller running FreeRTOS
 * **V1** refers to the level of features in this sample project.
 
 **Hardware Supported:**
-    * Esp32s3 DevKitC / DevKitM
-    * Esp32 DevKitC / DevKitM
+* Esp32s3 DevKitC / DevKitM
+* Esp32 DevKitC / DevKitM
 
 **Features:**
-  * Full SMP support
-  * C++ Construction/Destruction
-  * Wifi STA (basic connection/disconnection)
-  * SNTP support
-  * NVS support
-  * RGB Indicator for ws2812 LED
+* Full SMP support
+* C++ Construction/Destruction
+* Wifi STA (basic connection/disconnection)
+* SNTP support
+* NVS support
+* RGB Indicator for ws2812 LED
 
 The intent of this example project is to prepare a suitable development code base for high-performance, commercial, large scale advanced project development. In pursuit of that goal, this project will evolve to include many other features which are not included here at this time. When this Alpha project can not expanded upon further, we will create a Beta, and Gamma projects that will allow for more expansion.
 
