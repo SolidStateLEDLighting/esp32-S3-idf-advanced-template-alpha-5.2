@@ -17,7 +17,7 @@ This is a starter project for a dual core Esp32 microcontroller running FreeRTOS
 * NVS support
 * RGB Indicator for ws2812 LED
 
-The intent of this example project is to prepare a suitable development code base for high-performance, commercial, large scale advanced project development. In pursuit of that goal, this project will evolve to include many other features which are not included here at this time. When this Alpha project can not expanded upon further, we will create a Beta, and Gamma projects that will allow for more expansion.
+The intent of this example project is to prepare a suitable development code base for high-performance, commercial, large scale advanced project development. In pursuit of that goal, this project will evolve to include other features which are not included here at this time. When this Alpha project can not expanded upon further, we will create a Beta, and Gamma projects that will allow for more expansion.
 
 * Downloading, compiling, and running the application are all standard common processes and need no special instruction.  This project calls for the ESP-IDF version 5.2.
 * This project has been built in VS Code with the following plugins:
