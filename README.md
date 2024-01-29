@@ -1,9 +1,9 @@
 # Project Alpha 5.2 V1
 This is a starter project for a dual core Esp32 microcontroller running FreeRTOS.  The hardware is equivalent to a DevKit-M or C running an Esp32S3 N16R8, but this project should be portable to other dual and single core Esp32 processors without any changes.
 
->**Alpha** refers to the hardware for which this project will run on. 
->**5.2** refers to the version of ESP-IDF for which this project is built with.
->**V1** refers to the level of features in this sample project.
+**Alpha** refers to the hardware for which this project will run on. 
+**5.2** refers to the version of ESP-IDF for which this project is built with.
+**V1** refers to the level of features in this sample project.
 
 **Hardware Supported:**
 * Esp32s3 DevKitC / DevKitM
@@ -33,9 +33,9 @@ The intent of this example project is to prepare a suitable development code bas
 [System Readme Document](./main/README.md)  
 
 ## Links to Component Documents
-[NVS Readme Document](https://github.com/SolidStateLEDLighting/nvs_5.2/blob/main/README.md)  
-[Wifi/SNTP Readme Document](https://github.com/SolidStateLEDLighting/wifi_5.2/blob/main/README.md)  
-[Indication Readme Document](https://github.com/SolidStateLEDLighting/indication_ws2812_5.2/blob/main/README.md)  
+[NVS Readme Document](./components/nvs_5.2/README.md)  
+[Wifi/SNTP Readme Document](./components/wifi_5.2/README.md)  
+[Indication Readme Document](./components/indication_ws2812_5.2/README.md)  
 
 # Quick Start
 ---
