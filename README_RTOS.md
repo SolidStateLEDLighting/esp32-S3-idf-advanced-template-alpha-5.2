@@ -38,6 +38,6 @@ If you installed the IDF in the default location, then you can find the header f
 2) Save all, full clean project, rebuild.  
 
 ## Priority Values for Created Tasks  
-All tasks which are created in this application are all in one of three levels.  A task is either considered TASK_PRIORITY_HIGH, TASK_PRIORITY_MID, or TASK_PRIORITY_LOW.
+All tasks which are created in this application are all in one of three priority levels.  A task is either considered TASK_PRIORITY_HIGH, TASK_PRIORITY_MID, or TASK_PRIORITY_LOW.
 
-For example we might consider an I2C task to be of a HIGH priority.  But, we might think of LED indication as being of a LOW priority.  All other general tasks will be classified as a MID task.  This means that most of our processing will be evenly shared between our tasks in "round robin" fashion.  This prevents the RTOS from having to do any unneeded interrupting and priority inversion and all MID tasks will have a pretty even sharing of CPU time.
+For example we might consider an I2C task to be of a HIGH priority.  But, we might think of LED indication as being of a LOW priority.  All other general tasks will be classified as MID.  This means that most of our processing will be evenly shared between our tasks in round-robin fashion.  This prevents the RTOS from having to do any unneeded interrupting and priority inversion before most context changes and all MID tasks will have a pretty even sharing of CPU time.
