@@ -331,7 +331,7 @@ void System::run(void)
                 bootCount++;
                 lockSetUint8(&saveToNVSDelaySecs, 2);
 
-                initGenTimer(); // Starting General Timer task
+                initSysTimer(); // Starting System Timer task
                 sysOP = SYS_OP::Run;
                 break;
             }

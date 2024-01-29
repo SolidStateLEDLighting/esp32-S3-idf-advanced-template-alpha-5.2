@@ -135,7 +135,7 @@ extern "C"
         static void runGenTimerTaskMarshaller(void *); // Handles all Timer related events
         void runGenTimerTask(void);                    //
 
-        void initGenTimer(void);
+        void initSysTimer(void);
         static void genTimerCallback(void *);
 
         void halfSecondActions(void);

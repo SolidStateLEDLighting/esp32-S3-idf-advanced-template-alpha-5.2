@@ -20,7 +20,7 @@ uint8_t FiveMinutes = 5;
 // The timer here is of good precision but because all control to other objects is done through freeRTOS mechanisms, they would not
 // be best for short time intervals.  So, we refrain from calling other objects for short time periods.
 //
-void System::initGenTimer(void)
+void System::initSysTimer(void)
 {
     xTaskCreate(runGenTimerTaskMarshaller, "sys_tmr", 1024 * timerStackSizeK, this, TASK_PRIORITY_OFFSET_HIGH, &taskHandleRunSystemTimer);
 
