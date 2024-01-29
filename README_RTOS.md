@@ -10,22 +10,22 @@ On the down-side, after you optimize the full number range downward, there is al
 
 In this project we have 14 tasks.  With configMAX_PRIORITIES is set to 7, their prorites are assigned as follow:
 
-| Task      | Calculation                                         | Value |
-| :-------- | :-------------------------------------------------- | :---: |
-| ipc0      | configMAX_PRIORITIES - 1 (automatic)                |   6   |
-| ipc1      | configMAX_PRIORITIES - 1 (automatic)                |   6   |
-| wifi      | configMAX_PRIORITIES - 2 (automatic)                |   5   |
-| tit       | manually assigned in menuconfig                     |   5   |
-| esp_timer | configMAX_PRIORITIES - 3 (automatic)                |   4   |
-| tmr_svc   | manually assigned in menuconfig                     |   3   |
-| sys_tmr   | manually assigned in code TASK_PRIORITY_OFFSET_HIGH |   3   |
-| sys_evt   | configMAX_PRIORITIES - 5 (automatic)                |   2   |
-| sys_run   | manually assigned in code TASK_PRIORITY_OFFSET_MID  |   2   |
-| sys_gpio  | manually assigned in code TASK_PRIORITY_OFFSET_MID  |   2   |
-| wifi_run  | manually assigned in code TASK_PRIORITY_OFFSET_MID  |   2   |
-| ind_run   | manually assigned in code TASK_PRIORITY_OFFSET_LOW  |   1   |
-| IDLE0     | set by freeRTOS                                     |   0   |
-| IDLE1     | set by freeRTOS                                     |   0   |
+| Task      | Calculation                                  | Value |
+| :-------- | :------------------------------------------- | :---: |
+| ipc0      | configMAX_PRIORITIES - 1 (automatic)         |   6   |
+| ipc1      | configMAX_PRIORITIES - 1 (automatic)         |   6   |
+| wifi      | configMAX_PRIORITIES - 2 (automatic)         |   5   |
+| tit       | manually assigned in menuconfig              |   5   |
+| esp_timer | configMAX_PRIORITIES - 3 (automatic)         |   4   |
+| tmr_svc   | manually assigned in menuconfig              |   3   |
+| sys_tmr   | manually assigned in code TASK_PRIORITY_HIGH |   3   |
+| sys_evt   | configMAX_PRIORITIES - 5 (automatic)         |   2   |
+| sys_run   | manually assigned in code TASK_PRIORITY_MID  |   2   |
+| sys_gpio  | manually assigned in code TASK_PRIORITY_MID  |   2   |
+| wifi_run  | manually assigned in code TASK_PRIORITY_MID  |   2   |
+| ind_run   | manually assigned in code TASK_PRIORITY_LOW  |   1   |
+| IDLE0     | set by freeRTOS                              |   0   |
+| IDLE1     | set by freeRTOS                              |   0   |
 
 ### Instructions:
 If you installed the IDF in the default location, then you can find the header file here:  
