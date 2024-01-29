@@ -3,7 +3,7 @@ We are listing all the flowcharts that represent active tasks first.
 
 ## system_run.cpp flowchart
 This is the most important area of processing for the entire project.
-![System Flowcharts](./drawings/system_flowcharts.svg)
+![System Flowcharts](./drawings/system_flowcharts_run.svg)
 
 ## system_timer.cpp flowchart
 Our periodic functions are generated in the timer task area.
