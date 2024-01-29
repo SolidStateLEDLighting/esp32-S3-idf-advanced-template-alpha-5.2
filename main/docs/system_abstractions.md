@@ -31,4 +31,4 @@ This is a mid-level activity because the system_nvs routines call on the nvs cla
 ---  
 # Low-Level
 
-The system will make calls directly back to the ESP-IDF.  There are no other intermediary actors between the System and the IDF.
+The system will make calls directly back to the ESP-IDF.  There are no other intermediate libraries between the System and the IDF.

@@ -98,8 +98,8 @@ void System::runGPIOTask(void)
     uint32_t io_num = 0;
     uint8_t gpioIndex = 0;
 
+    // TESTING VARIABLES
     // esp_err_t ret = ESP_OK;
-
     // bool testBool = false;
     // std::string testString = "";
     // std::string string1 = "The quick brown fox jumps over the lazy dog";
@@ -107,7 +107,6 @@ void System::runGPIOTask(void)
     // uint8_t testUInteger8 = 0;
     // uint32_t testUInteger32 = 0;
     // int32_t testInteger32 = 555; // Should test number going negative
-
     // int32_t val = 0;
     // int32_t brightnessLevel = 0;
 
@@ -128,7 +127,6 @@ void System::runGPIOTask(void)
 
                 switch (gpioIndex)
                 {
-
                     /* case 0: // Destroying wifi
                     {
                          if (wifi != nullptr)
@@ -211,16 +209,11 @@ void System::runGPIOTask(void)
                     // }
                 }
 
-                // ESP_LOGW(TAG, "gpioIndex %d", gpioIndex);
-
                 if (++gpioIndex > 2)
                 {
                     routeLogByValue(LOG_TYPE::WARN, std::string(__func__) + "(): gpioIndex restart...");
                     gpioIndex = 0;
                 }
-
-                // ESP_LOGW(TAG, "gpioIndex %d", gpioIndex);
-
                 break;
             }
 

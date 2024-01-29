@@ -30,9 +30,9 @@ void System::run(void)
         {
             /*  Service all Task Notifications */
             /* Task Notifications should be used for notifications or commands which need no input and return no data. */
-            sysTaskNotifyValue = static_cast<SYS_NOTIFY>(ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(95))); // Wait 30 ticks for any message then move on.
+            sysTaskNotifyValue = static_cast<SYS_NOTIFY>(ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(250))); // Wait 250 mSec for any notifications then move on.
 
-            if (sysTaskNotifyValue > static_cast<SYS_NOTIFY>(0))
+            if (sysTaskNotifyValue > static_cast<SYS_NOTIFY>(0)) // We are not using commands right now, so there is no value is waiting here.
             {
                 switch (sysTaskNotifyValue)
                 {
@@ -128,7 +128,7 @@ void System::run(void)
 
             /* Service all Incoming Commands */
             /* Queue based commands should be used for commands which may provide input or perhaps return data. */
-            if (xQueuePeek(systemCmdRequestQue, (void *)&ptrSYSCmdRequest, pdMS_TO_TICKS(95))) // We cycle through here and look for incoming mail box command requests
+            if (xQueuePeek(systemCmdRequestQue, (void *)&ptrSYSCmdRequest, 0)) // We cycle through here and look for incoming mail box command requests
             {
                 if (ptrSYSCmdRequest->stringData != nullptr)
                 {
