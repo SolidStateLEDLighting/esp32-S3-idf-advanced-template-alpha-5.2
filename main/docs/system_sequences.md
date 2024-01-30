@@ -7,11 +7,11 @@ In our specific case, we use sequences to represent actions between two or more 
 
 
 ## Creating Wifi Object
-This is a very common pattern were an object with a run task is creating another object with its own run task.  
+This is a very common pattern were an object with a run task is creating another object with its own run task.  In this case, inside the constructor, the Wifi also creates the non-tasking SNTP object.  
 ![System Object Creates Wifi Object](./drawings/system_creating_wifi_sequence.svg)  
 
 ## Destroying Wifi Object
-
+![System Object Destroys Wifi Object](./drawings/system_destroying_wifi_sequence.svg) 
 
 ## Wifi Connection
 
