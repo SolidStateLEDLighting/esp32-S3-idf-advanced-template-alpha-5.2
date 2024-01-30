@@ -72,8 +72,8 @@ extern "C"
         uint8_t gpioStackSizeK = 5;                     // Default minimum size
         TaskHandle_t runTaskHandleSystemGPIO = nullptr; //
 
-        uint8_t timerStackSizeK = 4;                     // Default minimum size
-        TaskHandle_t taskHandleRunSystemTimer = nullptr; //
+        uint8_t timerStackSizeK = 4;                  // Default minimum size
+        TaskHandle_t taskHandleRunSysTimer = nullptr; //
 
         System(void);
         System(const System &) = delete;         // Disable copy constructor
@@ -130,13 +130,12 @@ extern "C"
         /* System_Timer */
         uint8_t rebootTimerSec = 0;
         uint8_t syncEventTimeOut_Counter = 0;
-        esp_timer_handle_t handleGenTimer = nullptr;
+        esp_timer_handle_t handleTimer = nullptr;
 
-        static void runGenTimerTaskMarshaller(void *); // Handles all Timer related events
-        void runGenTimerTask(void);                    //
-
-        void initSysTimer(void);
-        static void genTimerCallback(void *);
+        void initSysTimerTask(void);                   //
+        static void runSysTimerTaskMarshaller(void *); // Handles all Timer related events
+        void runSysTimerTask(void);                    //
+        static void sysTimerCallback(void *);          //
 
         void halfSecondActions(void);
         void oneSecondActions(void);

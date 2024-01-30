@@ -332,7 +332,7 @@ void System::run(void)
                 bootCount++;
                 lockSetUint8(&saveToNVSDelaySecs, 2);
 
-                initSysTimer(); // Starting System Timer task
+                initSysTimerTask(); // Starting System Timer task
                 sysOP = SYS_OP::Run;
                 break;
             }

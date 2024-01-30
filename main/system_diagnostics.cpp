@@ -150,9 +150,9 @@ void System::printTaskInfo()
     }
 
     // NOTE:  If you call these functions on the Timer task too early, that task will not be created yet.
-    name = pcTaskGetName(taskHandleRunSystemTimer);
-    priority = uxTaskPriorityGet(taskHandleRunSystemTimer);
-    highWaterMark = uxTaskGetStackHighWaterMark(taskHandleRunSystemTimer);
+    name = pcTaskGetName(taskHandleRunSysTimer);
+    priority = uxTaskPriorityGet(taskHandleRunSysTimer);
+    highWaterMark = uxTaskGetStackHighWaterMark(taskHandleRunSysTimer);
     printf("  %-10s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
 
     name = "sys_evt";

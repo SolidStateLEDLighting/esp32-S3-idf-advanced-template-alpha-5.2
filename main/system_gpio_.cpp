@@ -13,7 +13,7 @@ extern SemaphoreHandle_t semNVSEntry;
 extern SemaphoreHandle_t semWifiEntry;
 extern SemaphoreHandle_t semIndEntry;
 
-bool blnallowSwitchGPIOinput = true; // These variables are used for switch input debouncing
+bool allowSwitchGPIOinput = true; // These variables are used for switch input debouncing
 uint8_t SwitchDebounceCounter = 0;
 
 QueueHandle_t xQueueGPIOEvents = nullptr;
@@ -42,14 +42,14 @@ void System::initGPIOPins(void) // We initial all pins possible here.
 /* This ISR is set apart because tactile switch input needs to be handled with a debouncing algorithm. */
 void IRAM_ATTR GPIOSwitchIsrHandler(void *arg)
 {
-    if (blnallowSwitchGPIOinput)
+    if (allowSwitchGPIOinput)
     {
         // Important Note:  We are breaking the rules here by accessing variables in 2 different tasks without locking them.
         // In this particular case any errors that would result can not be seen.  We might have a skipped count or a
         // slightly longer delay.  This error would not matter.
         xQueueSendToBackFromISR(xQueueGPIOEvents, &arg, NULL);
         SwitchDebounceCounter = 50; // Reject all input for 5/10 of a second -- counter is running in system_timer
-        blnallowSwitchGPIOinput = false;
+        allowSwitchGPIOinput = false;
     }
 }
 
@@ -77,7 +77,7 @@ void System::initGPIOTask(void)
     ESP_GOTO_ON_ERROR(gpio_isr_handler_add(SW1, GPIOSwitchIsrHandler, (void *)SW1), sys_GPIOIsrHandler_err, TAG, "() failed");
 
     SwitchDebounceCounter = 30;
-    blnallowSwitchGPIOinput = true;
+    allowSwitchGPIOinput = true;
 
     xTaskCreate(runGPIOTaskMarshaller, "sys_gpio", 1024 * gpioStackSizeK, this, TASK_PRIORITY_MID, &runTaskHandleSystemGPIO); // (1) Low number indicates low priority task
     return;
@@ -121,7 +121,13 @@ void System::runGPIOTask(void)
 
             switch (io_num)
             {
-            case SW1: // Call Test fuctions here. Examples are stored inside system_gpio_tests.cpp
+                //
+                // Call Test fuctions here. Examples are stored inside:
+                // nvs_unit_tests.cpp
+                // wifi_unit_tests.cpp
+                // indication_unit_test.cpp
+                //
+            case SW1:
             {
                 routeLogByValue(LOG_TYPE::WARN, std::string(__func__) + "(): SW1... index is " + std::to_string(testIndex));
 

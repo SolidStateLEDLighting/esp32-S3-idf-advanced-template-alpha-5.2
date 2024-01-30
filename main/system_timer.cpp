@@ -4,7 +4,7 @@
 #include "esp_heap_caps.h"
 
 /* External Variables */
-extern bool blnallowSwitchGPIOinput;
+extern bool allowSwitchGPIOinput;
 extern uint8_t SwitchDebounceCounter;
 extern SemaphoreHandle_t semSysIndLock; // Local Indication Lock
 
@@ -20,44 +20,44 @@ uint8_t FiveMinutes = 5;
 // The timer here is of good precision but because all control to other objects is done through freeRTOS mechanisms, they would not
 // be best for short time intervals.  So, we refrain from calling other objects for short time periods.
 //
-void System::initSysTimer(void)
+void System::initSysTimerTask(void)
 {
-    xTaskCreate(runGenTimerTaskMarshaller, "sys_tmr", 1024 * timerStackSizeK, this, TASK_PRIORITY_HIGH, &taskHandleRunSystemTimer);
+    xTaskCreate(runSysTimerTaskMarshaller, "sys_tmr", 1024 * timerStackSizeK, this, TASK_PRIORITY_HIGH, &taskHandleRunSysTimer);
 
     const esp_timer_create_args_t general_timer_args = {
-        &System::genTimerCallback,
+        &System::sysTimerCallback,
         this,
         ESP_TIMER_TASK,
-        "general_timer", // name is optional, but may help identify the timer when debugging
+        "system_timer", // name is optional, but may help identify the timer when debugging
         true,
     };
 
     esp_err_t ret = ESP_OK;
-    ESP_GOTO_ON_ERROR(esp_timer_create(&general_timer_args, &handleGenTimer), sys_initGenTimer_err, TAG, "esp_timer_create() failed");
-    ESP_GOTO_ON_ERROR(esp_timer_start_periodic(handleGenTimer, TIMER_PERIOD_100Hz), sys_initGenTimer_err, TAG, "esp_timer_create() failed");
+    ESP_GOTO_ON_ERROR(esp_timer_create(&general_timer_args, &handleTimer), sys_initSysTimer_err, TAG, "esp_timer_create() failed");
+    ESP_GOTO_ON_ERROR(esp_timer_start_periodic(handleTimer, TIMER_PERIOD_100Hz), sys_initSysTimer_err, TAG, "esp_timer_create() failed");
     return;
 
-sys_initGenTimer_err:
+sys_initSysTimer_err:
     errMsg = std::string(__func__) + "(): " + esp_err_to_name(ret);
     sysOP = SYS_OP::Error;
 }
 
-void IRAM_ATTR System::genTimerCallback(void *arg)
+void IRAM_ATTR System::sysTimerCallback(void *arg)
 {
     // Our priorty here is to exit our ISR with minumum processing so the system can return to normal task servicing quickly.
     // Therefore, we will exercise Deferred Interrupt Processing as often as posible.
     // NOTE: Any high priorty task will essentially run as if it were the ISR itself if there are no other equally high prioirty tasks running.
     //
-    vTaskNotifyGiveFromISR(((System *)arg)->taskHandleRunSystemTimer, NULL);
+    vTaskNotifyGiveFromISR(((System *)arg)->taskHandleRunSysTimer, NULL);
 }
 
-void System::runGenTimerTaskMarshaller(void *arg)
+void System::runSysTimerTaskMarshaller(void *arg)
 {
-    ((System *)arg)->runGenTimerTask();
+    ((System *)arg)->runSysTimerTask();
     vTaskDelete(NULL);
 }
 
-void System::runGenTimerTask(void)
+void System::runSysTimerTask(void)
 {
     while (true)
     {
@@ -75,7 +75,7 @@ void System::runGenTimerTask(void)
             // In this particular case any errors that would result can not be seen.  We might have a skipped count or a
             // slightly longer delay.  The error would not matter.
             if (--SwitchDebounceCounter < 1)
-                blnallowSwitchGPIOinput = true;
+                allowSwitchGPIOinput = true;
         }
 
         if (halfSecond > 0)
