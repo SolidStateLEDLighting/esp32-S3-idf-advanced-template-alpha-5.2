@@ -9,12 +9,11 @@ extern uint8_t SwitchDebounceCounter;
 extern SemaphoreHandle_t semSysIndLock; // Local Indication Lock
 
 // Local Variables
-uint8_t halfSecond = 50;
-uint8_t OneSecond = 2;
-uint8_t FiveSeconds = 5;
-uint8_t TenSeconds = 10;
-uint8_t OneMinute = 6;
-uint8_t FiveMinutes = 5;
+uint8_t halfSecondCount = 50;
+uint8_t oneSecondCount = 2;
+uint8_t fiveSecondCount = 5;
+uint8_t tenSecondCount = 10;
+uint8_t oneMinuteCount = 6;
 
 //
 // The timer here is of good precision but because all control to other objects is done through freeRTOS mechanisms, they would not
@@ -78,57 +77,48 @@ void System::runSysTimerTask(void)
                 allowSwitchGPIOinput = true;
         }
 
-        if (halfSecond > 0)
+        if (halfSecondCount > 0)
         {
-            if (--halfSecond < 1)
+            if (--halfSecondCount < 1)
             {
-                // halfSecondActions();
+                // halfSecondActions();  // We have no halfSecondActions right now
+                halfSecondCount = 50;
 
-                if (OneSecond > 0)
+                if (oneSecondCount > 0)
                 {
-                    if (--OneSecond < 1)
+                    if (--oneSecondCount < 1)
                     {
                         oneSecondActions();
+                        oneSecondCount = 2;
 
-                        if (FiveSeconds > 0)
+                        if (fiveSecondCount > 0)
                         {
-                            if (--FiveSeconds < 1)
+                            if (--fiveSecondCount < 1)
                             {
                                 fiveSecondActions();
-                                FiveSeconds = 5;
+                                fiveSecondCount = 5;
                             }
                         }
 
-                        if (TenSeconds > 0)
+                        if (tenSecondCount > 0)
                         {
-                            if (--TenSeconds < 1)
+                            if (--tenSecondCount < 1)
                             {
                                 tenSecondActions();
-                                TenSeconds = 10;
+                                tenSecondCount = 10;
                             }
                         }
 
-                        if (OneMinute > 0)
+                        if (oneMinuteCount > 0)
                         {
-                            if (--OneMinute < 1)
+                            if (--oneMinuteCount < 1)
                             {
                                 oneMinuteActions();
-
-                                if (FiveMinutes > 0)
-                                {
-                                    if (--FiveMinutes < 1)
-                                    {
-                                        fiveMinuteActions();
-                                        FiveMinutes = 5;
-                                    }
-                                }
-                                OneMinute = 60;
+                                oneMinuteCount = 60;
                             }
                         }
-                        OneSecond = 2;
-                    }
+                                        }
                 }
-                halfSecond = 50;
             }
         }
     }
@@ -193,10 +183,4 @@ void System::oneMinuteActions(void)
 {
     if (showSys & _showSysTimerMinutes)
         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): One Minute");
-}
-
-void System::fiveMinuteActions(void)
-{
-    if (showSys & _showSysTimerMinutes)
-        routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Five Minutes");
 }
