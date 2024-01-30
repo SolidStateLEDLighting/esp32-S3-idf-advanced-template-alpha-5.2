@@ -96,7 +96,7 @@ void System::runGPIOTaskMarshaller(void *arg) // This function can be resolved a
 void System::runGPIOTask(void)
 {
     uint32_t io_num = 0;
-    uint8_t gpioIndex = 0;
+    uint8_t testIndex = 0;
 
     // TESTING VARIABLES
     // esp_err_t ret = ESP_OK;
@@ -123,9 +123,9 @@ void System::runGPIOTask(void)
             {
             case SW1: // Call Test fuctions here. Examples are stored inside system_gpio_tests.cpp
             {
-                routeLogByValue(LOG_TYPE::WARN, std::string(__func__) + "(): SW1... index is " + std::to_string(gpioIndex));
+                routeLogByValue(LOG_TYPE::WARN, std::string(__func__) + "(): SW1... index is " + std::to_string(testIndex));
 
-                switch (gpioIndex)
+                switch (testIndex)
                 {
                     /* case 0: // Destroying wifi
                     {
@@ -209,10 +209,10 @@ void System::runGPIOTask(void)
                     // }
                 }
 
-                if (++gpioIndex > 2)
+                if (++testIndex > 2)
                 {
-                    routeLogByValue(LOG_TYPE::WARN, std::string(__func__) + "(): gpioIndex restart...");
-                    gpioIndex = 0;
+                    routeLogByValue(LOG_TYPE::WARN, std::string(__func__) + "(): testIndex restart...");
+                    testIndex = 0;
                 }
                 break;
             }
