@@ -142,7 +142,6 @@ extern "C"
         void fiveSecondActions(void);
         void tenSecondActions(void);
         void oneMinuteActions(void);
-        void fiveMinuteActions(void);
 
         /* Utilities */
         const char *convertWifiStateToChars(uint8_t);
