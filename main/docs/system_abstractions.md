@@ -3,6 +3,8 @@
 
 The system class in itself is a top level class in our project.  The intent of the System is to be the foundation of the project.  Master control is held here.
 
+![System Abstractions](./drawings/system_abstractions.svg)
+
 ---  
 # Top-Level
 
