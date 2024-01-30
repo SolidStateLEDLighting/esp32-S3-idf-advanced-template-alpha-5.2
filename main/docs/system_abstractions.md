@@ -8,18 +8,21 @@ The system class in itself is a top level class in our project.  The intent of t
 ---  
 # Top-Level
 
-* **Diagnostics:** 
-The system is responsible for any top level diagnostic operations.  This may include memory analysis or task profiling.  Typically, lower level objects will not start
-diagnostics on their own because this could intefere with system control.
+* **Run Handling:** 
+The system makes decisions in the Run handler of the System object.  We can also invoke actions.  The system is also reponsible for low power sleep activities or complete hardware restarting.
+
+* **Timer Handling:** 
+Timers are limited in hardware.  We offer up a timing service to the System which can be used to invoke actions on the system level. 
 
 * **GPIO Handling:** 
 We organized GPIO activities at a system level as much as possible so that timer resources are conserved and the system can be put to sleep more efficietly.
 
-* **Run Handling:** 
-We can start and stop other objects in the project.  We can also invoke actions.  The system is also reponsible for low power sleep activities.
+* **Diagnostics:** 
+The system is responsible for any top level diagnostic operations.  This may include memory analysis or task profiling.  Typically, lower level objects will not start
+diagnostics on their own because this could intefere with system control.
 
-* **Timer Handling:** 
-Timers are limited in hardware.  We offer up a timing service to the System which can be used to invoke actions on the system level. 
+* **Error Handling:**
+The final decision on error handling happends at the System level. 
 
 ---  
 # Mid-Level
