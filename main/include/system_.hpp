@@ -50,7 +50,7 @@ extern "C"
         char TAG[5] = "_sys";
 
         /* Object States */
-        WIFI_CONN_STATE sysWifiConnState = WIFI_CONN_STATE::NFY_WIFI_DISCONNECTED;
+        WIFI_CONN_STATE sysWifiConnState = WIFI_CONN_STATE::WIFI_DISCONNECTED;
 
         /* Object References */
         NVS *nvs = nullptr;

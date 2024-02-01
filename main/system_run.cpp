@@ -40,7 +40,7 @@ void System::run(void)
                 {
                     if (show & _showRun)
                         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::NFY_WIFI_CONNECTING"); // Tell all parties who care that Internet is available.
-                    sysWifiConnState = WIFI_CONN_STATE::NFY_WIFI_CONNECTING_STA;
+                    sysWifiConnState = WIFI_CONN_STATE::WIFI_CONNECTING_STA;
                     break;
                 }
 
@@ -48,7 +48,7 @@ void System::run(void)
                 {
                     if (show & _showRun)
                         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::NFY_WIFI_CONNECTED"); // Tell all parties who care that Internet is available.
-                    sysWifiConnState = WIFI_CONN_STATE::NFY_WIFI_CONNECTED_STA;
+                    sysWifiConnState = WIFI_CONN_STATE::WIFI_CONNECTED_STA;
                     break;
                 }
 
@@ -56,7 +56,7 @@ void System::run(void)
                 {
                     if (show & _showRun)
                         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::NFY_WIFI_DISCONNECTING"); // Tell all parties who care that the Internet is not avaiable.
-                    sysWifiConnState = WIFI_CONN_STATE::NFY_WIFI_DISCONNECTING_STA;
+                    sysWifiConnState = WIFI_CONN_STATE::WIFI_DISCONNECTING_STA;
                     break;
                 }
 
@@ -64,7 +64,7 @@ void System::run(void)
                 {
                     if (show & _showRun)
                         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_NOTIFY::NFY_WIFI_DISCONNECTED"); // Wifi is competlely ready to be connected again.
-                    sysWifiConnState = WIFI_CONN_STATE::NFY_WIFI_DISCONNECTED;
+                    sysWifiConnState = WIFI_CONN_STATE::WIFI_DISCONNECTED;
                     break;
                 }
 
@@ -173,11 +173,11 @@ void System::run(void)
                 // If Connected   to a Host - flash Blue
                 //
                 int32_t val = 0;
-                if (sysWifiConnState == WIFI_CONN_STATE::NFY_WIFI_DISCONNECTED)
+                if (sysWifiConnState == WIFI_CONN_STATE::WIFI_DISCONNECTED)
                     val = 0x11000209;
-                if (sysWifiConnState == WIFI_CONN_STATE::NFY_WIFI_CONNECTING_STA)
+                if (sysWifiConnState == WIFI_CONN_STATE::WIFI_CONNECTING_STA)
                     val = 0x21000209;
-                else if (sysWifiConnState == WIFI_CONN_STATE::NFY_WIFI_CONNECTED_STA)
+                else if (sysWifiConnState == WIFI_CONN_STATE::WIFI_CONNECTED_STA)
                     val = 0x41000209;
 
                 if (val > 0)
