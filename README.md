@@ -33,7 +33,7 @@ ___
 [System Readme Document](./main/README.md)  
 
 ## Links to Component Documents
-[test entry](https://github.com/SolidStateLEDLighting/blob/main/indication_ws2812_5.2/README.md)  
+[test entry](https://github.com/SolidStateLEDLighting/indication_ws2812_5.2)
 [NVS Readme Document](./components/nvs_5.2/README.md)  
 [Wifi/SNTP Readme Document](./components/wifi_5.2/README.md)  
 [Indication Readme Document](./components/indication_ws2812_5.2/README.md)  
