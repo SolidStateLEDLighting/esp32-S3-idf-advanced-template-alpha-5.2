@@ -1,5 +1,5 @@
 # Project Alpha 5.2 V1
-This is a starter project for a dual core Esp32 microcontroller running FreeRTOS.  The hardware is equivalent to a DevKitM or DevKitC running an Esp32S3 N16R8, but this project should be portable to other dual and single core Esp32 processors with minor changes.
+This is a starter project for a dual core Esp32 microcontroller running FreeRTOS.  The hardware is equivalent to a DevKitM or DevKitC running an Esp32S3 N16R8, but this project should be portable to other dual and single core Esp32 processors with minor changes.  For example, you may need to size down the partition table as this project is set up for large scale development.
 
 **Alpha** refers to the hardware for which this project will run on.   
 **5.2** refers to the version of ESP-IDF for which this project is built with.  
@@ -51,7 +51,7 @@ ___
 6) NOTE: Test software snippets can be swapped into system_gpio.cpp source file so that the switch (GPIO0) can make various command calls.  
 ___  
 # Telling the Story
-Software documentation doesn't exactly lend itself well to telling a chronological story.  Instead we will use software engineering concepts to present multiple viewpoints which should deliver not only how the software functions, but also why the software is developed the way that it is.   The topics will be presented through **Abstractions**, **Block Diagrams**, **Flowcharts**, **Sequence Diagrams**, and **State Transition Diagrams**.  With all these different perspectives, you should be able to key in on the understanding in the way that registers with you best.
+Software documentation doesn't exactly lend itself well to telling a chronological story.  Instead, we will use software engineering concepts to present multiple viewpoints which should deliver not only how the software functions, but also why the software is developed the way that it is.   The topics will be presented through **Abstractions**, **Block Diagrams**, **Flowcharts**, **Sequence Diagrams**, and **State Transition Diagrams**.  With all these different perspectives, you should be able to key in on the understanding in the way that registers with you best.
 
 ## Abstractions  
 On a project level, the primary abstraction is the operation of the entire system.  At present, the project doesn't interact much with the surrounding world, so its abstractions are of limited value.  [project abstraction document](./docs/project_abstractions.md)

@@ -4,4 +4,4 @@ cmake_minimum_required(VERSION 3.5)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
-project(sample_project_5.2)
+project(esp-idf-advanced-template-alpha-5.2)
