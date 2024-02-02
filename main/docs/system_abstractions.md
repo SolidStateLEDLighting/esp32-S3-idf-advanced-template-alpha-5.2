@@ -1,11 +1,10 @@
 # System Abstractions
-> Taking note of our planned abstraction levels helps us keep the design intent clear between files and functions.
+Taking note of our abstraction levels helps us keep the design intent clear between files and functions.
 
 The system class in itself is a top level class in our project.  The intent of the System is to be the foundation of the project.  Master control is held here.
 
 ![System Abstractions](./drawings/system_abstractions.svg)
-
----  
+___  
 # Top-Level
 
 * **Run Handling:** 
@@ -23,8 +22,7 @@ diagnostics on their own because this could intefere with system control.
 
 * **Error Handling:**
 The final decision on error handling happends at the System level. 
-
----  
+___  
 # Mid-Level
 
 * **Logging:** 
@@ -32,8 +30,8 @@ Logging is a mid-level activity because all classes control their own logging.  
 
 * **NVS:** 
 This is a mid-level activity because the system_nvs routines call on the nvs class object to handle the lowest level access in the project.  System_nvs retreives/stores only system level values of interest.  During storage, our areas of concern are to evaluate default values and to catch and exclude values outside of defined bounds.
-
----  
+___  
 # Low-Level
 
 The system will make calls directly back to the ESP-IDF.  There are no other intermediate libraries between the System and the IDF.
+___  
