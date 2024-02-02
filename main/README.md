@@ -1,4 +1,4 @@
-# System Overview
+# System (Main) Component
 The system is made up of one object and three tasks.  This object is a singleton and has no destructor.  The system can only be restarted upon a full shutdown and reboot of the hardware.
 
 The system mangages everything at a high level.  It does the following:
