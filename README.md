@@ -28,17 +28,17 @@ The intent of this example project is to prepare a suitable development code bas
   * Espressif IDF Plugin (running **Configure ESP-IDF Extension** will do most of the heavy lifting for you.)
   * Git Graph (optional extras)
   * C/C++ Themes
-  
+___    
 ## System Documents (Main component)
 [System Readme Document](./main/README.md)  
 
 ## Links to Component Documents
-[NVS Readme Document](./components/nvs_5.2/README.md)  
+[test entry](https://github.com/SolidStateLEDLighting/indication_ws2812_5.2/README.md)
+[NVS Readme Document](./components/nvs_5.2/README.md)
 [Wifi/SNTP Readme Document](./components/wifi_5.2/README.md)  
 [Indication Readme Document](./components/indication_ws2812_5.2/README.md)  
 
 # Quick Start
----
 1) Clone the project and open the root directory in VS Code.
 2) Make an adjustment to freeRTOS Maximum priority [README_RTOS Document](./README_RTOS.md) 
 3) Run the ESP-IDF SDK Configuration Editor (menuconfig)  
@@ -50,7 +50,7 @@ The intent of this example project is to prepare a suitable development code bas
 4) Set your COM port and flash method (UART) and you should be ready to go.  
 5) Compile, Flash, and Monitor.  Apply input through GPIO0 push button switch as needed.
 6) NOTE: Test software snippets can be swapped into system_gpio.cpp source file so that the switch (GPIO0) can make various command calls.  
-
+___  
 # Telling the Story
 Software documentation doesn't exactly lend itself well to telling a chronological story.  Instead we will use software engineering concepts to present multiple viewpoints which should deliver not only how the software functions, but also why the software is developed the way that it is.   The topics will be presented through **Abstractions**, **Block Diagrams**, **Flowcharts**, **Sequence Diagrams**, and **State Transition Diagrams**.  With all these different perspectives, you should be able to key in on the understanding in the way that registers with you best.
 
