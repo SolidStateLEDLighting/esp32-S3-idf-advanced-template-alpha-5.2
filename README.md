@@ -3,7 +3,7 @@ This is a starter project for a dual core Esp32 microcontroller running FreeRTOS
 
 **Alpha** refers to the hardware for which this project will run on.   
 **5.2** refers to the version of ESP-IDF for which this project is built with.  
-**V1** refers to the level of features in this sample project. As features increase, this number will increase. 
+**V1** refers to the number of features in this sample project. As feature count increases, this number will increase. 
 
 **Hardware Supported:**
 * Esp32s3 DevKitC / DevKitM
@@ -12,8 +12,8 @@ This is a starter project for a dual core Esp32 microcontroller running FreeRTOS
 **Features:**
 * Full SMP support
 * C++ Construction/Destruction
-* Wifi STA (basic connection/disconnection)
-* SNTP support
+* Wifi STA (basic connection/disconnection support)
+* SNTP support (ability to fetch epoch time)
 * NVS support
 * RGB Indicator for ws2812 LED
 
@@ -51,7 +51,7 @@ ___
 6) NOTE: Test software snippets can be swapped into system_gpio.cpp source file so that the switch (GPIO0) can make various command calls.  
 ___  
 # Telling the Story
-Software documentation doesn't exactly lend itself well to telling a chronological story.  Instead, we will use software engineering concepts to present multiple viewpoints which should deliver not only how the software functions, but also why the software is developed the way that it is.   The topics will be presented through **Abstractions**, **Block Diagrams**, **Flowcharts**, **Sequence Diagrams**, and **State Transition Diagrams**.  With all these different perspectives, you should be able to key in on the understanding in the way that registers with you best.
+Software documentation doesn't exactly lend itself well to telling a chronological story.  Instead, we will use software engineering concepts to present multiple viewpoints which should deliver not only how the software functions, but also why the software is developed the way that it is.  The topics will be presented through **Abstractions**, **Block Diagrams**, **Flowcharts**, **Sequence Diagrams**, and **State Transition Diagrams**.  With all these different perspectives, you should be able to key in the ideas in the way that registers with you best.
 
 ## Abstractions  
 On a project level, the primary abstraction is the operation of the entire system.  At present, the project doesn't interact much with the surrounding world, so its abstractions are of limited value.  [project abstraction document](./docs/project_abstractions.md)
@@ -70,13 +70,13 @@ Features which are included, explained, or demonstrated are:
 6. Simple Network Time Protocol integration.
 7. WS2812 Addressable Indication RGB LED (employs the remote control transceiver (RMT) driver).
 
-For more detailed information about the system, follow this link:  [project block document](./docs/project_blocks.md)
+For more detailed information about the system, follow this link: [project block document](./docs/project_blocks.md).
 ___  
 ## Flowcharts  
 At a project level, there is not much to show in a flowchart except for app_main().  Our flowchart page will also provide links to allow you to drill down to other areas.  [project flowchart document](./docs/project_flowcharts.md)
 ___  
 ## Sequence Diagrams  
-There are a few key sequences which are worth examining on a global level.  The one that is most interesting is how a supporting object is constructed and how its task is spun up.    [project sequence document](./docs/project_sequences.md)
+There are a few key sequences which are worth examining on a global level.  The one that is most interesting is how a supporting object is constructed and how its task is spun up.  [project sequence document](./docs/project_sequences.md)
 ___  
 ## State Transition Program Flow
 One of the basic premises of development in a predominately cooperative multitasking system is that the threads (tasks) must yield back to the operating system's scheduler on a regular basis frequently enough to supply enough processor time to service all tasks of lesser or equal priority.  If any task doesn't yield, the system will starve of CPU time and a task watchdog timer will expire causing a core panic followed by a reboot.  If you have worked for any length of time with Esp32 and FreeRTOS, you have seen a watchdog timer expire (as well as stack overflows).
@@ -93,5 +93,5 @@ State transition modeling provides a well understood mechanism that upon input a
 
 On the down side, state modeling can't be easily followed in a single page of source code.  State modeling isn't a linear list of things to do (as is seen in most of Espressif's small code examples).  State modeling resembles a series of interrelated repeating loops.  With time and experience, state modeling becomes easier to see and understand, and one way to quickly get up to speed in understanding it - is to view state modeling diagrams and consider how it is a road map to the source code.  As a rule, if you can easily diagram your intended state transition process, then it is likely to be expressible in code.   Additionally, explaining why you are doing something is typically very important, so always include good documentation about your design intent.
 
-View this page for our state models at a project level.  [project state model document](./docs/project_state_models.md)
+The state model at a project level is fairly simple: [project state model document](./docs/project_state_models.md).
 ___  

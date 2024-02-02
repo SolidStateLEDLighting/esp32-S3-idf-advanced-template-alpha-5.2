@@ -185,7 +185,7 @@ void System::runGPIOTask(void)
                     break;
                 }
 
-                case 1:
+                case 2:
                 {
                     while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_DISC_HOST), eSetValueWithoutOverwrite))
                         vTaskDelay(pdMS_TO_TICKS(50));
@@ -195,7 +195,8 @@ void System::runGPIOTask(void)
                     break;
                 }
 
-                case 2:
+                case 1:
+                case 3:
                 {
                     printTaskInfo();
                     // printRunTimeStats();
@@ -215,7 +216,7 @@ void System::runGPIOTask(void)
                     // }
                 }
 
-                if (++testIndex > 2)
+                if (++testIndex > 3)
                 {
                     routeLogByValue(LOG_TYPE::WARN, std::string(__func__) + "(): testIndex restart...");
                     testIndex = 0;
