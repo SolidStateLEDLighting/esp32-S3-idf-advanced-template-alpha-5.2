@@ -33,11 +33,10 @@ ___
 [System Readme Document](./main/README.md)  
 
 ## Links to Component Documents
-[test entry](https://github.com/SolidStateLEDLighting/indication_ws2812_5.2)
-[NVS Readme Document](./components/nvs_5.2/README.md)  
-[Wifi/SNTP Readme Document](./components/wifi_5.2/README.md)  
-[Indication Readme Document](./components/indication_ws2812_5.2/README.md)  
-
+[NVS Readme Document](https://github.com/SolidStateLEDLighting/nvs_5.2)    
+[Wifi/SNTP Readme Document](https://github.com/SolidStateLEDLighting/wifi_5.2)    
+[Indication Readme Document](https://github.com/SolidStateLEDLighting/indication_ws2812_5.2) 
+___ 
 # Quick Start
 1) Clone the project and open the root directory in VS Code.
 2) Make an adjustment to freeRTOS Maximum priority [README_RTOS Document](./README_RTOS.md) 
