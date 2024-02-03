@@ -9,6 +9,7 @@
 // switch in software.   We handle switch input with espressive's recommendation to first catching the ISR and then routing that
 // to a queue.
 //
+/* External Semaphores */
 extern SemaphoreHandle_t semNVSEntry;
 extern SemaphoreHandle_t semWifiEntry;
 extern SemaphoreHandle_t semIndEntry;

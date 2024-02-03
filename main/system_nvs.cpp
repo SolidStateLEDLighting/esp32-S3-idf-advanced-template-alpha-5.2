@@ -7,7 +7,7 @@
 // be used as key values in non-volitile storage.
 //
 
-/* External Variables */
+/* External Semaphores */
 extern SemaphoreHandle_t semNVSEntry;
 
 void System::restoreVariablesFromNVS()
