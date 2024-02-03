@@ -82,6 +82,7 @@ void System::createSemaphores()
         xSemaphoreGive(semSysIndLock);
 }
 
+/* Public Member Functions */
 TaskHandle_t System::getRunTaskHandle(void)
 {
     return taskHandleSystemRun;
