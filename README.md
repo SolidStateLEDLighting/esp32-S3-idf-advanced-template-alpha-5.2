@@ -8,7 +8,7 @@ This is a starter project for a dual core Esp32 microcontroller running FreeRTOS
 **Hardware Supported:**
 * Esp32s3 DevKitC / DevKitM
 * Esp32 DevKitC / DevKitM
-
+![DevKitC](./docs/images/DevKitC.jpg) 
 **Features:**
 * Full SMP support
 * C++ Construction/Destruction
