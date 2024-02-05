@@ -10,7 +10,7 @@ This is a starter project for a dual core Esp32 microcontroller running FreeRTOS
 * Esp32 DevKitC / DevKitM  
 ![DevKitC](./docs/images/DevKitC.jpg)  
 
-**Features:**
+**V1 Features:**
 * Full SMP support
 * C++ Construction/Destruction
 * Wifi STA (basic connection/disconnection support)
