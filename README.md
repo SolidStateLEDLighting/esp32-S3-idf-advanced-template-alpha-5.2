@@ -40,7 +40,7 @@ ___
 ___ 
 # Quick Start
 1) Clone the project and open the root directory in VS Code.
-2) Make an adjustment to freeRTOS Maximum priority [README_RTOS Document](./README_RTOS.md) 
+2) As an option, you may make an adjustment to freeRTOS Maximum priority [README_RTOS Document](./README_RTOS.md) 
 3) Run the ESP-IDF SDK Configuration Editor (menuconfig)  
     >A. Select the correct GPIO output pin under **WS2812 RGB LED**  
     >B. Apply the correct SSID and Password for your Wifi connection under **Wifi STA Manual Settings**  

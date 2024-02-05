@@ -1,4 +1,7 @@
 # System (Main) Component
+
+We called this the System but because all is inside a directory called Main, the project recognizes Main as the name of the component.  It is possilbe to change the folder name but it requires some special work that would be more complex that worth doing at this point.
+
 The system is made up of one object and three tasks.  This object is a singleton and has no destructor.  The system can only be restarted upon a full shutdown and reboot of the hardware.
 
 The system mangages everything at a high level.  It does the following:
@@ -7,7 +10,7 @@ The system mangages everything at a high level.  It does the following:
 * May open and close external communications.
 * Triggers periodic system-wide tasks.
 * Handles error recovery on a system scale (if possible).
-* It is in charge of putting the system to sleep. **(not yet impliemented)**
+* It will be in charge of putting the system to sleep. **(not yet impliemented)**
 
 The following categories will help you visualize different aspects of the system:
 
