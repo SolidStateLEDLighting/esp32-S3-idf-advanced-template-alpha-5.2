@@ -17,9 +17,13 @@ Typically we would prefer to have the same task (thread) to both lock and unlock
 ## Wifi Connection
 Some of this process must be viewed in flowcharts for better clarity.
 
-We first set up a run directive.  This directive can be set up to run several step in sucession.  This case, a connection is only one step.
-![System Object Destroys Wifi Object](./drawings/system_wifi_connecting.svg) 
+We first set up a run directive.  This directive can be set up to run several step in sucession.  This case, a connection is only one step.  We then run the directives.
+![System Object Destroys Wifi Object](./drawings/system_wifi_connecting_sequence.svg) 
 
 ## Wifi Disconnection
+Some of this process must be viewed in flowcharts for better clarity.
+
+We first set up a run directive then run all directives.
+![System Object Destroys Wifi Object](./drawings/system_wifi_disconnecting_sequence.svg) 
 
 
