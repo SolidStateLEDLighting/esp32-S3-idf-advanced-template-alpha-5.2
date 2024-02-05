@@ -15,4 +15,4 @@ This is the state transition model for SYS_OP::Init above.  Very few of the stat
 ![Iniitalzation State Model](./drawings/system_init_state_model.svg)
 ___  
 ## Other States?
-There no states inside SYS_OP::Run, GPIO Events, or Timer Events.  Those operations is can be viewed by a flowchart on this ![page](./system_flowcharts.md).
+There no states inside SYS_OP::Run, GPIO Events, or Timer Events.  Those operations is can be viewed by a flowchart on this [page](./system_flowcharts.md).
