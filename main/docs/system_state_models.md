@@ -13,3 +13,5 @@ The Timer task is currently always running and creating timer events which invok
 
 ## System Operation Initializaton
 We can include operational states in our diagrams.  Here, we model everything which is inside SYS_OP::Init above.
+
+WIP (missing the diagram)
