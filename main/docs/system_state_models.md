@@ -11,6 +11,6 @@ The GPIO task is always available to handle gpio generated interrupts.  All comm
 The Timer task is currently always running and creating timer events which invoke RTOS mechanisms to send task notifications or change local System variables.
 ___  
 ## System Initializaton Operation
-We can include operational states in our diagrams.  Here, we model everything which is inside SYS_OP::Init above.  Very few of the state changes here need input.  Most of these states are small so as to release the CPU often.
+This is the state transition model for SYS_OP::Init above.  Very few of the state changes here need input.  Likewise, very few state produce output.  Most of these states are small so as to release the CPU often.
 ![Iniitalzation State Model](./drawings/system_init_state_model.svg)
 ___  
