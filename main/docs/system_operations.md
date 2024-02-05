@@ -6,7 +6,7 @@ We define a list of system operations in system_enum.hpp.  There currently only 
 * Init Operation
 * Error Operation
 * Idle Operation
-![Run Operation Diagram](./drawings/system_operations_block.svg)
+![Run Task Operation Diagram](./drawings/system_operations_block.svg)
 
 ### Run Operation
 In all objects, a Run operation (contained inside a Run task) is centeral to it's normal operation.  Most of a task's time is spent here.  The Run operation watches for any RTOS communications, it looks for pending actions, and sometimes state changes.  The object's Run task will always return to the centeralized Run operation when waiting is require before the next required action.  In most cases, we have set the loop cycles to 4Hz, but this could be adjusted if processing in any particular object requires a lower latency response time.

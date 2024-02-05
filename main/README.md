@@ -12,8 +12,7 @@ The system mangages everything at a high level.  It does the following:
 * Handles error recovery on a system scale (if possible).
 * It will be in charge of putting the system to sleep. **(not yet impliemented)**
 
-The following categories will help you visualize different aspects of the system:
-
+You may follow these links to System documentation:
 1) [System Abstractions](./docs/system_abstractions.md)
 2) [System Block Diagram](./docs/system_blocks.md)
 3) [System Flowcharts](./docs/system_flowcharts.md)
