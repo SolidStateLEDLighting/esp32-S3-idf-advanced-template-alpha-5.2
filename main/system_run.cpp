@@ -84,10 +84,10 @@ void System::run(void)
                             taskHandleWIFIRun = nullptr;       // Clear the wifi task handle
                             queHandleWIFICmdRequest = nullptr; // Clear the wifi Command Queue handle
 
-                            delete wifi; // Locking the object will be done inside the destructor.
+                            delete wifi;    // Locking the object will be done inside the destructor.
+                            wifi = nullptr; // Destructor will not set pointer null.  We must to do that manually.
 
-                            if (wifi != nullptr)
-                                wifi = nullptr; // Destructor will not set pointer null.  We must to do that manually.
+                            // Note: The semWifiEntry semaphore is already destroyed - so don't "Give" it or a run time error will occur
 
                             if (show & _showRun)
                                 routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): wifi deleted");

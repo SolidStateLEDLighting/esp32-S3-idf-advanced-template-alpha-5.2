@@ -150,6 +150,8 @@ void System::runGPIOTask(void)
                                 delete wifi;                   // Lock on the object will be done inside the destructor.
                                 wifi = nullptr;                // Destructor will not set pointer null.  We have to do that manually.
                                 ESP_LOGW(TAG, "wifi deleted"); //
+
+                                // Note: The semWifiEntry semaphore is already destroyed - so don't "Give" it or a run time error will occur
                             }
                         }
                         break;

@@ -97,7 +97,6 @@ extern "C"
 
         /* System_Logging */
         std::string errMsg = "";
-
         void routeLogByRef(LOG_TYPE, std::string *);
         void routeLogByValue(LOG_TYPE, std::string);
 
