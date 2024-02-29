@@ -38,7 +38,7 @@ This is the highest level of abstraction for saving and restoring data from non-
 ### system_run.cpp
 All our run time loops are contained within the system_run translation unit.  For other object with event handling, there will also be a run-time driven event handling function.
 
-**Our run loop contains all the possible [System Operations](./system_block_operations.md)**
+**Our run loop contains all the possible [System Operations](./system_operations.md)**
 
 ### system_timer.cpp
 This translation unit contains a high accuracy esp32 timers and a callback timer handler.  This timer is used for repetative periodic operations.
