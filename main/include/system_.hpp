@@ -35,7 +35,6 @@ extern "C"
     class System
     {
     public:
-        /* System_ */
         static System *getInstance() // Enforce use of System as a singleton object
         {
             static System sysInstance;
@@ -46,7 +45,10 @@ extern "C"
         QueueHandle_t getCmdRequestQueue(void);
 
     private:
-        /* System_ */
+        System(void);
+        System(const System &) = delete;         // Disable copy constructor
+        void operator=(System const &) = delete; // Disable assignment operator
+
         char TAG[5] = "_sys";
 
         /* Object States */
@@ -75,9 +77,7 @@ extern "C"
         uint8_t timerStackSizeK = 4;                  // Default minimum size
         TaskHandle_t taskHandleRunSysTimer = nullptr; //
 
-        System(void);
-        System(const System &) = delete;         // Disable copy constructor
-        void operator=(System const &) = delete; // Disable assignment operator
+        
 
         void setFlags(void);
         void setLogLevels(void);
