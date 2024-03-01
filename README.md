@@ -49,7 +49,7 @@ ___
 
 4) Set your COM port and flash method (UART) and you should be ready to go.  
 5) Compile, Flash, and Monitor.  Apply input through GPIO0 push button switch as needed.
-6) NOTE: Test software snippets can be swapped into system_gpio.cpp source file so that the switch (GPIO0) can make various command calls.  
+6) NOTE: Test software snippets can be swapped into system_gpio.cpp source file so that the switch (GPIO0) can make various test calls.  
 ___  
 # Telling the Story
 Software documentation doesn't exactly lend itself well to telling a chronological story.  Instead, we will use software engineering concepts to present multiple viewpoints which should deliver not only how the software functions, but also why the software is developed the way that it is.  The topics will be presented through **Abstractions**, **Block Diagrams**, **Flowcharts**, **Sequence Diagrams**, and **State Transition Diagrams**.  With all these different perspectives, you should be able to key in the ideas in the way that registers with you best.
@@ -63,7 +63,7 @@ You are looking at an overview of the classes, translation units and the FreeRTO
 ![project block diagram](./docs/drawings/project_block.svg)  
 
 Features which are included, explained, or demonstrated are:
-1. C++ Construction (excluding inheritance and polymorphism).
+1. C++ Construction (**excluding** inheritance and polymorphism).
 2. Component Construction with CMake build directives.
 3. State Transition Program Flow.
 4. Semaphores, Task Notification, and Queues (freeRTOS).
