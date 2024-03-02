@@ -80,6 +80,7 @@ void System::initGPIOTask(void)
     SwitchDebounceCounter = 30;
     allowSwitchGPIOinput = true;
 
+    routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): gpioStackSizeK: " + std::to_string(gpioStackSizeK));
     xTaskCreate(runGPIOTaskMarshaller, "sys_gpio", 1024 * gpioStackSizeK, this, TASK_PRIORITY_MID, &runTaskHandleSystemGPIO); // (1) Low number indicates low priority task
     return;
 

@@ -21,6 +21,7 @@ uint8_t oneMinuteCount = 6;
 //
 void System::initSysTimerTask(void)
 {
+    routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): timerStackSizeK: " + std::to_string(timerStackSizeK));
     xTaskCreate(runSysTimerTaskMarshaller, "sys_tmr", 1024 * timerStackSizeK, this, TASK_PRIORITY_HIGH, &taskHandleRunSysTimer);
 
     const esp_timer_create_args_t general_timer_args = {
