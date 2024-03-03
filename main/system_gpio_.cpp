@@ -137,50 +137,53 @@ void System::runGPIOTask(void)
 
                 switch (testIndex)
                 {
-                    /* case 0: // Destroying wifi
+                /* case 0: // Destroying wifi
+                {
+                    if (wifi != nullptr)
                     {
-                         if (wifi != nullptr)
+                        if (semWifiEntry != nullptr)
                         {
-                            if (semWifiEntry != nullptr)
-                            {
-                                xSemaphoreTake(semWifiEntry, portMAX_DELAY); // Wait here until we gain the lock.
+                            xSemaphoreTake(semWifiEntry, portMAX_DELAY); // Wait here until we gain the lock.
 
-                                // Send out notifications to any object that uses the wifi and tell them wifi is no longer available.
+                            // Send out notifications to any object that uses the wifi and tell them wifi is no longer available.
 
-                                taskHandleWIFIRun = nullptr;       // Reset the wifi handles
-                                queHandleWIFICmdRequest = nullptr; //
+                            taskHandleWIFIRun = nullptr;       // Reset the wifi handles
+                            queHandleWIFICmdRequest = nullptr; //
 
-                                delete wifi;                   // Lock on the object will be done inside the destructor.
-                                wifi = nullptr;                // Destructor will not set pointer null.  We have to do that manually.
-                                ESP_LOGW(TAG, "wifi deleted"); //
+                            delete wifi;                   // Lock on the object will be done inside the destructor.
+                            wifi = nullptr;                // Destructor will not set pointer null.  We have to do that manually.
+                            ESP_LOGW(TAG, "wifi deleted"); //
 
-                                // Note: The semWifiEntry semaphore is already destroyed - so don't "Give" it or a run time error will occur
-                            }
+                            // Note: The semWifiEntry semaphore is already destroyed - so don't "Give" it or a run time error will occur
                         }
-                        break;
                     }
+                    break;
+                }
 
-                    case 1: // Creating wifi
+                case 1: // Creating wifi
+                {
+                    if (wifi == nullptr)
+                        wifi = new Wifi();
+
+                    if (wifi != nullptr) // Make sure memory was allocated
                     {
-                        if (wifi == nullptr)
-                            wifi = new Wifi();
-
-                        if (wifi != nullptr) // Make sure memory was allocated
+                        if (xSemaphoreTake(semWifiEntry, 100)) // Get a lock on the object after it initializes
                         {
-                            if (xSemaphoreTake(semWifiEntry, 100)) // Get a lock on the object after it initializes
-                            {
-                                taskHandleWIFIRun = wifi->getRunTaskHandle();
-                                queHandleWIFICmdRequest = wifi->getCmdRequestQueue();
-                                xSemaphoreGive(semWifiEntry); // Release lock
+                            taskHandleWIFIRun = wifi->getRunTaskHandle();
+                            queHandleWIFICmdRequest = wifi->getCmdRequestQueue();
+                            xSemaphoreGive(semWifiEntry); // Release lock
 
-                                // Send out notifications to any object that needs the wifi and tell them wifi is now available.
+                            // Send out notifications to any object that needs the wifi and tell them wifi is now available.
 
-                                ESP_LOGW(TAG, "wifi instantiated");
-                            }
+                            ESP_LOGW(TAG, "wifi instantiated");
                         }
-                        break;
-                    } */
+                    }
+                    break;
+                } */
 
+                    //
+                    // Wifi Test
+                    //
                 case 0:
                 {
                     while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_CONN_PRI_HOST), eSetValueWithoutOverwrite))
@@ -218,7 +221,6 @@ void System::runGPIOTask(void)
 
                         if (queHandleIndCmdRequest != nullptr)
                             xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
-                        testIndex++;
                         break;
                     }
 
@@ -228,7 +230,6 @@ void System::runGPIOTask(void)
 
                         if (queHandleIndCmdRequest != nullptr)
                             xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
-                        testIndex++;
                         break;
                     }
 
@@ -238,7 +239,6 @@ void System::runGPIOTask(void)
 
                         if (queHandleIndCmdRequest != nullptr)
                             xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
-                        testIndex++;
                         break;
                     }
 
@@ -248,7 +248,6 @@ void System::runGPIOTask(void)
 
                         if (queHandleIndCmdRequest != nullptr)
                             xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
-                        testIndex = 0;
                         break;
                     } */
 
