@@ -112,6 +112,8 @@ void System::runGPIOTask(void)
     // int32_t val = 0;
     // int32_t brightnessLevel = 0;
 
+    // int32_t val = 0;
+
     xQueueReset(xQueueGPIOEvents);
 
     while (true)
@@ -156,9 +158,9 @@ void System::runGPIOTask(void)
                             }
                         }
                         break;
-                    } */
+                    }
 
-                    /* case 1: // Creating wifi
+                    case 1: // Creating wifi
                     {
                         if (wifi == nullptr)
                             wifi = new Wifi();
@@ -207,6 +209,52 @@ void System::runGPIOTask(void)
                     break;
                 }
 
+                    //
+                    // Indication Tests
+                    //
+                    /* case 0:
+                    {
+                        val = 0x11000209; // red1 Short
+
+                        if (queHandleIndCmdRequest != nullptr)
+                            xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+                        testIndex++;
+                        break;
+                    }
+
+                    case 1:
+                    {
+                        val = 0x22421219; // green2/blue2 Long
+
+                        if (queHandleIndCmdRequest != nullptr)
+                            xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+                        testIndex++;
+                        break;
+                    }
+
+                    case 2:
+                    {
+                        val = 0x41411219; // blue1/blue1 Long
+
+                        if (queHandleIndCmdRequest != nullptr)
+                            xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+                        testIndex++;
+                        break;
+                    }
+
+                    case 3:
+                    {
+                        val = 0x1E001219; // Turn R AUTO
+
+                        if (queHandleIndCmdRequest != nullptr)
+                            xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+                        testIndex = 0;
+                        break;
+                    } */
+
+                    //
+                    // NVS Action
+                    //
                     // case 3: // Erases all the partition's variables - defaults to "nvs"
                     // {
                     //     if (xSemaphoreTake(semNVSEntry, portMAX_DELAY))
@@ -217,7 +265,6 @@ void System::runGPIOTask(void)
                     //         xSemaphoreGive(semNVSEntry);
                     //     }
                     //     break;
-                    // }
                 }
 
                 if (++testIndex > 3)

@@ -165,6 +165,7 @@ void System::run(void)
             //
             // Temporary helper - RGB visual indicator is see if we are disconnected, in process, or connected to a Wifi host
             // This area is not included in documentation because it will be removed.
+            //
             if (--oneSecCounter < 1) // Low accuracy counter based on normal delays inside this run function.
             {
                 // ESP_LOGW(TAG, "sysWifiConnState is %d", (int)sysWifiConnState); // Testing and debugging
@@ -192,6 +193,7 @@ void System::run(void)
                     }
                 }
             }
+
             break;
         }
 
