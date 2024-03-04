@@ -1,7 +1,7 @@
 # System Sequences
 The creatation of the system object and the generalized process of creating subcomponents (with Tasks and without Tasks) is detailed at the project level [here](../../docs/project_sequences.md)
 
-Sequencing is typically represented as a series of actions between two parties over time.  In the case of software, these parties are either objects or translations units or binary executable components.
+Sequencing is typically represented as a series of actions between two parties over time.  In the case of software, these parties are either objects or translations units.
 
 In our specific case, we use sequences to represent sequential action between two or more objects.
 
