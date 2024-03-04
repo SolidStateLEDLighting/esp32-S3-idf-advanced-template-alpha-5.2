@@ -10,7 +10,7 @@ This project supports SMP with a dual core Esp32 microcontroller running FreeRTO
 **V1** refers to the number of features in this sample project. As feature count increases, this number will increase. 
 
 **Hardware Supported:**  
-* Esp32s3 DevKitC  
+* Esp32s3 DevKitC
 ![DevKitC](./docs/images/DevKitC.jpg)  
 
 **V1 Features:**
