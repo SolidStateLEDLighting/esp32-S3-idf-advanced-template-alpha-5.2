@@ -9,8 +9,8 @@ This project supports SMP with a dual core Esp32 microcontroller running FreeRTO
 **5.2** refers to the version of ESP-IDF for which this project is built with.  
 **V1** refers to the number of features in this sample project. As feature count increases, this number will increase. 
 
-**Hardware Supported:**
-* Esp32s3 DevKitC
+**Hardware Supported:**  
+* Esp32s3 DevKitC  
 ![DevKitC](./docs/images/DevKitC.jpg)  
 
 **V1 Features:**
