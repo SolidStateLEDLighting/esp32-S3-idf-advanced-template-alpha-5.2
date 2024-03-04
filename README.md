@@ -1,7 +1,9 @@
 # Project Alpha 5.2 V1
-This template is the result of years of study and development.  I refer to it as a boiler-plate project for large scale develpment.  This would be a starting point for a commerical project -- but it is by no means a beginner's project.  You must have a solid undertanding of most everything like: C/C++ programming, the multi-task (threading) model, freeRTOS concepts, CMake, and Esp component architecture.
+This template is the result of years of study and development.  I refer to it as a boiler-plate project for large scale development.  This would be a starting point for a commerical project -- but it is by no means a beginner's project.  You must have a solid undertanding of most everything like: C/C++ programming, the multi-task (threading) model, freeRTOS concepts, CMake, and Esp component architecture.
 
-This project supports SMP with a dual core Esp32 microcontroller running FreeRTOS.  The hardware is equivalent to a DevKitC running an Esp32S3 N16R8, but this project should be portable to other dual and single core Esp32 processors with minor changes.  For example, you may need to size down the partition table as this project is a foundation for IOT cloud (like OTA) services.
+This is a project that Espressif should be publishing so advanced users will know how to construct large applications.  Espressif is fairly good about showing how to create basic resources and use them, but they tend to ignore the proceedures on how to correctly dispose of resources.   We give attention to both processes here.
+
+This project supports SMP with a dual core Esp32 microcontroller running FreeRTOS.  The hardware is equivalent to a DevKitC running an Esp32S3 N16R8, but this project should be portable to other dual and single core Esp32 processors with minor changes.  For example, you may need to size down the partition table as this project is a foundation for IOT based projects (which include OTA).
 
 **Alpha** refers to the hardware for which this project will run on.   
 **5.2** refers to the version of ESP-IDF for which this project is built with.  
