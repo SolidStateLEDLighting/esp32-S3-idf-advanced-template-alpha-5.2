@@ -1,13 +1,14 @@
 # Project Alpha 5.2 V1
-This is a starter project for a dual core Esp32 microcontroller running FreeRTOS.  The hardware is equivalent to a DevKitM or DevKitC running an Esp32S3 N16R8, but this project should be portable to other dual and single core Esp32 processors with minor changes.  For example, you may need to size down the partition table as this project is set up for large scale development.
+This template is the result of years of study and development.  I refer to it as a boiler-plate project for large scale develpment.  This would be a starting point for a commerical project -- but it is by no means a beginner's project.  You must have a solid undertanding of everything like: C/C++ programming, the multi-task (threading) model, freeRTOS concepts, CMake, and Esp component architecture.
+
+This project supports SMP with a dual core Esp32 microcontroller running FreeRTOS.  The hardware is equivalent to a DevKitC running an Esp32S3 N16R8, but this project should be portable to other dual and single core Esp32 processors with minor changes.  For example, you may need to size down the partition table as this project is a foundation for IOT cloud (like OTA) services.
 
 **Alpha** refers to the hardware for which this project will run on.   
 **5.2** refers to the version of ESP-IDF for which this project is built with.  
 **V1** refers to the number of features in this sample project. As feature count increases, this number will increase. 
 
 **Hardware Supported:**
-* Esp32s3 DevKitC / DevKitM
-* Esp32 DevKitC / DevKitM  
+* Esp32s3 DevKitC
 ![DevKitC](./docs/images/DevKitC.jpg)  
 
 **V1 Features:**
@@ -18,7 +19,7 @@ This is a starter project for a dual core Esp32 microcontroller running FreeRTOS
 * NVS support
 * RGB Indicator for ws2812 LED
 
-The intent of this example project is to prepare a suitable development code base for high-performance, commercial, large scale advanced project development. In pursuit of that goal, this project will evolve to include other features which are not included here at this time. When this Alpha project can not expanded upon further, we will create a Beta, and Gamma projects that will allow for more expansion on larger hardware.
+This project will evolve to include other features which are not included here at this time. When this Alpha project can not expanded upon further, we will create a Beta, and Gamma projects that will allow for more expansion on larger hardware.
 
 * Downloading, compiling, and running the application are all standard common processes and need no special instruction.  This project calls for the ESP-IDF version 5.2.
 * This project has been built in VS Code with the following plugins:
