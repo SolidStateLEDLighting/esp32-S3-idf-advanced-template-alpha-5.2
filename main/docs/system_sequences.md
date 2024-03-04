@@ -7,23 +7,12 @@ In our specific case, we use sequences to represent sequential action between tw
 
 ## Creating Wifi Object
 This is a very common pattern where an object with a run task is creating another object with its own run task.  In this case, inside the constructor, the Wifi also creates the non-tasking SNTP object.  
-
-Typically we would prefer to have the same task (thread) to both lock and unlock semaphores.  This is one of the cases where the interaction between tasks does not allow us to use the same task to unlock the wifi's entry locking semaphore.  The System task locked the semaphore in the Wifi's constructor, and the Wifi task unlocks it after all intialization is complete.  This sequence has been proven to be without negative consequences.
-![System Object Creates Wifi Object](./drawings/system_sequence_creating_wifi.svg)  
-
+![System Object Creates Wifi Object](../../components/wifi_5.2/src/wifi/docs/drawings/wifi_sequence_calling_constructor.svg)  
+___  
 ## Destroying Wifi Object
-![System Object Destroys Wifi Object](./drawings/system_sequence_destroying_wifi.svg) 
-
+___  
 ## Wifi Connection
-Some of this process must be viewed in flowcharts for better clarity.
-
-We first set up a run directive.  This directive can be set up to run several step in sucession.  This case, a connection is only one step.  We then run the directives.
-![System Object Destroys Wifi Object](./drawings/system_sequence_wifi_connecting.svg) 
-
+___  
 ## Wifi Disconnection
-Some of this process must be viewed in flowcharts for better clarity.
-
-We first set up a run directive then run all directives.
-![System Object Destroys Wifi Object](./drawings/system_sequence_wifi_disconnecting.svg) 
-
+___   
 
