@@ -6,10 +6,10 @@ Sequencing is typically represented as a series of actions between two parties o
 In our specific case, we use sequences to represent sequential action between two or more objects.
 
 ## Creating Tasking Object  
-This is a very common pattern where the System is creating another object with its own run task.  
+This is a very simplified view of a common pattern where the System is creating another object which has its own run task.  
 ![System Creates Tasking Object](./drawings/system_sequence_creating_object.svg) 
 ___  
 ## Destroying Tasking Object  
-This is a very common pattern where the System is destroying another object with its own run task.  
+This is a very simplified view of a common pattern where the System is destroying another object which has its own run task.  
 ![System Destroys Tasking Object](./drawings/system_sequence_destroying_object.svg) 
 ___  
