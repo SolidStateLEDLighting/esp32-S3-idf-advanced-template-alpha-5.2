@@ -10,5 +10,6 @@ This is a very common pattern where the System is creating another object with i
 ![System Creates Tasking Object](./drawings/system_sequence_creating_object.svg) 
 ___  
 ## Destroying Tasking Object  
-WIP
+This is a very common pattern where the System is destroying another object with its own run task.  
+![System Destroys Tasking Object](./drawings/system_sequence_destroying_object.svg) 
 ___  
