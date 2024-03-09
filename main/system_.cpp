@@ -16,6 +16,7 @@ System::System(void)
     setFlags();                // Static enabling of logging statements for any area of concern during development.
     setLogLevels();            // Manually sets log levels for tasks down the call stack for development.
     createSemaphores();        // Creates any locking semaphores owned by this object.
+    createQueues();            // Create RTOS Commend Request resources.
     restoreVariablesFromNVS(); // Brings back all our persistant data.
 
     // NOTE: Don't 'take' our own semSysEntry semaphore here, as new objects are calling back to the System for handles throughout initialization.
@@ -82,6 +83,21 @@ void System::createSemaphores()
     semSysIndLock = xSemaphoreCreateBinary(); // Local Indication locking
     if (semSysIndLock != NULL)
         xSemaphoreGive(semSysIndLock);
+}
+
+void System::createQueues()
+{
+    if (systemCmdRequestQue == nullptr)
+        systemCmdRequestQue = xQueueCreate(1, sizeof(SYS_CmdRequest *)); // We hold the queue for incoming requests
+
+    if (ptrSYSCmdRequest == nullptr)
+        ptrSYSCmdRequest = new SYS_CmdRequest(); // <-- Incoming request
+
+    if (ptrSYSResponse == nullptr)
+    {
+        ptrSYSResponse = new SYS_Response(); // --> Outgoing responses
+        ptrSYSResponse->jsonResponse = nullptr;
+    }
 }
 
 /* Public Member Functions */

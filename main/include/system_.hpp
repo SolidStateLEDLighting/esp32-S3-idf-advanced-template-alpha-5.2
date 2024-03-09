@@ -77,11 +77,10 @@ extern "C"
         uint8_t timerStackSizeK = 4;                  // Default minimum size
         TaskHandle_t taskHandleRunSysTimer = nullptr; //
 
-        
-
         void setFlags(void);
         void setLogLevels(void);
         void createSemaphores(void);
+        void createQueues(void);
 
         /* System_Diagnostics */
         void runDiagnostics(void);

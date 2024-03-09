@@ -65,7 +65,6 @@ enum class SYS_OP : uint8_t
 enum class SYS_INIT : uint8_t
 {
     Start,
-    Init_Queues_Commands,
     Start_Network_Interface,
     Create_Default_Event_Loop,
     Start_GPIO,

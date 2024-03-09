@@ -206,23 +206,8 @@ void System::run(void)
                 if (show & _showInit)
                     routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::Start");
 
-                initSysStep = SYS_INIT::Init_Queues_Commands;
-                [[fallthrough]];
-            }
-
-            case SYS_INIT::Init_Queues_Commands:
-            {
-                if (show & _showInit)
-                    routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::Init_Queues_Commands - Step " + std::to_string((int)SYS_INIT::Init_Queues_Commands));
-
-                /* IOT Request and Responses */
-                systemCmdRequestQue = xQueueCreate(1, sizeof(SYS_CmdRequest *)); // We hold the queue for incoming requests
-                ptrSYSCmdRequest = new SYS_CmdRequest();                         // <-- Incoming request
-                ptrSYSResponse = new SYS_Response();                             // --> Outgoing responses
-                ptrSYSResponse->jsonResponse = nullptr;
-
                 initSysStep = SYS_INIT::Start_Network_Interface;
-                break;
+                [[fallthrough]];
             }
 
             case SYS_INIT::Start_Network_Interface:
