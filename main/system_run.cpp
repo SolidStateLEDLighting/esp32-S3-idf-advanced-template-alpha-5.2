@@ -163,7 +163,7 @@ void System::run(void)
                 runDiagnostics();
 
             //
-            // Temporary helper - RGB visual indicator is see if we are disconnected, in process, or connected to a Wifi host
+            // Temporary helper - RGB visual status indicator to see if we are disconnected, in process, or connected to a Wifi host
             // This area is not included in documentation because it will be removed.
             //
             if (--oneSecCounter < 1) // Low accuracy counter based on normal delays inside this run function.
