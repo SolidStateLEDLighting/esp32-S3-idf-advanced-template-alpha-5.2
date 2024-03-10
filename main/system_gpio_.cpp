@@ -100,20 +100,6 @@ void System::runGPIOTask(void)
     uint32_t io_num = 0;
     uint8_t testIndex = 0;
 
-    // TESTING VARIABLES
-    // esp_err_t ret = ESP_OK;
-    // bool testBool = false;
-    // std::string testString = "";
-    // std::string string1 = "The quick brown fox jumps over the lazy dog";
-    // std::string string2 = "Now is the time for all good men to come to the aid of their country.";
-    // uint8_t testUInteger8 = 0;
-    // uint32_t testUInteger32 = 0;
-    // int32_t testInteger32 = 555; // Should test number going negative
-    // int32_t val = 0;
-    // int32_t brightnessLevel = 0;
-
-    // int32_t val = 0;
-
     xQueueReset(xQueueGPIOEvents);
 
     while (true)
@@ -125,152 +111,14 @@ void System::runGPIOTask(void)
 
             switch (io_num)
             {
-                //
-                // Call Test fuctions here. Examples are stored inside:
-                // nvs_unit_tests.cpp
-                // wifi_unit_tests.cpp
-                // indication_unit_test.cpp
-                //
             case SW1:
             {
-                routeLogByValue(LOG_TYPE::WARN, std::string(__func__) + "(): SW1... index is " + std::to_string(testIndex));
+                //routeLogByValue(LOG_TYPE::WARN, std::string(__func__) + "(): SW1... index is " + std::to_string(testIndex));
 
-                switch (testIndex)
-                {
-                /* case 0: // Destroying wifi
-                {
-                    if (wifi != nullptr)
-                    {
-                        if (semWifiEntry != nullptr)
-                        {
-                            xSemaphoreTake(semWifiEntry, portMAX_DELAY); // Wait here until we gain the lock.
-
-                            // Send out notifications to any object that uses the wifi and tell them wifi is no longer available.
-
-                            taskHandleWIFIRun = nullptr;       // Reset the wifi handles
-                            queHandleWIFICmdRequest = nullptr; //
-
-                            delete wifi;                   // Lock on the object will be done inside the destructor.
-                            wifi = nullptr;                // Destructor will not set pointer null.  We have to do that manually.
-                            ESP_LOGW(TAG, "wifi deleted"); //
-
-                            // Note: The semWifiEntry semaphore is already destroyed - so don't "Give" it or a run time error will occur
-                        }
-                    }
-                    break;
-                }
-
-                case 1: // Creating wifi
-                {
-                    if (wifi == nullptr)
-                        wifi = new Wifi();
-
-                    if (wifi != nullptr) // Make sure memory was allocated
-                    {
-                        if (xSemaphoreTake(semWifiEntry, 100)) // Get a lock on the object after it initializes
-                        {
-                            taskHandleWIFIRun = wifi->getRunTaskHandle();
-                            queHandleWIFICmdRequest = wifi->getCmdRequestQueue();
-                            xSemaphoreGive(semWifiEntry); // Release lock
-
-                            // Send out notifications to any object that needs the wifi and tell them wifi is now available.
-
-                            ESP_LOGW(TAG, "wifi instantiated");
-                        }
-                    }
-                    break;
-                } */
-
-                    //
-                    // Wifi Test
-                    //
-                case 0:
-                {
-                    while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_CONN_PRI_HOST), eSetValueWithoutOverwrite))
-                        vTaskDelay(pdMS_TO_TICKS(50));
-
-                    while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_RUN_DIRECTIVES), eSetValueWithoutOverwrite))
-                        vTaskDelay(pdMS_TO_TICKS(50));
-                    break;
-                }
-
-                case 2:
-                {
-                    while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_DISC_HOST), eSetValueWithoutOverwrite))
-                        vTaskDelay(pdMS_TO_TICKS(50));
-
-                    while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_RUN_DIRECTIVES), eSetValueWithoutOverwrite))
-                        vTaskDelay(pdMS_TO_TICKS(50));
-                    break;
-                }
-
-                case 1:
-                case 3:
-                {
-                    printTaskInfo();
-                    // printRunTimeStats();
-                    break;
-                }
-
-                    //
-                    // Indication Tests
-                    //
-                    /* case 0:
-                    {
-                        val = 0x11000209; // red1 Short
-
-                        if (queHandleIndCmdRequest != nullptr)
-                            xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
-                        break;
-                    }
-
-                    case 1:
-                    {
-                        val = 0x22421219; // green2/blue2 Long
-
-                        if (queHandleIndCmdRequest != nullptr)
-                            xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
-                        break;
-                    }
-
-                    case 2:
-                    {
-                        val = 0x41411219; // blue1/blue1 Long
-
-                        if (queHandleIndCmdRequest != nullptr)
-                            xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
-                        break;
-                    }
-
-                    case 3:
-                    {
-                        val = 0x1E001219; // Turn R AUTO
-
-                        if (queHandleIndCmdRequest != nullptr)
-                            xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
-                        break;
-                    } */
-
-                    //
-                    // NVS Action
-                    //
-                    // case 3: // Erases all the partition's variables - defaults to "nvs"
-                    // {
-                    //     if (xSemaphoreTake(semNVSEntry, portMAX_DELAY))
-                    //     {
-                    //         ESP_LOGW(TAG, "eraseNVSPartition");
-                    //         nvs->eraseNVSPartition();
-                    //         esp_restart(); // Must do a complete reboot immediately or system will crash in any nvs instruction.  Must completely reinitialize nvs at startup.
-                    //         xSemaphoreGive(semNVSEntry);
-                    //     }
-                    //     break;
-                }
-
-                if (++testIndex > 3)
-                {
-                    routeLogByValue(LOG_TYPE::WARN, std::string(__func__) + "(): testIndex restart...");
-                    testIndex = 0;
-                }
+                // test_objectLifecycle_create(&testIndex);
+                // test_objectLifecycle_destroy(&testIndex);
+                // test_nvs(&testIndex);
+                test_wifi(&testIndex);
                 break;
             }
 

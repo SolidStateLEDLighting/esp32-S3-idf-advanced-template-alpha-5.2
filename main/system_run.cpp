@@ -259,6 +259,7 @@ void System::run(void)
                     routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::Create_Indication - Step " + std::to_string((int)SYS_INIT::Create_Indication));
 
                 if (ind == nullptr)
+                    // ind = new Indication(0, 0, 0); // This is a silent boot up with no app version to flash.
                     ind = new Indication((uint8_t)APP_VERSION_MAJOR, (uint8_t)APP_VERSION_MINOR, (uint8_t)APP_VERSION_PATCH);
 
                 if (ind != nullptr)
