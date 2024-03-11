@@ -85,3 +85,16 @@ enum class LOG_TYPE : uint8_t
     WARN,
     INFO,
 };
+
+//
+// Testing
+//
+enum class SYS_TEST_TYPE : uint8_t
+{
+    LIFE_CYCLE_CREATE,
+    LIFE_CYCLE_DESTROY,
+    LOW_POWER_SLEEP,
+    NVS,
+    INDICATION,
+    WIFI,
+};

@@ -98,6 +98,7 @@ void System::runGPIOTaskMarshaller(void *arg) // This function can be resolved a
 void System::runGPIOTask(void)
 {
     uint32_t io_num = 0;
+    SYS_TEST_TYPE testType = SYS_TEST_TYPE::WIFI;
     uint8_t testIndex = 0;
 
     xQueueReset(xQueueGPIOEvents);
@@ -106,19 +107,47 @@ void System::runGPIOTask(void)
     {
         if (xQueueReceive(xQueueGPIOEvents, (void *)&io_num, portMAX_DELAY)) // There is never any reason to yield.
         {
-            if (sysOP == SYS_OP::Init) // If we haven't finished out our initialization -- discard items in our queue.
+            if (sysOP == SYS_OP::Init) // If we haven't finished out our initialization -- discard item from our queue.
                 continue;
 
             switch (io_num)
             {
             case SW1:
             {
-                //routeLogByValue(LOG_TYPE::WARN, std::string(__func__) + "(): SW1... index is " + std::to_string(testIndex));
+                // routeLogByValue(LOG_TYPE::WARN, std::string(__func__) + "(): SW1... testIndex is " + std::to_string(testIndex));
 
-                // test_objectLifecycle_create(&testIndex);
-                // test_objectLifecycle_destroy(&testIndex);
-                // test_nvs(&testIndex);
-                test_wifi(&testIndex);
+                switch (testType)
+                {
+                case SYS_TEST_TYPE::LIFE_CYCLE_CREATE:
+                {
+                    test_objectLifecycle_create(&testType, &testIndex);
+                    break;
+                }
+                case SYS_TEST_TYPE::LIFE_CYCLE_DESTROY:
+                {
+                    test_objectLifecycle_destroy(&testType, &testIndex);
+                    break;
+                }
+                case SYS_TEST_TYPE::LOW_POWER_SLEEP:
+                {
+                    break;
+                }
+                case SYS_TEST_TYPE::NVS:
+                {
+                    test_nvs(&testType, &testIndex);
+                    break;
+                }
+                case SYS_TEST_TYPE::INDICATION:
+                {
+                    test_indication(&testType, &testIndex);
+                    break;
+                }
+                case SYS_TEST_TYPE::WIFI:
+                {
+                    test_wifi(&testType, &testIndex);
+                    break;
+                }
+                }
                 break;
             }
 

@@ -22,7 +22,7 @@ extern SemaphoreHandle_t semIndEntry;
 //
 // Object Lifecycle
 //
-void System::test_objectLifecycle_create(uint8_t *index)
+void System::test_objectLifecycle_create(SYS_TEST_TYPE *type, uint8_t *index)
 {
     switch (*index)
     {
@@ -59,14 +59,14 @@ void System::test_objectLifecycle_create(uint8_t *index)
     break;
     }
 
-    if (++*index > 3) // We set the limit based on our test sequence
+    if (++*index > 0) // We set the limit based on our test sequence
     {
         ESP_LOGW("", "Restarting text index...");
         *index = 0;
     }
 }
 
-void System::test_objectLifecycle_destroy(uint8_t *index)
+void System::test_objectLifecycle_destroy(SYS_TEST_TYPE *type, uint8_t *index)
 {
     switch (*index)
     {
@@ -105,7 +105,7 @@ void System::test_objectLifecycle_destroy(uint8_t *index)
     break;
     }
 
-    if (++*index > 3) // We set the limit based on our test sequence
+    if (++*index > 0) // We set the limit based on our test sequence
     {
         ESP_LOGW("", "Restarting text index...");
         *index = 0;
@@ -115,7 +115,7 @@ void System::test_objectLifecycle_destroy(uint8_t *index)
 //
 // NVS
 //
-void System::test_nvs(uint8_t *index)
+void System::test_nvs(SYS_TEST_TYPE *type, uint8_t *index)
 {
     // bool testBool = false;
     // std::string testString = "";
@@ -161,7 +161,7 @@ void System::test_nvs(uint8_t *index)
 //
 // Indication
 //
-void System::test_indication(uint8_t *index)
+void System::test_indication(SYS_TEST_TYPE *type, uint8_t *index)
 {
     int32_t val = 0;
 
@@ -215,7 +215,7 @@ void System::test_indication(uint8_t *index)
 //
 // Wifi
 //
-void System::test_wifi(uint8_t *index)
+void System::test_wifi(SYS_TEST_TYPE *type, uint8_t *index)
 {
     switch (*index)
     {

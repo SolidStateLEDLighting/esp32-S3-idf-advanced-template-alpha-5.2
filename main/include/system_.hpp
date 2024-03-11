@@ -95,11 +95,11 @@ extern "C"
         void runGPIOTask(void); // Handles GPIO Interrupts on Change Events
 
         /* System_gpio_test */
-        void test_objectLifecycle_create(uint8_t *);
-        void test_objectLifecycle_destroy(uint8_t *);
-        void test_nvs(uint8_t *);
-        void test_indication(uint8_t *);
-        void test_wifi(uint8_t *);
+        void test_objectLifecycle_create(SYS_TEST_TYPE *, uint8_t *);
+        void test_objectLifecycle_destroy(SYS_TEST_TYPE *, uint8_t *);
+        void test_nvs(SYS_TEST_TYPE *, uint8_t *);
+        void test_indication(SYS_TEST_TYPE *, uint8_t *);
+        void test_wifi(SYS_TEST_TYPE *, uint8_t *);
 
         /* System_Logging */
         std::string errMsg = "";
