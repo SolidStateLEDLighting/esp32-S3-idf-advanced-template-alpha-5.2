@@ -98,6 +98,7 @@ void System::runGPIOTaskMarshaller(void *arg) // This function can be resolved a
 void System::runGPIOTask(void)
 {
     uint32_t io_num = 0;
+    
     SYS_TEST_TYPE testType = SYS_TEST_TYPE::WIFI;
     uint8_t testIndex = 0;
 
@@ -130,6 +131,7 @@ void System::runGPIOTask(void)
                 }
                 case SYS_TEST_TYPE::LOW_POWER_SLEEP:
                 {
+                    test_low_power_sleep(&testType, &testIndex);
                     break;
                 }
                 case SYS_TEST_TYPE::NVS:

@@ -97,6 +97,7 @@ extern "C"
         /* System_gpio_test */
         void test_objectLifecycle_create(SYS_TEST_TYPE *, uint8_t *);
         void test_objectLifecycle_destroy(SYS_TEST_TYPE *, uint8_t *);
+        void test_low_power_sleep(SYS_TEST_TYPE *, uint8_t *);
         void test_nvs(SYS_TEST_TYPE *, uint8_t *);
         void test_indication(SYS_TEST_TYPE *, uint8_t *);
         void test_wifi(SYS_TEST_TYPE *, uint8_t *);

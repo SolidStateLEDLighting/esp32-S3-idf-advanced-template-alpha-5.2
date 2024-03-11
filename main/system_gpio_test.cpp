@@ -44,6 +44,9 @@ void System::test_objectLifecycle_create(SYS_TEST_TYPE *type, uint8_t *index)
                 ESP_LOGW(TAG, "wifi instantiated");
             }
         }
+        *type = SYS_TEST_TYPE::LIFE_CYCLE_DESTROY;
+        *index = 0;
+        return;
         break;
     }
 
@@ -56,7 +59,6 @@ void System::test_objectLifecycle_create(SYS_TEST_TYPE *type, uint8_t *index)
     {
         break;
     }
-    break;
     }
 
     if (++*index > 0) // We set the limit based on our test sequence
@@ -90,6 +92,9 @@ void System::test_objectLifecycle_destroy(SYS_TEST_TYPE *type, uint8_t *index)
                 // Note: The semWifiEntry semaphore is already destroyed - so don't "Give" it or a run time error will occur
             }
         }
+        *type = SYS_TEST_TYPE::LIFE_CYCLE_CREATE;
+        *index = 0;
+        return;
         break;
     }
 
@@ -102,7 +107,41 @@ void System::test_objectLifecycle_destroy(SYS_TEST_TYPE *type, uint8_t *index)
     {
         break;
     }
-    break;
+    }
+
+    if (++*index > 0) // We set the limit based on our test sequence
+    {
+        ESP_LOGW("", "Restarting text index...");
+        *index = 0;
+    }
+}
+
+//
+// Low Power and Sleep Modes
+//
+void System::test_low_power_sleep(SYS_TEST_TYPE *type, uint8_t *index)
+{
+    switch (*index)
+    {
+    case 0:
+    {
+        break;
+    }
+
+    case 1:
+    {
+        break;
+    }
+
+    case 2:
+    {
+        break;
+    }
+
+    case 3:
+    {
+        break;
+    }
     }
 
     if (++*index > 0) // We set the limit based on our test sequence
@@ -148,7 +187,6 @@ void System::test_nvs(SYS_TEST_TYPE *type, uint8_t *index)
     {
         break;
     }
-    break;
     }
 
     if (++*index > 0) // We set the limit based on our test sequence
@@ -202,7 +240,6 @@ void System::test_indication(SYS_TEST_TYPE *type, uint8_t *index)
             xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
         break;
     }
-    break;
     }
 
     if (++*index > 3) // We set the limit based on our test sequence
@@ -250,7 +287,6 @@ void System::test_wifi(SYS_TEST_TYPE *type, uint8_t *index)
         printTaskInfo();
         break;
     }
-    break;
     }
 
     if (++*index > 3) // We set the limit based on our test sequence
