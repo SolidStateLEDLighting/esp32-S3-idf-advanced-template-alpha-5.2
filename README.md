@@ -3,7 +3,7 @@ This template is the result of years of study and development.  I refer to it as
 
 This is a project that Espressif should be publishing so advanced users will know how to construct large applications.  Espressif is fairly good about showing how to create basic resources and using them, but they tend to ignore the procedures on how to correctly dispose of resources.   We give attention to the full lifecycle here in what could be considered a genuine commerical grade project.
 
-This project supports SMP with a dual core Esp32 microcontroller running FreeRTOS.  The hardware is equivalent to a DevKitC running an Esp32S3 N16R8, but this project should be portable to other dual and single core Esp32 processors with minor changes.  For example, you may need to size down the partition table as this project is a foundation for IOT based projects (which include OTA).
+This project supports SMP with a dual core Esp32 microcontroller running FreeRTOS.  The hardware is equivalent to a DevKitC running an Esp32S3 N16R8, but this project should be portable to other dual and single core Esp32 processors with minor changes.  For example, you may need to size down the partition table as this project is a foundation for IOT based projects (which includes OTA).
 
 **Alpha** refers to the hardware for which this project will run on.   
 **5.2** refers to the version of ESP-IDF for which this project is built with.  
