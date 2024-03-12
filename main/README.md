@@ -19,7 +19,4 @@ You may follow these links to System documentation:
 4) [System Operations](./docs/system_operations.md)
 5) [System Sequences](./docs/system_sequences.md)
 6) [System State Models](./docs/system_state_models.md)
-___  
-**Want me on the team?  Reach out with my contact information in Github.  Thanks.**
-![Open to work](./docs/images/OpenToWork.jpg)
-___  
+___    
