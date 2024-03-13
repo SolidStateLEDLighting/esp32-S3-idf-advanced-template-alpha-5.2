@@ -1,7 +1,11 @@
 #include "system_.hpp"
 
+#include "sdkconfig.h"
 #include "driver/gpio.h"
+#include "driver/uart.h"
 #include "esp_check.h"
+
+#include "esp_sleep.h"
 
 /* External Semaphores */
 extern SemaphoreHandle_t semNVSEntry;
@@ -123,31 +127,49 @@ void System::test_low_power_sleep(SYS_TEST_TYPE *type, uint8_t *index)
 {
     switch (*index)
     {
-    case 0:
+    case 0: // Enter Modem Sleep
     {
         break;
     }
 
-    case 1:
+    case 1: // Enter Light Sleep (Full RAM Retention)
+    {
+        while (gpio_get_level(SW1) == 0)   // This is required to allow time for the circuit to rise from interrupt trigger (low).
+            vTaskDelay(pdMS_TO_TICKS(10)); // that brought the call here.  We need to see a high before we can continue.  This takes time.
+
+        gpio_wakeup_enable(SW1, GPIO_INTR_LOW_LEVEL); // Our GPIO0 is already configured for input active LOW
+        esp_sleep_enable_gpio_wakeup();
+
+        ESP_LOGW(TAG, "Entering Light Sleep...");
+        uart_wait_tx_idle_polling((uart_port_t)CONFIG_ESP_CONSOLE_UART_NUM); // This call allows the serial port FIFO buffer to empty before sleep
+        esp_light_sleep_start();
+        //
+        // The active GPIO interrupt on this pin doesn't seem to have an effect on our wake-up input
+        // which occurs right here...  I'm guessing that this interrupt doesn't get registered in light sleep
+        // or it is lost in the wake up process.
+        //
+        ESP_LOGW(TAG, "Returned from Light Sleep...");
+        gpio_wakeup_disable(SW1);
+        break;
+    }
+
+    case 2: // Enter Deep Sleep (RAM is lost - RTC Memory holds data)
     {
         break;
     }
 
-    case 2:
-    {
-        break;
-    }
-
-    case 3:
+    case 3: // Enter Hibernation Mode (no RAM data can be saved here)
     {
         break;
     }
     }
 
-    if (++*index > 0) // We set the limit based on our test sequence
+    // CHANGE YOUR TEST AREA AND INDEX AS NEEDED FOR THE NEXT SEQUENCE YOU WANT
+
+    if (++*index > 1) // We set the limit based on our test sequence
     {
-        ESP_LOGW("", "Restarting text index...");
-        *index = 0;
+        // ESP_LOGW("", "Restarting text index...");
+        *index = 1;
     }
 }
 
@@ -188,6 +210,8 @@ void System::test_nvs(SYS_TEST_TYPE *type, uint8_t *index)
         break;
     }
     }
+
+    // CHANGE YOUR TEST AREA AND INDEX AS NEEDED FOR THE NEXT SEQUENCE YOU WANT
 
     if (++*index > 0) // We set the limit based on our test sequence
     {
@@ -242,6 +266,8 @@ void System::test_indication(SYS_TEST_TYPE *type, uint8_t *index)
     }
     }
 
+    // CHANGE YOUR TEST AREA AND INDEX AS NEEDED FOR THE NEXT SEQUENCE YOU WANT
+
     if (++*index > 3) // We set the limit based on our test sequence
     {
         ESP_LOGW("", "Restarting text index...");
@@ -288,6 +314,8 @@ void System::test_wifi(SYS_TEST_TYPE *type, uint8_t *index)
         break;
     }
     }
+
+    // CHANGE YOUR TEST AREA AND INDEX AS NEEDED FOR THE NEXT SEQUENCE YOU WANT
 
     if (++*index > 3) // We set the limit based on our test sequence
     {

@@ -206,8 +206,21 @@ void System::run(void)
                 if (show & _showInit)
                     routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::Start");
 
-                initSysStep = SYS_INIT::Start_Network_Interface;
+                initSysStep = SYS_INIT::Power_Down_Unused_Resources;
                 [[fallthrough]];
+            }
+
+            case SYS_INIT::Power_Down_Unused_Resources:
+            {
+                // By default all areas of the Esp32 are on and active after a reboot.  Our task here is to turn off anything that is unused
+                // in this application.   We must remember to return here to allow the use of a peripheral when we enable one in the application.
+
+                
+
+
+
+                initSysStep = SYS_INIT::Start_Network_Interface;
+                break;
             }
 
             case SYS_INIT::Start_Network_Interface:
