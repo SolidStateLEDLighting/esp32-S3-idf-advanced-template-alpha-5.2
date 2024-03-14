@@ -140,6 +140,9 @@ void System::test_low_power_sleep(SYS_TEST_TYPE *type, uint8_t *index)
         gpio_wakeup_enable(SW1, GPIO_INTR_LOW_LEVEL); // Our GPIO0 is already configured for input active LOW
         esp_sleep_enable_gpio_wakeup();
 
+        // WARNING: You will need to be sure that you are attached to the correct Console UART or you may not see the serial output
+        //          resume when you awake from sleep.   Select the serial port output that is native to the Tx/Rx pins - not the USB output.
+
         ESP_LOGW(TAG, "Entering Light Sleep...");
         uart_wait_tx_idle_polling((uart_port_t)CONFIG_ESP_CONSOLE_UART_NUM); // This call allows the serial port FIFO buffer to empty before sleep
         esp_light_sleep_start();
