@@ -49,7 +49,7 @@ void IRAM_ATTR GPIOSwitchIsrHandler(void *arg)
         // In this particular case any errors that would result can not be seen.  We might have a skipped count or a
         // slightly longer delay.  This error would not matter.
         xQueueSendToBackFromISR(xQueueGPIOEvents, &arg, NULL);
-        SwitchDebounceCounter = 50; // Reject all input for 5/10 of a second -- counter is running in system_timer
+        SwitchDebounceCounter = 5; // Reject all input for 5/10 of a second -- counter is running in system_timer
         allowSwitchGPIOinput = false;
     }
 }
@@ -99,8 +99,8 @@ void System::runGPIOTask(void)
 {
     uint32_t io_num = 0;
 
-    SYS_TEST_TYPE testType = SYS_TEST_TYPE::WIFI; // PICK YOUR TEST AREA
-    uint8_t testIndex = 0;                        // SET YOUR STARTING TEST INDEX
+    SYS_TEST_TYPE testType = SYS_TEST_TYPE::POWER_MANAGEMENT; // PICK YOUR TEST AREA
+    uint8_t testIndex = 0;                                    // SET YOUR STARTING TEST INDEX
 
     xQueueReset(xQueueGPIOEvents);
 
@@ -124,26 +124,37 @@ void System::runGPIOTask(void)
                     test_objectLifecycle_create(&testType, &testIndex);
                     break;
                 }
+
                 case SYS_TEST_TYPE::LIFE_CYCLE_DESTROY:
                 {
                     test_objectLifecycle_destroy(&testType, &testIndex);
                     break;
                 }
+
+                case SYS_TEST_TYPE::POWER_MANAGEMENT:
+                {
+                    test_power_management(&testType, &testIndex);
+                    break;
+                }
+
                 case SYS_TEST_TYPE::LOW_POWER_SLEEP:
                 {
                     test_low_power_sleep(&testType, &testIndex);
                     break;
                 }
+
                 case SYS_TEST_TYPE::NVS:
                 {
                     test_nvs(&testType, &testIndex);
                     break;
                 }
+
                 case SYS_TEST_TYPE::INDICATION:
                 {
                     test_indication(&testType, &testIndex);
                     break;
                 }
+
                 case SYS_TEST_TYPE::WIFI:
                 {
                     test_wifi(&testType, &testIndex);

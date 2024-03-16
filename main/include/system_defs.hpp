@@ -13,7 +13,7 @@
 #define ESP_INTR_FLAG_DEFAULT 0
 
 /* System Timer contant */
-#define TIMER_PERIOD_100Hz 10000 // 10000 microseconds = .01 second  = 100Hz
+#define TIMER_PERIOD_10Hz 1000 // 1000 microseconds = .1 second  = 10Hz
 
 /* GPIO Definitions */
 #define SW1 GPIO_NUM_0 // Boot Switch -- GPIO_EN.  This a strapping pin is pulled-up by default

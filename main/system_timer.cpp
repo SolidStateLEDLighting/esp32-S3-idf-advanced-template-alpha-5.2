@@ -9,7 +9,7 @@ extern uint8_t SwitchDebounceCounter;
 extern SemaphoreHandle_t semSysIndLock; // Local Indication Lock
 
 // Local Variables
-uint8_t halfSecondCount = 50;
+uint8_t halfSecondCount = 5;
 uint8_t oneSecondCount = 2;
 uint8_t fiveSecondCount = 5;
 uint8_t tenSecondCount = 10;
@@ -25,16 +25,16 @@ void System::initSysTimerTask(void)
     xTaskCreate(runSysTimerTaskMarshaller, "sys_tmr", 1024 * timerStackSizeK, this, TASK_PRIORITY_HIGH, &taskHandleRunSysTimer);
 
     const esp_timer_create_args_t general_timer_args = {
-        &System::sysTimerCallback,
-        this,
-        ESP_TIMER_TASK,
-        "system_timer", // name is optional, but may help identify the timer when debugging
-        true,
+        &System::sysTimerCallback, //
+        this,                      // Argument to pass to the callback
+        ESP_TIMER_TASK,            //
+        "system_timer",            // Name is optional, but may help identify the timer when debugging
+        true,                      // Skip unhandled events for periodic timers
     };
 
     esp_err_t ret = ESP_OK;
     ESP_GOTO_ON_ERROR(esp_timer_create(&general_timer_args, &handleTimer), sys_initSysTimer_err, TAG, "esp_timer_create() failed");
-    ESP_GOTO_ON_ERROR(esp_timer_start_periodic(handleTimer, TIMER_PERIOD_100Hz), sys_initSysTimer_err, TAG, "esp_timer_create() failed");
+    ESP_GOTO_ON_ERROR(esp_timer_start_periodic(handleTimer, TIMER_PERIOD_10Hz), sys_initSysTimer_err, TAG, "esp_timer_create() failed");
     return;
 
 sys_initSysTimer_err:
@@ -62,9 +62,9 @@ void System::runSysTimerTask(void)
     while (true)
     {
         //
-        // 100hz Processing
+        // 10hz Processing
         //
-        // We are using a generic task notification to trigger this routine at 100hz.  This command blocks until a
+        // We are using a generic task notification to trigger this routine at 10hz.  This command blocks until a
         // notification arrives.  We don't examine any notification value.  The value is ignored.
         //
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
@@ -83,7 +83,7 @@ void System::runSysTimerTask(void)
             if (--halfSecondCount < 1)
             {
                 // halfSecondActions();  // We have no halfSecondActions right now
-                halfSecondCount = 50;
+                halfSecondCount = 5;
 
                 if (oneSecondCount > 0)
                 {
@@ -118,7 +118,7 @@ void System::runSysTimerTask(void)
                                 oneMinuteCount = 60;
                             }
                         }
-                                        }
+                    }
                 }
             }
         }
