@@ -129,8 +129,7 @@ void System::test_power_management(SYS_TEST_TYPE *type, uint8_t *index)
     {
         // Use of Power Management creates interrupt latency because the system has to resume power consuming actions.  This takes time.
         // If you always need a minimum response time then you should not use Power Management features.
-
-        // I'M NOT SURE IF THIS IS WORKING AS DESCRIBED IN THE DOCS.  ALSO, THERE IS NO INFORMATION ABOUT HOW THIS DIFFERS BETWEEN SINGLE AND DUAL CORES.
+        // APB (Advanced Peripheral Bus)
 
         // # Kernel
         // CONFIG_FREERTOS_USE_TICKLESS_IDLE=y // [X] configUSE_TICKLESS_IDLE
@@ -138,6 +137,7 @@ void System::test_power_management(SYS_TEST_TYPE *type, uint8_t *index)
         // # Enable support for power management
         // CONFIG_PM_ENABLE=y        // [X] Support for power management
         // CONFIG_PM_DFS_INIT_AUTO=y // [X] Enable dynamic frequency scaling (DFS) at startup
+        // CONFIG_PM_PROFILING=y     // [X] Enable profiling counters for PM locks
 
         // # Put related source code in IRAM
         // CONFIG_PM_SLP_IRAM_OPT=y  // [X] Put lightsleep related codes in internal RAM
@@ -163,6 +163,8 @@ void System::test_power_management(SYS_TEST_TYPE *type, uint8_t *index)
         ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_APB, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
         ESP_LOGW(TAG, "apb clock frequency is %ld", freqValue);
 
+        esp_pm_dump_locks(stdout);
+
         *index = 1;
         break;
     }
@@ -182,6 +184,8 @@ void System::test_power_management(SYS_TEST_TYPE *type, uint8_t *index)
 
         ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_APB, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
         ESP_LOGW(TAG, "apb clock frequency aquired is %ld", freqValue);
+
+        esp_pm_dump_locks(stdout);
 
         *index = 2;
         break;
@@ -205,16 +209,7 @@ void System::test_power_management(SYS_TEST_TYPE *type, uint8_t *index)
         ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_APB, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
         ESP_LOGW(TAG, "apb clock frequency released is %ld", freqValue);
 
-        *index = 3;
-        break;
-    }
-    case 3:
-    {
-        ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_CPU, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
-        ESP_LOGW(TAG, "cpu clock frequency final read is %ld", freqValue);
-
-        ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_APB, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
-        ESP_LOGW(TAG, "apb clock frequency final read is %ld", freqValue);
+        esp_pm_dump_locks(stdout);
 
         *type = SYS_TEST_TYPE::WIFI;
         *index = 0;
@@ -223,7 +218,7 @@ void System::test_power_management(SYS_TEST_TYPE *type, uint8_t *index)
     }
 }
 
-void System::test_low_power_sleep(SYS_TEST_TYPE *type, uint8_t *index)
+void System::test_light_sleep(SYS_TEST_TYPE *type, uint8_t *index)
 {
     switch (*index)
     {
@@ -234,7 +229,6 @@ void System::test_low_power_sleep(SYS_TEST_TYPE *type, uint8_t *index)
 
         ESP_ERROR_CHECK(gpio_wakeup_enable(SW1, GPIO_INTR_LOW_LEVEL)); // Our GPIO0 is already configured for input active LOW
         ESP_ERROR_CHECK(esp_sleep_enable_gpio_wakeup());
-
 
         ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_CPU, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
         ESP_LOGW(TAG, "cpu clock frequency final read is %ld", freqValue);
@@ -268,6 +262,8 @@ void System::test_low_power_sleep(SYS_TEST_TYPE *type, uint8_t *index)
         ESP_LOGW(TAG, "Returned from Light Sleep...");
         ESP_ERROR_CHECK(gpio_wakeup_disable(SW1));
 
+        esp_pm_dump_locks(stdout);
+
         ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_CPU, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
         ESP_LOGW(TAG, "cpu clock frequency final read is %ld", freqValue);
 
@@ -278,13 +274,34 @@ void System::test_low_power_sleep(SYS_TEST_TYPE *type, uint8_t *index)
         *index = 0;
         break;
     }
+    }
 
-    case 1: // Enter Deep Sleep (RAM is lost - RTC Memory holds data)
+    // CHANGE YOUR TEST AREA AND INDEX AS NEEDED FOR THE NEXT SEQUENCE YOU WANT
+}
+
+void System::test_deep_sleep(SYS_TEST_TYPE *type, uint8_t *index)
+{
+    // Deep sleep will by default shut down CPU_CLK, APB_CLK, and RAM.
+
+    switch (*index)
+    {
+    case 0: // Enter Deep Sleep
+    {
+        while (gpio_get_level(SW1) == 0)   // This is required to allow time for the circuit to rise after the interrupt trigger (low).
+            vTaskDelay(pdMS_TO_TICKS(10)); // which brought the call here.  We need to see a high before we can continue.  This takes time.
+
+
+        *type = SYS_TEST_TYPE::WIFI;
+        *index = 0;
+        break;
+    }
+
+    case 1:
     {
         break;
     }
 
-    case 2: // Enter Hibernation Mode (no RAM data can be saved here)
+    case 2:
     {
         break;
     }

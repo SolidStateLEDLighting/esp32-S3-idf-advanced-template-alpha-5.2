@@ -99,8 +99,8 @@ void System::runGPIOTask(void)
 {
     uint32_t io_num = 0;
 
-    SYS_TEST_TYPE testType = SYS_TEST_TYPE::WIFI; // PICK YOUR STARTING TEST AREA
-    uint8_t testIndex = 0;                        // SET YOUR STARTING TEST INDEX
+    SYS_TEST_TYPE testType = SYS_TEST_TYPE::LIGHT_SLEEP; // PICK YOUR STARTING TEST AREA
+    uint8_t testIndex = 0;                                   // SET YOUR STARTING TEST INDEX
 
     xQueueReset(xQueueGPIOEvents);
 
@@ -137,9 +137,15 @@ void System::runGPIOTask(void)
                     break;
                 }
 
-                case SYS_TEST_TYPE::LOW_POWER_SLEEP:
+                case SYS_TEST_TYPE::LIGHT_SLEEP:
                 {
-                    test_low_power_sleep(&testType, &testIndex);
+                    test_light_sleep(&testType, &testIndex);
+                    break;
+                }
+
+                case SYS_TEST_TYPE::DEEP_SLEEP:
+                {
+                    test_deep_sleep(&testType, &testIndex);
                     break;
                 }
 
