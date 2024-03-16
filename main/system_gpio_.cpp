@@ -99,8 +99,8 @@ void System::runGPIOTask(void)
 {
     uint32_t io_num = 0;
 
-    SYS_TEST_TYPE testType = SYS_TEST_TYPE::POWER_MANAGEMENT; // PICK YOUR TEST AREA
-    uint8_t testIndex = 0;                                    // SET YOUR STARTING TEST INDEX
+    SYS_TEST_TYPE testType = SYS_TEST_TYPE::WIFI; // PICK YOUR TEST AREA
+    uint8_t testIndex = 0;                        // SET YOUR STARTING TEST INDEX
 
     xQueueReset(xQueueGPIOEvents);
 
