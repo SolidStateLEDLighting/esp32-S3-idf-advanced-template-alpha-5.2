@@ -6,6 +6,9 @@
 #include "esp_check.h"
 
 #include "esp_pm.h"
+// #include "esp_clk.h"
+#include "esp_clk_tree.h"
+#include "esp_private/esp_clk.h"
 
 #include "esp_sleep.h"
 
@@ -127,9 +130,14 @@ void System::test_power_management(SYS_TEST_TYPE *type, uint8_t *index)
         // Use of Power Management creates interrupt latency because the system has to resume power consuming actions.  This takes time.
         // If you always need a minimum response time then you should not use Power Management features.
 
+        // I'M NOT SURE IF THIS IS WORKING AS DESCRIBED IN THE DOCS.  ALSO, THERE IS NO INFORMATION ABOUT HOW THIS DIFFERS BETWEEN SINGLE AND DUAL CORES.
+
+        // # Kernel
+        // CONFIG_FREERTOS_USE_TICKLESS_IDLE=y // [X] configUSE_TICKLESS_IDLE
+
         // # Enable support for power management
-        // CONFIG_PM_ENABLE=y                   // [X] Support for power management
-        // CONFIG_FREERTOS_USE_TICKLESS_IDLE=y  // [X] configUSE_TICKLESS_IDLE
+        // CONFIG_PM_ENABLE=y        // [X] Support for power management
+        // CONFIG_PM_DFS_INIT_AUTO=y // [X] Enable dynamic frequency scaling (DFS) at startup
 
         // # Put related source code in IRAM
         // CONFIG_PM_SLP_IRAM_OPT=y  // [X] Put lightsleep related codes in internal RAM
@@ -142,31 +150,78 @@ void System::test_power_management(SYS_TEST_TYPE *type, uint8_t *index)
         ESP_ERROR_CHECK(uart_wait_tx_idle_polling((uart_port_t)CONFIG_ESP_CONSOLE_UART_NUM));
 
         esp_pm_config_t pm_config = {
-            .max_freq_mhz = 240,        // These values can be set anywhere we set them manually here.
-            .min_freq_mhz = 80,         // 
+            .max_freq_mhz = 240,        // These values are set manually here.
+            .min_freq_mhz = 80,         //
             .light_sleep_enable = true, // Automatic light sleep is enabled if tickless idle support is enabled.
         };
 
         ESP_ERROR_CHECK(esp_pm_configure(&pm_config));
 
-        *type = SYS_TEST_TYPE::WIFI;
-        *index = 0;
+        ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_CPU, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
+        ESP_LOGW(TAG, "cpu clock frequency is %ld", freqValue);
+
+        ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_APB, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
+        ESP_LOGW(TAG, "apb clock frequency is %ld", freqValue);
+
+        *index = 1;
         break;
     }
 
     case 1:
     {
+        ESP_ERROR_CHECK(esp_pm_lock_create(ESP_PM_CPU_FREQ_MAX, 0, "cpu_lock", &cpu_lock_handle));
+        ESP_ERROR_CHECK(esp_pm_lock_acquire(cpu_lock_handle));
+        taskYIELD();
+
+        ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_CPU, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
+        ESP_LOGW(TAG, "cpu clock frequency aquired is %ld", freqValue);
+
+        ESP_ERROR_CHECK(esp_pm_lock_create(ESP_PM_APB_FREQ_MAX, 0, "apb_lock", &apb_lock_handle));
+        ESP_ERROR_CHECK(esp_pm_lock_acquire(apb_lock_handle));
+        taskYIELD();
+
+        ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_APB, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
+        ESP_LOGW(TAG, "apb clock frequency aquired is %ld", freqValue);
+
+        *index = 2;
         break;
     }
 
     case 2:
     {
+        ESP_ERROR_CHECK(esp_pm_lock_release(cpu_lock_handle));
+        ESP_ERROR_CHECK(esp_pm_lock_delete(cpu_lock_handle));
+        cpu_lock_handle = nullptr;
+        taskYIELD();
+
+        ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_CPU, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
+        ESP_LOGW(TAG, "cpu clock frequency released is %ld", freqValue);
+
+        ESP_ERROR_CHECK(esp_pm_lock_release(apb_lock_handle));
+        ESP_ERROR_CHECK(esp_pm_lock_delete(apb_lock_handle));
+        apb_lock_handle = nullptr;
+        taskYIELD();
+
+        ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_APB, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
+        ESP_LOGW(TAG, "apb clock frequency released is %ld", freqValue);
+
+        *index = 3;
+        break;
+    }
+    case 3:
+    {
+        ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_CPU, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
+        ESP_LOGW(TAG, "cpu clock frequency final read is %ld", freqValue);
+
+        ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_APB, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
+        ESP_LOGW(TAG, "apb clock frequency final read is %ld", freqValue);
+
+        *type = SYS_TEST_TYPE::WIFI;
+        *index = 0;
         break;
     }
     }
-
 }
-
 
 void System::test_low_power_sleep(SYS_TEST_TYPE *type, uint8_t *index)
 {
@@ -179,6 +234,13 @@ void System::test_low_power_sleep(SYS_TEST_TYPE *type, uint8_t *index)
 
         ESP_ERROR_CHECK(gpio_wakeup_enable(SW1, GPIO_INTR_LOW_LEVEL)); // Our GPIO0 is already configured for input active LOW
         ESP_ERROR_CHECK(esp_sleep_enable_gpio_wakeup());
+
+
+        ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_CPU, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
+        ESP_LOGW(TAG, "cpu clock frequency final read is %ld", freqValue);
+
+        ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_APB, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
+        ESP_LOGW(TAG, "apb clock frequency final read is %ld", freqValue);
 
         // WARNING: You will need to be sure that you are attached to the correct Console UART or you may not see the serial output
         //          resume when you awake from sleep.   Select the serial port output that is native to the Tx/Rx pins - not the on-chip USB output.
@@ -205,6 +267,12 @@ void System::test_low_power_sleep(SYS_TEST_TYPE *type, uint8_t *index)
         //
         ESP_LOGW(TAG, "Returned from Light Sleep...");
         ESP_ERROR_CHECK(gpio_wakeup_disable(SW1));
+
+        ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_CPU, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
+        ESP_LOGW(TAG, "cpu clock frequency final read is %ld", freqValue);
+
+        ESP_ERROR_CHECK(esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_APB, ESP_CLK_TREE_SRC_FREQ_PRECISION_APPROX, &freqValue));
+        ESP_LOGW(TAG, "apb clock frequency final read is %ld", freqValue);
 
         *type = SYS_TEST_TYPE::WIFI;
         *index = 0;

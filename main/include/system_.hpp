@@ -21,6 +21,7 @@
 #include "esp_timer.h"
 #include "esp_sntp.h"
 #include "esp_log.h"
+#include "esp_pm.h"
 
 #include "nvs/nvs_.hpp"               // Our components
 #include "indication/indication_.hpp" //
@@ -95,6 +96,10 @@ extern "C"
         void runGPIOTask(void); // Handles GPIO Interrupts on Change Events
 
         /* System_gpio_test */
+        uint32_t freqValue;
+        esp_pm_lock_handle_t cpu_lock_handle = nullptr;
+        esp_pm_lock_handle_t apb_lock_handle = nullptr;
+
         void test_objectLifecycle_create(SYS_TEST_TYPE *, uint8_t *);
         void test_objectLifecycle_destroy(SYS_TEST_TYPE *, uint8_t *);
         void test_power_management(SYS_TEST_TYPE *, uint8_t *);

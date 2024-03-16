@@ -1,4 +1,4 @@
-# Project Alpha 5.2 V1  
+# Project Alpha 5.2  
 > [!NOTE]  
 > This repository now has received 2 stars from developers who work directly for Espressif.  Thanks guys.  
 
@@ -10,19 +10,22 @@ This project supports SMP with a dual core Esp32 microcontroller running FreeRTO
 
 **Alpha** refers to the hardware for which this project will run on.   
 **5.2** refers to the version of ESP-IDF for which this project is built with.  
-**V1** refers to the number of features in this sample project. As feature count increases, this number will increase. 
 
 **Hardware Supported:**  
 * Esp32s3 DevKitC
 ![DevKitC](./docs/images/DevKitC.jpg)  
 
-**V1 Features:**
+**Current Features:**
 * Full SMP support
 * C++ Construction/Destruction
 * Wifi STA (basic connection/disconnection support)
 * SNTP support (ability to fetch epoch time)
 * NVS support
 * RGB Indicator for ws2812 LED
+
+**Testing Features:**
+* Power Management (not sure that I'm happy with it yet)
+* Light Sleep (seems to be working)
 
 This project will evolve to include other features which are not included here at this time. When this Alpha project can not expanded upon further, we will create a Beta, and Gamma projects that will allow for more expansion on larger hardware.
 
