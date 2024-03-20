@@ -23,9 +23,9 @@ This project supports SMP with a dual core Esp32 microcontroller running FreeRTO
 * NVS support
 * RGB Indicator for ws2812 LED
 
-**Testable Features: (not implimented the main build yet)**
-* Power Management (just beginning to explore profiling of the clocks)
-* Light Sleep (seems to be working in principle)
+**Testable Features: (not implemented the main build yet)**
+* Power Management (implemented in the test area)
+* Light Sleep (implemented in the test area)
 
 This project will evolve to include other features which are not included here at this time. When this Alpha project can not expanded upon further, we will create a Beta, and Gamma projects that will allow for more expansion on larger hardware.
 

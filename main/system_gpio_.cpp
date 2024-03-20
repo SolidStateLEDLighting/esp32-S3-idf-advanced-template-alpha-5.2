@@ -2,6 +2,9 @@
 
 #include "driver/gpio.h"
 #include "esp_check.h"
+
+#include "esp_sleep.h"
+
 //
 // We generally handle GPIO interrupts here.  The idea is to route them to the handler which is designed for that service.
 //
@@ -15,7 +18,7 @@ extern SemaphoreHandle_t semWifiEntry;
 extern SemaphoreHandle_t semIndEntry;
 
 bool allowSwitchGPIOinput = true; // These variables are used for switch input debouncing
-uint8_t SwitchDebounceCounter = 0;
+uint8_t SwitchDebounceCounter = 5;
 
 QueueHandle_t xQueueGPIOEvents = nullptr;
 
@@ -77,7 +80,7 @@ void System::initGPIOTask(void)
 
     ESP_GOTO_ON_ERROR(gpio_isr_handler_add(SW1, GPIOSwitchIsrHandler, (void *)SW1), sys_GPIOIsrHandler_err, TAG, "() failed");
 
-    SwitchDebounceCounter = 30;
+    SwitchDebounceCounter = 10;
     allowSwitchGPIOinput = true;
 
     routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): gpioStackSizeK: " + std::to_string(gpioStackSizeK));
@@ -99,8 +102,8 @@ void System::runGPIOTask(void)
 {
     uint32_t io_num = 0;
 
-    SYS_TEST_TYPE testType = SYS_TEST_TYPE::LIGHT_SLEEP; // PICK YOUR STARTING TEST AREA
-    uint8_t testIndex = 0;                                   // SET YOUR STARTING TEST INDEX
+    SYS_TEST_TYPE testType = SYS_TEST_TYPE::WIFI; // PICK YOUR STARTING TEST AREA
+    uint8_t testIndex = 0;                        // SET YOUR STARTING TEST INDEX
 
     xQueueReset(xQueueGPIOEvents);
 
@@ -108,17 +111,24 @@ void System::runGPIOTask(void)
     {
         if (xQueueReceive(xQueueGPIOEvents, (void *)&io_num, portMAX_DELAY)) // There is never any reason to yield.
         {
-            if (sysOP == SYS_OP::Init) // If we haven't finished out our initialization -- discard item from our queue.
+            if (sysOP == SYS_OP::Init) // If we haven't finished out our initialization -- discard items from our queue.
                 continue;
 
             switch (io_num)
             {
             case SW1:
             {
-                // routeLogByValue(LOG_TYPE::WARN, std::string(__func__) + "(): SW1... testIndex is " + std::to_string(testIndex));
+                routeLogByValue(LOG_TYPE::WARN, std::string(__func__) + "(): SW1 - testIndex = " + std::to_string(testIndex) + " Wakeup Cause = " + std::to_string((int)esp_sleep_get_wakeup_cause()));
 
                 switch (testType)
                 {
+                case SYS_TEST_TYPE::IDLE:
+                {
+                    routeLogByValue(LOG_TYPE::WARN, std::string(__func__) + "(): SYS_TEST_TYPE::IDLE...");
+                    esp_pm_dump_locks(stdout);
+                    break;
+                }
+
                 case SYS_TEST_TYPE::LIFE_CYCLE_CREATE:
                 {
                     test_objectLifecycle_create(&testType, &testIndex);

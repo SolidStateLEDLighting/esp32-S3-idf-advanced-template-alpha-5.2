@@ -22,7 +22,7 @@ void System::runMarshaller(void *arg)
 void System::run(void)
 {
     esp_err_t ret = ESP_OK;
-    int8_t oneSecCounter = 7;
+    int8_t oneSecCounter = 6;
 
     while (true)
     {
@@ -166,10 +166,10 @@ void System::run(void)
             // Temporary helper - RGB visual status indicator to see if we are disconnected, in process, or connected to a Wifi host
             // This area is not included in documentation because it will be removed.
             //
-            if (--oneSecCounter < 1) // Low accuracy counter based on normal delays inside this run function.
+            if (--oneSecCounter < 1) // Low accuracy counter based on normal delay inside this run function.
             {
                 // ESP_LOGW(TAG, "sysWifiConnState is %d", (int)sysWifiConnState); // Testing and debugging
-                oneSecCounter = 7; // Can be adjusted up or down to yield are more pleasant result.
+                oneSecCounter = 6; // Can be adjusted up or down to yield are more pleasing cadence.
                 //
                 // If Unconnected to a Host - flash Red
                 // If Connecting  to a Host - flash Green
@@ -214,11 +214,6 @@ void System::run(void)
             {
                 // By default all areas of the Esp32 are on and active after a reboot.  Our task here is to turn off anything that is unused
                 // in this application.   We must remember to return here to allow the use of a peripheral when we enable one in the application.
-
-                
-
-
-
                 initSysStep = SYS_INIT::Start_Network_Interface;
                 break;
             }

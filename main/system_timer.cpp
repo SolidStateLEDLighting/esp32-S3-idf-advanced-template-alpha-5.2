@@ -9,8 +9,7 @@ extern uint8_t SwitchDebounceCounter;
 extern SemaphoreHandle_t semSysIndLock; // Local Indication Lock
 
 // Local Variables
-uint8_t halfSecondCount = 5;
-uint8_t oneSecondCount = 2;
+uint8_t oneSecondCount = 10;
 uint8_t fiveSecondCount = 5;
 uint8_t tenSecondCount = 10;
 uint8_t oneMinuteCount = 6;
@@ -59,8 +58,21 @@ void System::runSysTimerTaskMarshaller(void *arg)
 
 void System::runSysTimerTask(void)
 {
+    uint32_t startRunTicks = xTaskGetTickCount();
+    uint32_t Hz = 0;
+
     while (true)
     {
+        /* // Sanity Test for the system_timer
+        if (pdTICKS_TO_MS(xTaskGetTickCount() - startRunTicks) > 1000) // Once second has just passed...
+        {
+            ESP_LOGW(TAG, "Running at %ld Hz", Hz); // Report cycles per second
+            startRunTicks = xTaskGetTickCount();    // Restart the count
+            Hz = 0;                                 //
+        }
+        else
+            Hz++; */
+
         //
         // 10hz Processing
         //
@@ -78,46 +90,37 @@ void System::runSysTimerTask(void)
                 allowSwitchGPIOinput = true;
         }
 
-        if (halfSecondCount > 0)
+        if (oneSecondCount > 0)
         {
-            if (--halfSecondCount < 1)
+            if (--oneSecondCount < 1)
             {
-                // halfSecondActions();  // We have no halfSecondActions right now
-                halfSecondCount = 5;
+                oneSecondActions();
+                oneSecondCount = 10;
 
-                if (oneSecondCount > 0)
+                if (fiveSecondCount > 0)
                 {
-                    if (--oneSecondCount < 1)
+                    if (--fiveSecondCount < 1)
                     {
-                        oneSecondActions();
-                        oneSecondCount = 2;
+                        fiveSecondActions();
+                        fiveSecondCount = 5;
+                    }
+                }
 
-                        if (fiveSecondCount > 0)
-                        {
-                            if (--fiveSecondCount < 1)
-                            {
-                                fiveSecondActions();
-                                fiveSecondCount = 5;
-                            }
-                        }
+                if (tenSecondCount > 0)
+                {
+                    if (--tenSecondCount < 1)
+                    {
+                        tenSecondActions();
+                        tenSecondCount = 10;
+                    }
+                }
 
-                        if (tenSecondCount > 0)
-                        {
-                            if (--tenSecondCount < 1)
-                            {
-                                tenSecondActions();
-                                tenSecondCount = 10;
-                            }
-                        }
-
-                        if (oneMinuteCount > 0)
-                        {
-                            if (--oneMinuteCount < 1)
-                            {
-                                oneMinuteActions();
-                                oneMinuteCount = 60;
-                            }
-                        }
+                if (oneMinuteCount > 0)
+                {
+                    if (--oneMinuteCount < 1)
+                    {
+                        oneMinuteActions();
+                        oneMinuteCount = 60;
                     }
                 }
             }
@@ -134,6 +137,12 @@ void System::oneSecondActions(void)
 {
     if (showSys & _showSysTimerSeconds)
         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): One Second");
+
+    // int32_t val = 0x41000209; // 5 second heartbeat in blue
+
+    // if (queHandleIndCmdRequest != nullptr) // Debug heartbeat that can be counted over a 1 minute interval
+    //     xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
+    
     //
     // When we are working with multiple variables at the same time, we don't want 'save to NVS' being called too quickly.
     // Allow a save even if we are in the process of reboot count-down.
@@ -161,14 +170,10 @@ void System::fiveSecondActions(void)
         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): Five Seconds");
 
     /*
-    if (xSemaphoreTake(semSysIndLock, portMAX_DELAY)) // Several tasks can access Indication varaibles.
-    {
         int32_t val = 0x41000209; // 5 second heartbeat in blue
 
         if (queHandleIndCmdRequest != nullptr)
             xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
-        xSemaphoreGive(semSysIndLock);
-    }
     */
 }
 

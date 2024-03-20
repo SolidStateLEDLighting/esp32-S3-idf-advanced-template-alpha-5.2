@@ -92,6 +92,7 @@ enum class LOG_TYPE : uint8_t
 //
 enum class SYS_TEST_TYPE : uint8_t
 {
+    IDLE,
     LIFE_CYCLE_CREATE,
     LIFE_CYCLE_DESTROY,
     POWER_MANAGEMENT,
