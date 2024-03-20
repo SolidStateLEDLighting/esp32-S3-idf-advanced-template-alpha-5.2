@@ -10,7 +10,7 @@ The system mangages everything at a high level.  It does the following:
 * May open and close external communications.
 * Triggers periodic system-wide tasks.
 * Handles error recovery on a system scale (if possible).
-* It will be in charge of putting the system to sleep. **(not yet impliemented)**
+* It will be in charge of putting the system to sleep. **(code is in a testing state at this time)**
 
 You may follow these links to System documentation:
 1) [System Abstractions](./docs/system_abstractions.md)
