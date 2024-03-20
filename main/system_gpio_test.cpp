@@ -153,11 +153,11 @@ void System::test_power_management(SYS_TEST_TYPE *type, uint8_t *index)
         ESP_ERROR_CHECK(uart_wait_tx_idle_polling((uart_port_t)CONFIG_ESP_CONSOLE_UART_NUM));
 
         // This hardware has an active GPIO0 input.  We must register this input as a wake up source AND allow the VddSDIO power bus to remain on.
-        // If we don't run these next 3 lines of code, the GPIO0 line will bounce and create an interrupt which is not intended.
-        // We mainly need these commands in place for pm_config.light_sleep_enable = true AND we have a timer or some other interrupt source running.
+        // If we don't run these next 2 or 3 lines of code, the GPIO0 line will bounce and trigger an unintended interrupt.
+        // We mainly need these commands in place for pm_config.light_sleep_enable = true AND we have a timer or some other interrupt source occurring.
         ESP_ERROR_CHECK(gpio_wakeup_enable(SW1, GPIO_INTR_LOW_LEVEL)); // Our GPIO0 is already configured for input active LOW
         ESP_ERROR_CHECK(esp_sleep_enable_gpio_wakeup());
-        ESP_ERROR_CHECK(esp_sleep_pd_config(ESP_PD_DOMAIN_VDDSDIO, ESP_PD_OPTION_ON)); // This feature may already be in AUTO mode before you arrive here and this statement may be redundant.
+        ESP_ERROR_CHECK(esp_sleep_pd_config(ESP_PD_DOMAIN_VDDSDIO, ESP_PD_OPTION_ON)); // This feature may already be in AUTO mode before you arrive here and this statement may be superfluous.
 
         esp_pm_config_t pm_config = {
             .max_freq_mhz = 160,        // These values are set manually here.
@@ -176,6 +176,7 @@ void System::test_power_management(SYS_TEST_TYPE *type, uint8_t *index)
         esp_pm_dump_locks(stdout);
 
         *type = SYS_TEST_TYPE::IDLE; // Idle process allows us to dump PM info on the next GPIO0 input.
+        // *index = 1;
         break;
     }
 
@@ -247,9 +248,9 @@ void System::test_light_sleep(SYS_TEST_TYPE *type, uint8_t *index)
         ESP_LOGW(TAG, "apb clock frequency final read is %ld", freqValue);
 
         // WARNING: You will need to be sure that you are attached to the correct Console UART or you may not see the serial output
-        //          resume when you awake from sleep.   Select the serial port output that is native to the Tx/Rx pins - not the on-chip USB output.
+        //          resume when you awake from sleep.  Select the serial port output that is native to the Tx/Rx pins - not the on-chip USB output.
 
-        // esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_GPIO); // We did this for a test to confirm that GPIO can be disabled as the wakeup source.
+        // esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_GPIO); // I did this for a test to confirm that GPIO can be disabled as the wakeup source.
 
         ESP_LOGW(TAG, "Entering Light Sleep...");
         ESP_ERROR_CHECK(uart_wait_tx_idle_polling((uart_port_t)CONFIG_ESP_CONSOLE_UART_NUM)); // This call flushes the serial port FIFO buffer before sleep
