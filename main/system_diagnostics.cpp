@@ -180,6 +180,15 @@ void System::printTaskInfo()
     if (ind != nullptr)
         ind->printTaskInfoByColumns();
 
+    name = "main";
+    hd = xTaskGetHandle(name.c_str());
+    if (hd != NULL)
+    {
+        priority = uxTaskPriorityGet(hd);
+        highWaterMark = uxTaskGetStackHighWaterMark(hd);
+        printf("  %-10s   %02ld           %ld\n", name.c_str(), priority, highWaterMark);
+    }
+
     name = "IDLE0";
     hd = xTaskGetHandle(name.c_str());
     if (hd != NULL)

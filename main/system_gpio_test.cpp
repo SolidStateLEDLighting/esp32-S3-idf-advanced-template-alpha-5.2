@@ -6,6 +6,7 @@
 #include "esp_check.h"
 
 #include "esp_pm.h"
+#include "driver/rtc_io.h"
 // #include "esp_clk.h"
 #include "esp_clk_tree.h"
 #include "esp_private/esp_clk.h"
@@ -129,7 +130,7 @@ void System::test_power_management(SYS_TEST_TYPE *type, uint8_t *index)
     {
         // Use of Power Management creates interrupt latency because the system required time to resumes power consuming activities.
         // If you always need a minimum response time then you should not use Power Management features.
-        // Note to self: APB is the Advanced Peripheral Bus (for those of your like me who are forgetful)
+        // Note to self: APB is the Advanced Peripheral Bus (for those of your like me who can't remember every anacronym)
 
         // All of the following menuConfig commands should be in place to take advantage of Power Management.  Further, I generally suggest
         // that you remove them if you are not taking advantage of Power Management services.
@@ -153,8 +154,8 @@ void System::test_power_management(SYS_TEST_TYPE *type, uint8_t *index)
         ESP_ERROR_CHECK(uart_wait_tx_idle_polling((uart_port_t)CONFIG_ESP_CONSOLE_UART_NUM));
 
         // This hardware has an active GPIO0 input.  We must register this input as a wake up source AND allow the VddSDIO power bus to remain on.
-        // If we don't run these next 2 or 3 lines of code, the GPIO0 line will bounce and trigger an unintended interrupt.
-        // We mainly need these commands in place for pm_config.light_sleep_enable = true AND we have a timer or some other interrupt source occurring.
+        // If we don't run these next 2 or 3 lines of code, the GPIO0 line will bounce and trigger unintended interrupts.
+        // We mainly need these commands in place for pm_config.light_sleep_enable = true AND we have a timer or some other interrupt source triggering sleep-wake cycles.
         ESP_ERROR_CHECK(gpio_wakeup_enable(SW1, GPIO_INTR_LOW_LEVEL)); // Our GPIO0 is already configured for input active LOW
         ESP_ERROR_CHECK(esp_sleep_enable_gpio_wakeup());
         ESP_ERROR_CHECK(esp_sleep_pd_config(ESP_PD_DOMAIN_VDDSDIO, ESP_PD_OPTION_ON)); // This feature may already be in AUTO mode before you arrive here and this statement may be superfluous.
@@ -272,7 +273,7 @@ void System::test_light_sleep(SYS_TEST_TYPE *type, uint8_t *index)
         // which occurs right here...  I'm guessing that this interrupt doesn't get registered in light sleep
         // or it is lost/ignored in the wake-up process.
         //
-        ESP_LOGW(TAG, "Returned from Light Sleep...");
+        ESP_LOGW(TAG, "Returning from Light Sleep...");
         ESP_ERROR_CHECK(gpio_wakeup_disable(SW1));
 
         esp_pm_dump_locks(stdout);
@@ -303,23 +304,26 @@ void System::test_deep_sleep(SYS_TEST_TYPE *type, uint8_t *index)
         while (gpio_get_level(SW1) == 0)   // This is required to allow time for the circuit to rise after the interrupt trigger (low).
             vTaskDelay(pdMS_TO_TICKS(10)); // which brought the call here.  We need to see a high before we can continue.  This takes time.
 
-        *type = SYS_TEST_TYPE::WIFI;
-        *index = 0;
+        // Isolate RTC pins that are active and might pull current during sleep. RTC pins available for the ESP32-S3:0-21.
+        // rtc_gpio_isolate(GPIO_NUM_1);
+        // rtc_gpio_isolate(GPIO_NUM_2);
+
+        // Disable any interrupt source which should not wake the system.
+        // (None at this time)
+
+        // Enable required wake up sources.  RTC pins available for the ESP32-S3: 0-21.
+        ESP_ERROR_CHECK(esp_sleep_enable_ext0_wakeup(SW1, 0));
+
+        // Enable pull-up/pull-down on the required input pins
+        ESP_ERROR_CHECK(rtc_gpio_pulldown_dis(SW1)); // Always disable a source or a sink first
+        ESP_ERROR_CHECK(rtc_gpio_pullup_en(SW1));    // Enable a source or a sink second
+
+        ESP_LOGW(TAG, "Entering Deep Sleep..."); // Don't need to flush the serial port before sleep -- normal operation will do this for you with deep sleep.
+        esp_deep_sleep_start();
+        // There is no returning to this point.  Every deep-sleep wake up will restart the application at app_main()
         break;
     }
-
-    case 1:
-    {
-        break;
     }
-
-    case 2:
-    {
-        break;
-    }
-    }
-
-    // CHANGE YOUR TEST AREA AND INDEX AS NEEDED FOR THE NEXT SEQUENCE YOU WANT
 }
 
 //

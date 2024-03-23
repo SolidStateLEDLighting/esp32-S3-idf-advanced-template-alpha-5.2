@@ -86,6 +86,8 @@
         "variant": "cpp",
         "complex": "cpp",
         "netfwd": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "rtc.h": "c",
+        "mspi_timing_tuning.h": "c"
     }
 }

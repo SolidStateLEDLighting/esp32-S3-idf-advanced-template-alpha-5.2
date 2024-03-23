@@ -57,9 +57,17 @@ struct SYS_Response
 enum class SYS_OP : uint8_t
 {
     Run,
+    Shutdown,
     Init,
     Error,
     Idle,
+};
+
+enum class SYS_SHUTDOWN : uint8_t
+{
+    Start,
+    Finished,
+    Error,
 };
 
 enum class SYS_INIT : uint8_t

@@ -124,6 +124,7 @@ void System::run(void)
                                 routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): indication deleted");
                         }
                     }
+                    break;
                 }
                 }
             }
@@ -197,16 +198,22 @@ void System::run(void)
             break;
         }
 
+        case SYS_OP::Shutdown:
+        {
+
+            break;
+        }
+
         case SYS_OP::Init:
         {
-            switch (initSysStep)
+            switch (sysInitStep)
             {
             case SYS_INIT::Start:
             {
                 if (show & _showInit)
                     routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::Start");
 
-                initSysStep = SYS_INIT::Power_Down_Unused_Resources;
+                sysInitStep = SYS_INIT::Power_Down_Unused_Resources;
                 [[fallthrough]];
             }
 
@@ -214,7 +221,7 @@ void System::run(void)
             {
                 // By default all areas of the Esp32 are on and active after a reboot.  Our task here is to turn off anything that is unused
                 // in this application.   We must remember to return here to allow the use of a peripheral when we enable one in the application.
-                initSysStep = SYS_INIT::Start_Network_Interface;
+                sysInitStep = SYS_INIT::Start_Network_Interface;
                 break;
             }
 
@@ -224,12 +231,12 @@ void System::run(void)
                     routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::Start_Network_Interface - Step " + std::to_string((int)SYS_INIT::Start_Network_Interface));
 
                 ESP_GOTO_ON_ERROR(esp_netif_init(), sys_Start_Network_Interface_err, TAG, "esp_netif_init() failure."); // Network Interface initialization - starts up the TCP/IP stack.
-                initSysStep = SYS_INIT::Create_Default_Event_Loop;
+                sysInitStep = SYS_INIT::Create_Default_Event_Loop;
                 break;
 
             sys_Start_Network_Interface_err:
                 errMsg = std::string(__func__) + "(): SYS_INIT::Start_Network_Interface: error: " + esp_err_to_name(ret);
-                initSysStep = SYS_INIT::Error;
+                sysInitStep = SYS_INIT::Error;
                 break;
             }
 
@@ -239,12 +246,12 @@ void System::run(void)
                     routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::Create_Default_Event_Loop - Step " + std::to_string((int)SYS_INIT::Create_Default_Event_Loop));
 
                 ESP_GOTO_ON_ERROR(esp_event_loop_create_default(), sys_Create_Default_Event_Loop_err, TAG, "esp_event_loop_create_default() failure.");
-                initSysStep = SYS_INIT::Start_GPIO;
+                sysInitStep = SYS_INIT::Start_GPIO;
                 break;
 
             sys_Create_Default_Event_Loop_err:
                 errMsg = std::string(__func__) + "(): SYS_INIT::Create_Default_Event_Loop: error: " + esp_err_to_name(ret);
-                initSysStep = SYS_INIT::Error;
+                sysInitStep = SYS_INIT::Error;
                 break;
             }
 
@@ -257,7 +264,7 @@ void System::run(void)
                 initGPIOTask(); // Assigning ISRs to pins and start GPIO Task
 
                 // NOTE: Timer task will be not be started until System initialization is complete.
-                initSysStep = SYS_INIT::Create_Indication;
+                sysInitStep = SYS_INIT::Create_Indication;
                 break;
             }
 
@@ -275,7 +282,7 @@ void System::run(void)
                     if (show & _showInit)
                         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::Wait_On_Indication - Step " + std::to_string((int)SYS_INIT::Wait_On_Indication));
 
-                    initSysStep = SYS_INIT::Wait_On_Indication;
+                    sysInitStep = SYS_INIT::Wait_On_Indication;
                 }
                 [[fallthrough]];
             }
@@ -287,7 +294,7 @@ void System::run(void)
                     taskHandleIndRun = ind->getRunTaskHandle();
                     queHandleIndCmdRequest = ind->getCmdRequestQueue();
                     xSemaphoreGive(semIndEntry);
-                    initSysStep = SYS_INIT::Create_Wifi;
+                    sysInitStep = SYS_INIT::Create_Wifi;
                 }
                 break;
             }
@@ -305,7 +312,7 @@ void System::run(void)
                     if (show & _showInit)
                         routeLogByValue(LOG_TYPE::INFO, std::string(__func__) + "(): SYS_INIT::Wait_On_Wifi - Step " + std::to_string((int)SYS_INIT::Wait_On_Wifi));
 
-                    initSysStep = SYS_INIT::Wait_On_Wifi;
+                    sysInitStep = SYS_INIT::Wait_On_Wifi;
                 }
                 [[fallthrough]];
             }
@@ -317,7 +324,7 @@ void System::run(void)
                     taskHandleWIFIRun = wifi->getRunTaskHandle();
                     queHandleWIFICmdRequest = wifi->getCmdRequestQueue();
                     xSemaphoreGive(semWifiEntry);
-                    initSysStep = SYS_INIT::Finished;
+                    sysInitStep = SYS_INIT::Finished;
                 }
                 break;
             }

@@ -58,8 +58,8 @@ void System::runSysTimerTaskMarshaller(void *arg)
 
 void System::runSysTimerTask(void)
 {
-    uint32_t startRunTicks = xTaskGetTickCount();
-    uint32_t Hz = 0;
+    // uint32_t startRunTicks = xTaskGetTickCount();
+    // uint32_t Hz = 0;
 
     while (true)
     {

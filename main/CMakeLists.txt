@@ -8,17 +8,18 @@ FILE(GLOB_RECURSE SOURCES ${PROJECT_DIR}/main/*.cpp)
 #
 # Included components which are exposed in public header files.
 set(REQUIRES
-    esp_event
-    esp_timer
-    esp_netif
     driver
+    esp_timer
     indication_ws2812_5.2
     wifi_5.2
 )
 #
 # Anything that must be included, but may remain hidden from the public header files.
-# Limiting component exposure can reduce Undefined Reference linking problems in larger applications.
+# Limiting component scope can reduce Undefined Reference linkage problems in large applications.
 set(PRIV_REQUIRES
+    app_update
+    esp_event
+    esp_netif
     nvs_5.2
 )
 #

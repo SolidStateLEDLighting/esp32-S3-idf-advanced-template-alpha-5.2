@@ -36,9 +36,10 @@ extern "C"
     class System
     {
     public:
-        static System *getInstance() // Enforce use of System as a singleton object
+        static System *getInstance(esp_reset_reason_t resetReason = ESP_RST_UNKNOWN) // Enforce use of System as a singleton object
         {
-            static System sysInstance;
+            // Upon the creating of a new System object, it may be important to respond to a reset in a uniqueway.
+            static System sysInstance = System(resetReason);
             return &sysInstance;
         }
 
@@ -46,7 +47,7 @@ extern "C"
         QueueHandle_t getCmdRequestQueue(void);
 
     private:
-        System(void);
+        System(esp_reset_reason_t);
         System(const System &) = delete;         // Disable copy constructor
         void operator=(System const &) = delete; // Disable assignment operator
 
@@ -78,6 +79,7 @@ extern "C"
         uint8_t timerStackSizeK = 4;                  // Default minimum size
         TaskHandle_t taskHandleRunSysTimer = nullptr; //
 
+        void resetHandling(esp_reset_reason_t);
         void setFlags(void);
         void setLogLevels(void);
         void createSemaphores(void);
@@ -131,7 +133,7 @@ extern "C"
 
         SYS_OP sysOP = SYS_OP::Idle; // State variables
         SYS_OP opSys_Return = SYS_OP::Idle;
-        SYS_INIT initSysStep = SYS_INIT::Finished;
+        SYS_INIT sysInitStep = SYS_INIT::Finished;
 
         TaskHandle_t taskHandleIndRun = nullptr; // RTOS
         TaskHandle_t taskHandleSNTPRun = nullptr;
