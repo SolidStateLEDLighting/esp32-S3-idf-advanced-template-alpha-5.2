@@ -135,13 +135,15 @@ void System::test_power_management(SYS_TEST_TYPE *type, uint8_t *index)
         // All of the following menuConfig commands should be in place to take advantage of Power Management.  Further, I generally suggest
         // that you remove them if you are not taking advantage of Power Management services.
 
-        // # Kernel
-        // CONFIG_FREERTOS_USE_TICKLESS_IDLE=y // [X] configUSE_TICKLESS_IDLE
-
+        // (Order of item selection is important for this list...)
+        //
         // # Enable support for power management
         // CONFIG_PM_ENABLE=y        // [X] Support for power management
         // CONFIG_PM_DFS_INIT_AUTO=y // [X] Enable dynamic frequency scaling (DFS) at startup
         // CONFIG_PM_PROFILING=y     // [X] Enable profiling counters for PM locks
+
+        // # Kernel
+        // CONFIG_FREERTOS_USE_TICKLESS_IDLE=y // [X] configUSE_TICKLESS_IDLE
 
         // # Put related source code in IRAM
         // CONFIG_PM_SLP_IRAM_OPT=y  // [X] Put lightsleep related codes in internal RAM
