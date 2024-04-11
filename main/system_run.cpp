@@ -9,6 +9,7 @@
 /* External Semaphores */
 extern SemaphoreHandle_t semIndEntry;
 extern SemaphoreHandle_t semWifiEntry;
+
 extern SemaphoreHandle_t semSysRouteLock;
 extern SemaphoreHandle_t semSysUint8Lock;
 extern SemaphoreHandle_t semSysIndLock; // Local Indication Lock

@@ -38,8 +38,7 @@ extern "C"
     public:
         static System *getInstance(esp_reset_reason_t resetReason = ESP_RST_UNKNOWN) // Enforce use of System as a singleton object
         {
-            // Upon the creating of a new System object, it may be important to respond to a reset in a uniqueway.
-            static System sysInstance = System(resetReason);
+            static System sysInstance = System(resetReason); // Upon a new System object, it may be important to respond to a reset in a unique way.
             return &sysInstance;
         }
 
@@ -70,14 +69,9 @@ extern "C"
         QueueHandle_t queHandleWIFICmdRequest = nullptr;
         QueueHandle_t queHandleIndCmdRequest = nullptr;
 
-        uint8_t runStackSizeK = 8;                  // Default minimum size
-        TaskHandle_t taskHandleSystemRun = nullptr; //
+        
 
-        uint8_t gpioStackSizeK = 5;                     // Default minimum size
-        TaskHandle_t runTaskHandleSystemGPIO = nullptr; //
-
-        uint8_t timerStackSizeK = 4;                  // Default minimum size
-        TaskHandle_t taskHandleRunSysTimer = nullptr; //
+        
 
         void resetHandling(esp_reset_reason_t);
         void setFlags(void);
@@ -92,6 +86,9 @@ extern "C"
         void printTaskInfo(void);
 
         /* System_gpio */
+        uint8_t gpioStackSizeK = 5;                     // Default minimum size
+        TaskHandle_t runTaskHandleSystemGPIO = nullptr; //
+
         void initGPIOPins(void);
         void initGPIOTask(void);
         static void runGPIOTaskMarshaller(void *);
@@ -131,6 +128,9 @@ extern "C"
         SYS_Response *ptrSYSResponse = nullptr;
         std::string strCmdPayload = "";
 
+        uint8_t runStackSizeK = 8;                  // Default minimum size
+        TaskHandle_t taskHandleSystemRun = nullptr; //
+
         SYS_OP sysOP = SYS_OP::Idle; // State variables
         SYS_OP opSys_Return = SYS_OP::Idle;
         SYS_INIT sysInitStep = SYS_INIT::Finished;
@@ -146,6 +146,9 @@ extern "C"
         uint8_t rebootTimerSec = 0;
         uint8_t syncEventTimeOut_Counter = 0;
         esp_timer_handle_t handleTimer = nullptr;
+
+        uint8_t timerStackSizeK = 4;                  // Default minimum size
+        TaskHandle_t taskHandleRunSysTimer = nullptr; //
 
         void initSysTimerTask(void);                   //
         static void runSysTimerTaskMarshaller(void *); // Handles all Timer related events

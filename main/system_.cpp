@@ -2,7 +2,6 @@
 
 /* Local Semaphores */
 SemaphoreHandle_t semSysEntry = NULL;
-SemaphoreHandle_t semSysEventLock = NULL;
 SemaphoreHandle_t semSysRouteLock = NULL;
 
 /* External Semaphores */
@@ -103,10 +102,6 @@ void System::createSemaphores()
     semSysEntry = xSemaphoreCreateBinary(); // External Entry locking
     if (semSysEntry != NULL)
         xSemaphoreGive(semSysEntry);
-
-    semSysEventLock = xSemaphoreCreateBinary(); // Event locking
-    if (semSysEventLock != NULL)
-        xSemaphoreGive(semSysEventLock);
 
     semSysRouteLock = xSemaphoreCreateBinary(); // Route locking
     if (semSysRouteLock != NULL)
