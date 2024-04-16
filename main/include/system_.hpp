@@ -69,10 +69,6 @@ extern "C"
         QueueHandle_t queHandleWIFICmdRequest = nullptr;
         QueueHandle_t queHandleIndCmdRequest = nullptr;
 
-        
-
-        
-
         void resetHandling(esp_reset_reason_t);
         void setFlags(void);
         void setLogLevels(void);

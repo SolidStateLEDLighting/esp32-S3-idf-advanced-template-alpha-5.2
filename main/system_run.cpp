@@ -17,7 +17,9 @@ extern SemaphoreHandle_t semSysIndLock; // Local Indication Lock
 void System::runMarshaller(void *arg)
 {
     ((System *)arg)->run();
-    vTaskDelete(NULL);
+
+    ((System *)arg)->taskHandleSystemRun = nullptr;
+    vTaskDelete(((System *)arg)->taskHandleSystemRun);
 }
 
 void System::run(void)

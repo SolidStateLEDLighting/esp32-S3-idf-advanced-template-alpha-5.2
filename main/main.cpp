@@ -1,8 +1,6 @@
 #include "system_.hpp"
 #include "esp_ota_ops.h"
 
-extern SemaphoreHandle_t semSYSEntry;
-
 extern "C" void app_main(void)
 {
     //

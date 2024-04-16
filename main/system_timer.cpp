@@ -53,7 +53,9 @@ void IRAM_ATTR System::sysTimerCallback(void *arg)
 void System::runSysTimerTaskMarshaller(void *arg)
 {
     ((System *)arg)->runSysTimerTask();
-    vTaskDelete(NULL);
+
+    ((System *)arg)->taskHandleRunSysTimer = nullptr;
+    vTaskDelete(((System *)arg)->taskHandleRunSysTimer);
 }
 
 void System::runSysTimerTask(void)
@@ -142,7 +144,7 @@ void System::oneSecondActions(void)
 
     // if (queHandleIndCmdRequest != nullptr) // Debug heartbeat that can be counted over a 1 minute interval
     //     xQueueSendToBack(queHandleIndCmdRequest, (void *)&val, pdMS_TO_TICKS(0));
-    
+
     //
     // When we are working with multiple variables at the same time, we don't want 'save to NVS' being called too quickly.
     // Allow a save even if we are in the process of reboot count-down.

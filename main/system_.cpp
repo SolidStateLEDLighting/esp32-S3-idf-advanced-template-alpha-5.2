@@ -10,6 +10,7 @@ extern SemaphoreHandle_t semSysBoolLock;
 extern SemaphoreHandle_t semSysUint8Lock;
 extern SemaphoreHandle_t semSysIndLock;
 
+/* Construction / Destruction */
 System::System(esp_reset_reason_t resetReason)
 {
     ESP_LOGW(TAG, "Startup...");

@@ -436,7 +436,10 @@ void System::test_wifi(SYS_TEST_TYPE *type, uint8_t *index)
     {
     case 0:
     {
-        while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_CONN_PRI_HOST), eSetValueWithoutOverwrite))
+        while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_CLEAR_PRI_HOST), eSetValueWithoutOverwrite))
+             vTaskDelay(pdMS_TO_TICKS(50));
+
+        while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_PROV_HOST), eSetValueWithoutOverwrite))
             vTaskDelay(pdMS_TO_TICKS(50));
 
         while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_RUN_DIRECTIVES), eSetValueWithoutOverwrite))
@@ -454,7 +457,10 @@ void System::test_wifi(SYS_TEST_TYPE *type, uint8_t *index)
 
     case 2:
     {
-        while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_DISC_HOST), eSetValueWithoutOverwrite))
+        // while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_DISC_HOST), eSetValueWithoutOverwrite))
+        //     vTaskDelay(pdMS_TO_TICKS(50));
+
+        while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_CONN_PRI_HOST), eSetValueWithoutOverwrite))
             vTaskDelay(pdMS_TO_TICKS(50));
 
         while (!xTaskNotify(taskHandleWIFIRun, static_cast<uint32_t>(WIFI_NOTIFY::CMD_RUN_DIRECTIVES), eSetValueWithoutOverwrite))

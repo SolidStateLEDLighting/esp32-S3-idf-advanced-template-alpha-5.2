@@ -22,6 +22,7 @@ This project supports SMP with a dual core Esp32 microcontroller running FreeRTO
 * SNTP support (ability to fetch epoch time)
 * NVS support
 * RGB Indicator for ws2812 LED
+* Universal Wifi Provisioning (Wifi method only)
 
 **Testable Features: (not applied to the main build yet)**
 * Power Management (implemented in the test area)
