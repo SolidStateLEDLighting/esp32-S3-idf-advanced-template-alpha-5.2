@@ -53,9 +53,8 @@ void IRAM_ATTR System::sysTimerCallback(void *arg)
 void System::runSysTimerTaskMarshaller(void *arg)
 {
     ((System *)arg)->runSysTimerTask();
-
-    ((System *)arg)->taskHandleRunSysTimer = nullptr;
-    vTaskDelete(((System *)arg)->taskHandleRunSysTimer);
+    ((System *)arg)->taskHandleRunSysTimer = nullptr; // This doesn't happen automatically but we look at this variable for validity, so set it manually.
+    vTaskDelete(NULL);
 }
 
 void System::runSysTimerTask(void)

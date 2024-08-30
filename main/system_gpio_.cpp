@@ -95,9 +95,8 @@ sys_GPIOIsrHandler_err:
 void System::runGPIOTaskMarshaller(void *arg) // This function can be resolved at run time by the compiler.
 {
     ((System *)arg)->runGPIOTask();
-
-    ((System *)arg)->runTaskHandleSystemGPIO = nullptr;
-    vTaskDelete(((System *)arg)->runTaskHandleSystemGPIO);
+    ((System *)arg)->runTaskHandleSystemGPIO = nullptr; // This doesn't happen automatically but we look at this variable for validity, so set it manually.
+    vTaskDelete(NULL);
 }
 
 void System::runGPIOTask(void)
@@ -177,7 +176,7 @@ void System::runGPIOTask(void)
                 {
                     test_wifi(&testType, &testIndex);
                     break;
-                }                
+                }
                 }
                 break;
             }
