@@ -1,6 +1,6 @@
 # System (Main) Component
 
-We called this the System but because all is inside a directory called Main, the project recognizes Main as the name of the component.  It is possible to change the folder name but it requires some special work that would be more complex that worth doing at this point.
+We called this the System but because all this is inside a directory called Main, the project recognizes Main as the name of the component.  It is possible to change the folder name but this requires some special work that would be more complex and not worth doing at this point.  Main is set as the default name of the primary component.
 
 The system is made up of one object and three tasks.  This object is a singleton and has no destructor.  The system can only be restarted upon a full shutdown and reboot of the hardware.
 

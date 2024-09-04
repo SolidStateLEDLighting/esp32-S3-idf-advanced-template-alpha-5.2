@@ -1,1 +1,1 @@
-If you are viewing components from Github, you will see these are just links to other repositories.  These components may be used by multiple projects.  The plan is to have each project include the components as a submodule.
+If you are viewing components from Github, you will see that some of these components are just links to other repositories.  The plan is to have each project include the components as a submodule when appropriate.
