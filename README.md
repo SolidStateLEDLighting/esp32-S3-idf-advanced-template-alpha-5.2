@@ -107,6 +107,3 @@ On the down side, state modeling can't be easily followed in a single page of so
 
 The state model at a project level is fairly simple: [project state model document](./docs/project_state_models.md).
 ___  
-**Want me on the team?  Reach out with my contact information in Github.  Thanks.**
-![Open to work](./docs/images/OpenToWork.jpg)
-___  
