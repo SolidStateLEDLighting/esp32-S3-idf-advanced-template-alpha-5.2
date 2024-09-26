@@ -2,6 +2,9 @@
 > [!NOTE]  
 > This repository now has received 2 stars from developers who work directly for Espressif.  Thanks guys.  
 
+> [!NOTE]  
+**There is a slight problem in my cloning process.  The submodules (Wifi, NVS, Indication) are not being included correctly.  I am working on that shortly.**
+
 This template is the result of years of study and development.  I refer to it as a boiler-plate project for large scale development.  This would be a starting point for a commerical project -- but it is by no means a beginner's project.  You must have a solid undertanding of most everything like: C/C++ programming, the multi-task (threading) model, freeRTOS concepts, CMake, and Esp component architecture.
 
 This is a project that Espressif should be publishing so advanced users will know how to construct large applications.  Espressif is fairly good about showing how to create basic resources and using them, but they tend to ignore the procedures on how to correctly dispose of resources.   We give attention to the full lifecycle here in what could be considered a genuine commerical grade project.
